@@ -1,6 +1,7 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/homepage.dart';
 
 void main() {
@@ -41,7 +42,7 @@ class _NavigationBarState extends State<NavigationBar> {
         controller: _pageController,
         children: [
          HomePage(),
-          Container(color: Colors.red),
+          Cart(),
           Container(color: Colors.greenAccent.shade700),
           Container(color: Colors.orange),
         ],

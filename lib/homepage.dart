@@ -289,9 +289,9 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     SizedBox(width: 11,),
-                    items("\$0.14","\$0.22",'assets/images/strawberry.png',"Fresh Broccoli Premium item from Thailand","200gr"),
-                    items("\$0.14","\$0.22",'assets/images/broc.png',"Fresh Broccoli Premium item from Thailand","200gr"),
-                    items("\$0.28","\$0.44",'assets/images/greenapple.png',"Fresh Apple Premium item from England","2 Items"),
+                    items("\$0.14","\$0.22",'assets/images/strawberry.png',"Fresh strawberry Premium item from Nuwerliya","250gr"),
+                    items("\$0.14","\$0.22",'assets/images/banana.png',"Yellowish Banana Premium item from Lanka","200gr"),
+                    items("\$0.28","\$0.44",'assets/images/orange.png'," Wow Orange Premium item from England","6 Items"),
 
                   ],
                 ),
