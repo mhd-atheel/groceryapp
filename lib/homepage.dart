@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/itemPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         SizedBox(height: 5),
-        Text(name)
+        Text(name,style: TextStyle(color: Colors.black),)
       ],
     );
   }
@@ -46,70 +47,78 @@ class _HomePageState extends State<HomePage> {
       clipBehavior: Clip.none,
       alignment: Alignment.topLeft,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8.0),
-          child: Container(
-            height: 200,
-            width: 130,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Color(0xffEEF2F9),
-            ),
-            child: Column(
-              children: [
+        GestureDetector(
+          onTap: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ItemPage()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8.0),
+            child: Container(
+              height: 200,
+              width: 130,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Color(0xffEEF2F9),
+              ),
+              child: Column(
+                children: [
 
-                Container(
-                  height: 120,
-                  width: 130,
-                  child: Image.asset(img,height: 120 ,fit: BoxFit.contain,),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 5,),
-                    Text(discoutnprice,style:
-                    TextStyle(
-                        color: Color(0xff00be5e),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15
-                    )
-                      ,),
-                    SizedBox(width: 5,),
-                    Text(price,style:
-                    TextStyle(
-                        color:Colors.grey.shade600,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        decoration: TextDecoration.lineThrough
-
-                    )
-                      ,)
-                  ],
-                ),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 2),
-                  child: Text(desc,style:
-                  TextStyle(
-                      color: Colors.grey,
-                      fontSize: 10
-                  )
-                    ,),
-                )),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0,left: 5),
-                  child: Row(
+                  Container(
+                    height: 120,
+                    width: 130,
+                    child: Image.asset(img,height: 120 ,fit: BoxFit.contain,),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(net,style:
+                      SizedBox(width: 5,),
+                      Text(discoutnprice,style:
                       TextStyle(
-                        color:Colors.grey.shade600,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                          color: Color(0xff6dde9a),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15
+                      )
+                        ,),
+                      SizedBox(width: 5,),
+                      Text(price,style:
+                      TextStyle(
+                          color:Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          decoration: TextDecoration.lineThrough
+
                       )
                         ,)
                     ],
                   ),
-                )
-              ],
+                  Expanded(child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 2),
+                    child: Text(desc,style:
+                    TextStyle(
+                        color: Colors.grey,
+                        fontSize: 10
+                    )
+                      ,),
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0,left: 5),
+                    child: Row(
+                      children: [
+                        Text(net,style:
+                        TextStyle(
+                          color:Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        )
+                          ,)
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -180,6 +189,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
+              SizedBox(height: 5,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -290,8 +300,8 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     SizedBox(width: 11,),
                     items("\$0.14","\$0.22",'assets/images/strawberry.png',"Fresh strawberry Premium item from Nuwerliya","250gr"),
-                    items("\$0.14","\$0.22",'assets/images/banana.png',"Yellowish Banana Premium item from Lanka","200gr"),
-                    items("\$0.28","\$0.44",'assets/images/orange.png'," Wow Orange Premium item from England","6 Items"),
+                    items("\$0.14","\$0.22",'assets/images/orange.png'," Wow Orange Premium item from England","200gr"),
+                    items("\$0.28","\$0.44",'assets/images/banana.png',"Yellowish Banana Premium item from Lanka","6 Items"),
 
                   ],
                 ),

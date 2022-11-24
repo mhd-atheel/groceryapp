@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/homepage.dart';
+import 'package:groceryapp/itemPage.dart';
+import 'package:groceryapp/orderpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,23 +18,33 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white
+        scaffoldBackgroundColor: Colors.white,
+        textTheme:
+        Theme.of(context).textTheme.apply(
+          bodyColor: Color(0xff6dde9a), //<-- SEE HERE
+          displayColor: Color(0xff6dde9a), //<-- SEE HERE
+        ),
+        fontFamily: 'Poppins',
+
+
+
       ),
-      home:  NavigationBar(),
+      home:  BottomNavbar(),
     );
   }
 }
 
-class NavigationBar extends StatefulWidget {
-  const NavigationBar({Key? key}) : super(key: key);
+class BottomNavbar extends StatefulWidget {
+  const BottomNavbar({Key? key}) : super(key: key);
 
   @override
-  State<NavigationBar> createState() => _NavigationBarState();
+  State<BottomNavbar> createState() => _BottomNavbarState();
 }
 
-class _NavigationBarState extends State<NavigationBar> {
+class _BottomNavbarState extends State<BottomNavbar> {
   int _currentPage = 0;
   final _pageController = PageController();
   @override
@@ -43,7 +55,7 @@ class _NavigationBarState extends State<NavigationBar> {
         children: [
          HomePage(),
           Cart(),
-          Container(color: Colors.greenAccent.shade700),
+          OrderPage(),
           Container(color: Colors.orange),
         ],
         onPageChanged: (index) {
