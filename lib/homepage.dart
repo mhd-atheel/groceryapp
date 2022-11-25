@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  items(discoutnprice,price,img,desc,net){
+  items(net,name,img,price){
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.topLeft,
@@ -61,85 +61,89 @@ class _HomePageState extends State<HomePage> {
               width: 130,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Color(0xffEEF2F9),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade100,
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
               ),
               child: Column(
                 children: [
 
                   Container(
-                    height: 120,
-                    width: 130,
+                    height: 100,
+                    width: 110,
                     child: Image.asset(img,height: 120 ,fit: BoxFit.contain,),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(width: 5,),
-                      Text(discoutnprice,style:
-                      TextStyle(
-                          color: Color(0xff6dde9a),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      )
-                        ,),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xff2C5E30),
+                          borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 6),
+                          child: Text(net,style:
+                          TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12
+                          )
+                            ,),
+                        ),
+                      ),
                       SizedBox(width: 5,),
-                      Text(price,style:
-                      TextStyle(
-                          color:Colors.grey.shade600,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          decoration: TextDecoration.lineThrough
 
-                      )
-                        ,)
                     ],
                   ),
-                  Expanded(child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 2),
-                    child: Text(desc,style:
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0,top:0),
+                    child: Text(name,style:
                     TextStyle(
-                        color: Colors.grey,
-                        fontSize: 10
+                        color: Color(0xff5B9420),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Prompt'
                     )
                       ,),
-                  )),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0,left: 5),
-                    child: Row(
-                      children: [
-                        Text(net,style:
-                        TextStyle(
-                          color:Colors.grey.shade600,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        )
-                          ,)
-                      ],
-                    ),
-                  )
+                    padding: const EdgeInsets.only(left: 5.0,top: 0),
+                    child: Text(price,style:
+                    TextStyle(
+                        color: Color(0xff2C5E30),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                    )
+                      ,),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 10.0,left: 5),
+                  //   child: Row(
+                  //     children: [
+                  //       Text(net,style:
+                  //       TextStyle(
+                  //         color:Colors.grey.shade600,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 15,
+                  //       )
+                  //         ,)
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
             ),
           ),
         ),
-        Positioned(
-          top: 15,
-          left: 15,
-          child: Container(
-            width: 30,
-            height: 15,
-            decoration: BoxDecoration(
-                color: Color(0xffffa31a),
-                borderRadius: BorderRadius.circular(2)
-            ),
-            child: Center(child: Text("10%",style:
-            TextStyle(
-                fontSize: 10,
-                color: Colors.white,
-                fontWeight: FontWeight.w600),
-            )),
-          ),
-        ),
+
       ],
     );
   }
@@ -276,9 +280,12 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     SizedBox(width: 11,),
-                    items("\$0.14","\$0.22",'assets/images/spinach.png',"Fresh Broccoli Premium item from Thailand","200gr"),
-                    items("\$0.14","\$0.22",'assets/images/broc.png',"Fresh Broccoli Premium item from Thailand","200gr"),
-                    items("\$0.28","\$0.44",'assets/images/greenapple.png',"Fresh Apple Premium item from England","2 Items"),
+                    items("200gr","Spinach",'assets/images/spinach.png',"\$20"),
+                    items("500gr","Broccoli",'assets/images/broc.png',"\$30.5"),
+                    items("1kg","Apple",'assets/images/greenapple.png',"\$24"),
+                    items("500gr","Strawberry",'assets/images/strawberry.png',"\$22"),
+                    items("1kg","Orange",'assets/images/orange.png',"\$18"),
+                    items("1kg","Banana",'assets/images/banana.png',"\$12"),
 
                   ],
                 ),
@@ -299,9 +306,12 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     SizedBox(width: 11,),
-                    items("\$0.14","\$0.22",'assets/images/strawberry.png',"Fresh strawberry Premium item from Nuwerliya","250gr"),
-                    items("\$0.14","\$0.22",'assets/images/orange.png'," Wow Orange Premium item from England","200gr"),
-                    items("\$0.28","\$0.44",'assets/images/banana.png',"Yellowish Banana Premium item from Lanka","6 Items"),
+                    items("500gr","Strawberry",'assets/images/strawberry.png',"\$22"),
+                    items("1kg","Orange",'assets/images/orange.png',"\$18"),
+                    items("1kg","Banana",'assets/images/banana.png',"\$12"),
+                    items("200gr","Spinach",'assets/images/spinach.png',"\$20"),
+                    items("500gr","Broccoli",'assets/images/broc.png',"\$30.5"),
+                    items("1kg","Apple",'assets/images/greenapple.png',"\$24"),
 
                   ],
                 ),

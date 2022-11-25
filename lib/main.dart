@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xffF4F4F3),
         textTheme:
         Theme.of(context).textTheme.apply(
-          bodyColor: Color(0xff6dde9a), //<-- SEE HERE
+          bodyColor: Color(0xff2C5E30), //<-- SEE HERE
           displayColor: Color(0xff6dde9a), //<-- SEE HERE
         ),
         fontFamily: 'Poppins',

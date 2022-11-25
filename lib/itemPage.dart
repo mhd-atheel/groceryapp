@@ -198,7 +198,7 @@ class _ItemPageState extends State<ItemPage> {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: Color(0xff6dde9a),
+                    color: Color(0xffE4420F),
 
                   ),
                   child: Center(
