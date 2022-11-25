@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8.0),
             child: Container(
-              height: 200,
+              height: 180,
               width: 130,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(left: 5.0,top:0),
                     child: Text(name,style:
                     TextStyle(
-                        color: Color(0xff5B9420),
+                        color: Color(0xff2C5E30),
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Prompt'
@@ -120,7 +120,8 @@ class _HomePageState extends State<HomePage> {
                     TextStyle(
                         color: Color(0xff2C5E30),
                         fontSize: 18,
-                        fontWeight: FontWeight.bold
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Prompt'
                     )
                       ,),
                   ),
@@ -167,7 +168,9 @@ class _HomePageState extends State<HomePage> {
                       height: 45,
                       decoration: BoxDecoration(
                           color: Color(0xfff2f2f2),
-                          borderRadius: BorderRadius.circular(5)),
+                          borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.grey)
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
@@ -200,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       "What do you looking for?",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
                 ),
@@ -236,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       "Promations for you?",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
                 ),
@@ -270,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       "Fresh Vegan",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
                 ),
@@ -296,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       "Recommend for you",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
                 ),

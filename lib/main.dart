@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           bodyColor: Color(0xff2C5E30), //<-- SEE HERE
           displayColor: Color(0xff6dde9a), //<-- SEE HERE
         ),
-        fontFamily: 'Poppins',
+        fontFamily: 'Prompt',
 
 
 
