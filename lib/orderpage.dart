@@ -19,11 +19,10 @@ class _OrderPageState extends State<OrderPage> {
           "My Order",
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
               fontFamily: "Poppins"),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Color(0xff6dde9a),
+        backgroundColor: Color(0xffF4F4F3),
+        foregroundColor: Color(0xff2C5E30),
         elevation: 0,
       ),
       body: Column(
