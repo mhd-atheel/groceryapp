@@ -5,13 +5,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/itemPage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  late String itemName;
+  late String net;
+  late String img = '';
+  late String price;
   categories(img,name) {
     return Column(
       children: [
@@ -51,7 +55,7 @@ class _HomePageState extends State<HomePage> {
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ItemPage()),
+              MaterialPageRoute(builder: (context) => ItemPage(itemName: name,net: net,img: img,price: price, )),
             );
           },
           child: Padding(

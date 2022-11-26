@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/main.dart';
 class ItemPage extends StatefulWidget {
-  const ItemPage({Key? key}) : super(key: key);
+  String itemName;
+  String net;
+  String img;
+  String price;
 
+   ItemPage({Key? key, required this.itemName, required this.net, required this.img, required this.price}) : super(key: key);
   @override
   State<ItemPage> createState() => _ItemPageState();
 }
@@ -18,9 +22,7 @@ class _ItemPageState extends State<ItemPage> {
         title:  Text(
           "Products",
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-              fontFamily: "Poppins"),
+              fontFamily: "Prompt"),
         ),
         leading: IconButton(
           onPressed: () {
@@ -40,7 +42,7 @@ class _ItemPageState extends State<ItemPage> {
             ),
           ),
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffF4F4F3),
         foregroundColor: Colors.black,
         elevation: 0,
       ),
@@ -67,7 +69,7 @@ class _ItemPageState extends State<ItemPage> {
                     ],
                   ),
                   child: Image.asset(
-                    'assets/images/spinach.png',
+                    widget.img,
                     height: MediaQuery.of(context).size.height/3.5,
                     width:  MediaQuery.of(context).size.width,
 
@@ -80,7 +82,7 @@ class _ItemPageState extends State<ItemPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Orange",
+                      widget.itemName,
                       style: TextStyle(fontWeight: FontWeight.normal, fontSize: 25),
                     ),
                     IconButton(
@@ -116,7 +118,7 @@ class _ItemPageState extends State<ItemPage> {
 
                       ),
                       child: Center(
-                        child: Text("200gr",style: TextStyle(
+                        child: Text(widget.net,style: TextStyle(
 
                             fontWeight: FontWeight.bold,
                             fontSize: 10
@@ -180,7 +182,7 @@ class _ItemPageState extends State<ItemPage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 16.0),
                       child: Text(
-                        "\$120",
+                        "${widget.price}",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,color: Colors.black),
                       ),
                     ),

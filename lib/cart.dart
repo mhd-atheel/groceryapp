@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/variables.dart';
-import 'package:groceryapp/widjet/cartWidjet.dart';
+import 'package:groceryapp/widget/cartWidget.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -121,6 +121,19 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title:  Text(
+          "Cart",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              fontFamily: "Poppins"),
+        ),
+        backgroundColor: Color(0xffF4F4F3),
+        foregroundColor: Color(0xff2C5E30),
+        automaticallyImplyLeading: false,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -128,40 +141,40 @@ class _CartState extends State<Cart> {
               SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Cart",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                              fontFamily: "Poppins"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            CartWidjet(
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   child: Row(
+              //     children: [
+              //       Row(
+              //         children: [
+              //           Text(
+              //             "Cart",
+              //             style: TextStyle(
+              //                 fontWeight: FontWeight.bold,
+              //                 fontSize: 25,
+              //                 fontFamily: "Poppins"),
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+            CartWidget(
               name: "Banana",
               img: "assets/images/strawberry.png",
               price: "\$20",
             ),
-            CartWidjet(
+            CartWidget(
               name: "Orange",
               img: "assets/images/orange.png",
               price: "\$15",
             ),
-              CartWidjet(
+              CartWidget(
                 name: "Banana",
                 img: "assets/images/banana.png",
                 price: "\$15",
               ),
-              CartWidjet(
+              CartWidget(
                 name: "Spinach",
                 img: "assets/images/spinach.png",
                 price: "\$15",

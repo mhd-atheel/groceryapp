@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CartWidjet extends StatefulWidget{
+class CartWidget extends StatefulWidget{
   final String img;
   final String name;
   final String price;
 
-  CartWidjet({
+  CartWidget({
     super.key,
     required this.img,
     required this.name,
@@ -15,10 +15,10 @@ class CartWidjet extends StatefulWidget{
   });
 
   @override
-  State<CartWidjet> createState() => _CartWidjetState();
+  State<CartWidget> createState() => _CartWidgetState();
 }
 
-class _CartWidjetState extends State<CartWidjet> {
+class _CartWidgetState extends State<CartWidget> {
   int counter = 1;
 
   @override
