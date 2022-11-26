@@ -17,14 +17,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Grocery App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Color(0xffF4F4F3),
         textTheme:
         Theme.of(context).textTheme.apply(
-          bodyColor: Color(0xff2C5E30), //<-- SEE HERE
+          bodyColor: Color(0xff2F3825), //<-- SEE HERE
           displayColor: Color(0xff2C5E30), //<-- SEE HERE
         ),
         fontFamily: 'Prompt',
@@ -75,22 +75,22 @@ class _BottomNavbarState extends State<BottomNavbar> {
           BottomBarItem(
             icon: Icon(FontAwesomeIcons.shop,size: 18,),
             title: Text(' Shop',style: TextStyle(color: Colors.black54),),
-            activeColor: Color(0xff00e673),
+            activeColor: Color(0xff2C5E30),
           ),
           BottomBarItem(
             icon: Icon(FontAwesomeIcons.cartShopping,size: 18,),
             title: Text('Cart',style: TextStyle(color: Colors.black54),),
-            activeColor: Color(0xff00e673),
+            activeColor: Color(0xff2C5E30),
           ),
           BottomBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             title: Text('My Order',style: TextStyle(color: Colors.black54),),
-            activeColor: Color(0xff00e673),
+            activeColor: Color(0xff2C5E30),
           ),
           BottomBarItem(
             icon: Icon(FontAwesomeIcons.user,size: 18,),
             title: Text('Account',style: TextStyle(color: Colors.black54),),
-            activeColor: Color(0xff00e673),
+            activeColor: Color(0xff2C5E30),
           ),
         ],
       ),

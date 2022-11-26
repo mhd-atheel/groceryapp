@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(left: 5.0,top:0),
                     child: Text(name,style:
                     TextStyle(
-                        color: Color(0xff2C5E30),
+                        color: Color(0xff2F3825),
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Prompt'
