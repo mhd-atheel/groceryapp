@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/main.dart';
 class ItemPage extends StatefulWidget {
@@ -33,7 +34,12 @@ class _ItemPageState extends State<ItemPage> {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Cart()),
+                );
+              },
               icon: Icon(FontAwesomeIcons.cartShopping,size: 20,color: Color(0xff2C5E30),),
             ),
           ),
