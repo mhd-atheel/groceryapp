@@ -42,7 +42,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         SizedBox(height: 5),
-        Text(name,style: TextStyle(color: Colors.black),)
+        Text(name,style: TextStyle(
+          fontFamily: 'Prompt'
+        ),)
       ],
     );
   }

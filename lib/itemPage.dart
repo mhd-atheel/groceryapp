@@ -31,17 +31,23 @@ class _ItemPageState extends State<ItemPage> {
           icon: Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Cart()),
-                );
-              },
-              icon: Icon(FontAwesomeIcons.cartShopping,size: 20,color: Color(0xff2C5E30),),
+          GestureDetector(
+            child: Icon(
+              FontAwesomeIcons.heart,size: 20,color: Color(0xff2C5E30),
             ),
+            onTap:() {
+              print("Heart Icons");
+            },
+          ),
+
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Cart()),
+              );
+            },
+            icon: Icon(Icons.shopping_cart_outlined,size: 20,color: Color(0xff2C5E30),),
           ),
         ],
         // backgroundColor: Color(0xffF4F4F3),
@@ -241,8 +247,6 @@ class _ItemPageState extends State<ItemPage> {
                                     )
                                       ,),
                                   ),
-
-
                                 ],
                               ),
                             ),

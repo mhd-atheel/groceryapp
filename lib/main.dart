@@ -6,6 +6,7 @@ import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/itemPage.dart';
 import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/orderpage.dart';
+import 'package:groceryapp/profilePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,7 +58,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
          HomePage(),
           Cart(),
           OrderPage(),
-          Container(color: Colors.orange),
+          ProfilePage()
         ],
         onPageChanged: (index) {
           // Use a better state management solution
