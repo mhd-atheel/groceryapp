@@ -141,24 +141,6 @@ class _CartState extends State<Cart> {
               SizedBox(
                 height: 10,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              //   child: Row(
-              //     children: [
-              //       Row(
-              //         children: [
-              //           Text(
-              //             "Cart",
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.bold,
-              //                 fontSize: 25,
-              //                 fontFamily: "Poppins"),
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
             CartWidget(
               name: "Banana",
               img: "assets/images/strawberry.png",

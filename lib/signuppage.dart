@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:groceryapp/main.dart';
-import 'package:groceryapp/signuppage.dart';
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+import 'package:groceryapp/loginpage.dart';
+
+import 'main.dart';
+
+class SignupPage extends StatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,18 +20,18 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 40,),
+              SizedBox(height: 25,),
               Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: Row(
                       children: [
-                        Text("Hi,Welcome back!",style: TextStyle(
-                          fontFamily: "Prompt",
-                          fontSize: 35,
-                          color: Color(0xff2F3825),
-                          fontWeight: FontWeight.bold
+                        Text("Hi,Welcome guys!",style: TextStyle(
+                            fontFamily: "Prompt",
+                            fontSize: 35,
+                            color: Color(0xff2F3825),
+                            fontWeight: FontWeight.bold
                         ),),
                       ],
                     ),
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: Row(
                       children: [
-                        Text("Hello again,you have been missed!",style: TextStyle(
+                        Text("Hello again, we always with you!",style: TextStyle(
                             fontFamily: "Proppins",
                             fontSize: 15,
                             color: Color(0xff2F3825)
@@ -71,6 +72,41 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: Row(
                       children: [
+                        Text("Your Name",style: TextStyle(
+                            fontFamily: "Prompt",
+                            fontSize: 15,
+                            color: Color(0xff2F3825)
+                        ),),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        // 0xfff2f2f2  - like a gray
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black54)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 0),
+                        child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'your name',
+                              labelStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                            )),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Row(
+                      children: [
                         Text("Email Address",style: TextStyle(
                             fontFamily: "Prompt",
                             fontSize: 15,
@@ -86,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       decoration: BoxDecoration(
-                                  // 0xfff2f2f2  - like a gray
+                        // 0xfff2f2f2  - like a gray
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(color: Colors.black54)
@@ -95,10 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
                             decoration: InputDecoration(
-                                hintText: 'example@gmail.com ',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                                )),
+                              hintText: 'example@gmail.com ',
+                              labelStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                            )),
                       ),
                     ),
                   ),
@@ -129,10 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
                             decoration: InputDecoration(
-                                labelText: 'password ',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                                )),
+                              hintText: 'password ',
+                              labelStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                            )),
                       ),
                     ),
                   ),
@@ -154,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         ),
                         child: Center(
-                          child: Text("Login",style: TextStyle(
+                          child: Text("Create Account",style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18
@@ -168,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Don't have an account?",style: TextStyle(
+                        Text("Already have an account?",style: TextStyle(
                             fontFamily: "Prompt",
                             fontSize: 16,
                             color: Color(0xff2F3825)
@@ -176,9 +212,9 @@ class _LoginPageState extends State<LoginPage> {
                         TextButton(onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SignupPage()),
+                            MaterialPageRoute(builder: (context) => const LoginPage()),
                           );
-                        }, child:Text("Create Account",style: TextStyle(color: Color(0xff27963c)),) )
+                        }, child:Text("Login",style: TextStyle(color: Color(0xff27963c),fontFamily: "Prompt"),) )
                       ],
                     ),
                   ),

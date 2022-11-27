@@ -30,69 +30,75 @@ class _CartWidgetState extends State<CartWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
-            children: [
-              Container(
-                height: 120,
-                width: 130,
-                child: Image.asset(
-                  widget.img,
+          Container(
+            width: 281,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
                   height: 120,
-                  fit: BoxFit.contain,
+                  width: 130,
+                  child: Image.asset(
+                    widget.img,
+                    height: 120,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right:0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height:20),
-                    Text(
-                      widget.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          fontFamily: "Poppins"),
-                    ),
-                    SizedBox(height:5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "2.00kg",
-                          style: TextStyle(
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height:5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(widget.price,
-                          style: TextStyle(
-                            color: Color(0xff00be5e),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        SizedBox(width: 120,),
-                      ],
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(right:0,left: 0),
+                  child: Container(
+                    child: Column(
 
-                  ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height:20),
+                        Text(
+                          widget.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              fontFamily: "Poppins"),
+                        ),
+                        SizedBox(height:5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "2.00kg",
+                              style: TextStyle(
+                                  color: Color(0xff000000),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height:5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(widget.price,
+                              style: TextStyle(
+                                color: Color(0xff00be5e),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(width: 120,),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right:0.0,left: 0),
+            padding: const EdgeInsets.all(0),
             child: Row(
 
               children: [
