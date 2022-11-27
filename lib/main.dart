@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/itemPage.dart';
+import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/orderpage.dart';
 
 void main() {
@@ -25,14 +26,14 @@ class MyApp extends StatelessWidget {
         textTheme:
         Theme.of(context).textTheme.apply(
           bodyColor: Color(0xff2F3825), //<-- SEE HERE
-          displayColor: Color(0xff2C5E30), //<-- SEE HERE
+          displayColor: Color(0xff2F3825), //<-- SEE HERE
         ),
         fontFamily: 'Prompt',
 
 
 
       ),
-      home:  BottomNavbar(),
+      home:  LoginPage(),
     );
   }
 }

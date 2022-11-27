@@ -28,7 +28,7 @@ class _CartWidgetState extends State<CartWidget> {
       height: 120,
       width: MediaQuery.of(context).size.width,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Row(
             children: [
@@ -42,7 +42,7 @@ class _CartWidgetState extends State<CartWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right:0),
+                padding: EdgeInsets.only(right:0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +92,7 @@ class _CartWidgetState extends State<CartWidget> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(right:20.0),
+            padding: const EdgeInsets.only(right:0.0,left: 0),
             child: Row(
 
               children: [
@@ -120,11 +120,13 @@ class _CartWidgetState extends State<CartWidget> {
                     }
 
                   },
-                  child: Icon(FontAwesomeIcons.minus,size: 15,
+                  child: Icon(Icons.remove_circle_outline_rounded,size: 30,
                   ),
                 ),
                 SizedBox(width: 3,),
-                Text("$counter"),
+                Text("$counter",style: TextStyle(
+               fontSize: 20
+                   ),),
                 SizedBox(width: 3,),
                 GestureDetector(
                   onTap:(){
@@ -134,7 +136,7 @@ class _CartWidgetState extends State<CartWidget> {
 
                     });
                   },
-                  child: Icon(FontAwesomeIcons.plus,size: 15,),
+                  child: Icon(Icons.add_circle_outline_rounded,size: 30,),
                 ),
               ],
             ),

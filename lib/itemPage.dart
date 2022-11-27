@@ -204,7 +204,7 @@ class _ItemPageState extends State<ItemPage> {
                               width: 130,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
+                                color: Color(0xffEEF2F9),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade100,
@@ -269,7 +269,7 @@ class _ItemPageState extends State<ItemPage> {
                               width: 130,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
+                                color: Color(0xffEEF2F9),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade100,
@@ -334,7 +334,7 @@ class _ItemPageState extends State<ItemPage> {
                               width: 130,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
+                                color: Color(0xffEEF2F9),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.shade100,
