@@ -38,6 +38,12 @@ dependencies:
   bottom_bar: ^2.0.2
   carousel_pro: ^1.0.0
   badges: ^2.0.3
+  firebase_core: ^2.3.0
+  firebase_auth: ^4.1.4
+  firebase_database: ^10.0.6
+  firebase_storage: ^11.0.6
+  image_picker: ^0.8.6
+  cloud_firestore: ^4.1.0
 
 
 

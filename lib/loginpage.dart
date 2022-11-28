@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/main.dart';
@@ -10,6 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+   final emailController = TextEditingController();
+   final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
+                          controller: emailController,
                             decoration: InputDecoration(
                                 hintText: 'example@gmail.com ',
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -128,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
+                          controller: passwordController,
                             decoration: InputDecoration(
                                 labelText: 'password ',
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -137,11 +142,18 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const BottomNavbar()),
-                      );
+                    onTap: () async{
+                      FirebaseAuth auth = FirebaseAuth.instance;
+                      await auth.signInWithEmailAndPassword(
+                          email: emailController.text, password: passwordController.text).then((value) {
+                             print(auth.currentUser?.uid);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const BottomNavbar()),
+                            );
+                      });
+
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 15.0,left: 15,right: 15,top: 10),

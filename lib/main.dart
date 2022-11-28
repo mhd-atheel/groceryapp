@@ -1,21 +1,26 @@
 import 'package:bottom_bar/bottom_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
+import 'package:groceryapp/data.dart';
 import 'package:groceryapp/homepage.dart';
-import 'package:groceryapp/itemPage.dart';
 import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/orderpage.dart';
 import 'package:groceryapp/profilePage.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
+  FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +39,9 @@ class MyApp extends StatelessWidget {
 
 
       ),
-      home:  LoginPage(),
+
+      home:auth.currentUser == null ? LoginPage():BottomNavbar(),
+        // auth.currentUser == null ? LoginPage():HomePage()
     );
   }
 }

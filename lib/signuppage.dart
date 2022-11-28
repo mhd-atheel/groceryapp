@@ -1,6 +1,12 @@
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryapp/loginpage.dart';
 
+import 'data.dart';
+import 'data.dart';
 import 'main.dart';
 
 class SignupPage extends StatefulWidget {
@@ -11,6 +17,9 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,6 +104,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
+                            controller: nameController,
                             decoration: InputDecoration(
                               hintText: 'your name',
                               labelStyle: TextStyle(color: Colors.grey),
@@ -130,6 +140,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
+                          controller: emailController,
                             decoration: InputDecoration(
                               hintText: 'example@gmail.com ',
                               labelStyle: TextStyle(color: Colors.grey),
@@ -164,6 +175,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
+                          controller: passwordController,
                             decoration: InputDecoration(
                               hintText: 'password ',
                               labelStyle: TextStyle(color: Colors.grey),
@@ -173,11 +185,28 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const BottomNavbar()),
-                      );
+                    onTap: () async{
+                      FirebaseAuth auth = FirebaseAuth.instance;
+                       await auth.createUserWithEmailAndPassword(
+                           email: emailController.text, password: passwordController.text)
+                           .then((value) async {
+                            print("Signup Success Fully");
+                            Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                            FirebaseFirestore firestore = FirebaseFirestore.instance;
+                          await  firestore.collection("biodata").doc(Data.uuid).set({
+                              'name':nameController.text,
+                              'email':emailController.text,
+                              'password':passwordController.text,
+                            }).then((value) {
+                              print("Added Fully");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const BottomNavbar()),
+                              );
+                            });
+
+                       });
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 15.0,left: 15,right: 15,top: 10),
