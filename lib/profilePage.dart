@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/editProfile.dart';
 import 'package:groceryapp/loginpage.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -22,7 +23,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  
+  String imageUrl = '';
+  late String name = '';
+  late String email= '';
   @override
   void initState() {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -33,41 +36,14 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       name = myData['name'];
       email= myData['email'];
+      imageUrl= myData['dowloadurl'];
+
     });
   });
   }
-  late String name = '';
-  late String email= '';
-  late String imageUrl = '';
-  File? _image;
-  final imagePicker = ImagePicker();
-  String? downloadURL;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  Future ImagePickerMethod() async{
-    final pick =await imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if(pick != null){
-        _image = File(pick.path);
-      }
-      // else{
-      //   showSnackBars("No File Selected", Duration(milliseconds: 400));
-      // }
-    });
-  }
-  Future uploadImage() async {
-    final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
-    Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-    Reference ref = FirebaseStorage.instance.ref().child(Data.uuid).child('userprofile').child(posttime);
-    await ref.putFile(_image!);
-    downloadURL = await ref.getDownloadURL();
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    await  firestore.collection("biodata").doc(Data.uuid).update({
-      'downloadurl': downloadURL
-    });
-    print(downloadURL);
-  }
 
 
+  FirebaseAuth auth  = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -101,25 +77,14 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: (){
-                      ImagePickerMethod().then((value) async {
-                        await uploadImage();
-                      });
-
-                    },
-                    child: _image == null?CircleAvatar(
-                      radius: 60,
-                      child: Image.asset("assets/images/logo.png"),
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                    ):CircleAvatar(
-                      radius: 40,
-                      backgroundImage:FileImage(_image!),
-
-                    ),
-                  ),
-
+                  // Container(
+                  //   height: 200,
+                  //   width: 200,
+                  //   decoration: BoxDecoration(
+                  //     shape: BoxShape.circle,
+                  //     // image: Image.network(imageUrl)
+                  //   ),
+                  // )
                 ],
               ),
               SizedBox(height: 10,),
@@ -255,22 +220,30 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffffa31a),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  const EditProfile()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color(0xffffa31a),
 
-                  ),
-                  child: Center(
-                    child: Text("Edit Profile",style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18
-                    ),),
+                    ),
+                    child: Center(
+                      child: Text("Edit Profile",style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                      ),),
+                    ),
                   ),
                 ),
               )

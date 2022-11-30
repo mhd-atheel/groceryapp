@@ -20,6 +20,8 @@ class _SignupPageState extends State<SignupPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  String address = 'your address';
+  String phone = 'your number';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,6 +189,8 @@ class _SignupPageState extends State<SignupPage> {
                   GestureDetector(
                     onTap: () async{
                       FirebaseAuth auth = FirebaseAuth.instance;
+                      AuthCredential credential = EmailAuthProvider.credential(email: emailController.text, password: passwordController.text);
+                      await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential);
                        await auth.createUserWithEmailAndPassword(
                            email: emailController.text, password: passwordController.text)
                            .then((value) async {
@@ -197,6 +201,8 @@ class _SignupPageState extends State<SignupPage> {
                               'name':nameController.text,
                               'email':emailController.text,
                               'password':passwordController.text,
+                              'address':address,
+                              'phone':phone,
                             }).then((value) {
                               print("Added Fully");
                               Navigator.push(
