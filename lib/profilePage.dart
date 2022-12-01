@@ -26,6 +26,8 @@ class _ProfilePageState extends State<ProfilePage> {
   String imageUrl = '';
   late String name = '';
   late String email= '';
+  late String phone= '';
+  late String address= '';
   @override
   void initState() {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -36,6 +38,8 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       name = myData['name'];
       email= myData['email'];
+      phone= myData['phone'];
+      address= myData['address'];
       imageUrl= myData['dowloadurl'];
 
     });
@@ -201,6 +205,134 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(width: 10,),
                             Text(
                               'Email',style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Prompt"
+                            ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ), //Container
+                    //Container
+                  ],
+                  //<Widget>[]
+                ),
+              ),
+              Center(
+                child: Stack(
+                  fit: StackFit.loose,
+                  clipBehavior: Clip.none, // This is what you need.
+                  children:[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0 ,horizontal: 10),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 15),
+                              child: Text(
+                                address.toUpperCase(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  fontFamily: 'Prompt'
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ), //Container
+                    Positioned(
+                      top: 0,
+                      left: 20,
+                      child: Container(
+                        width: 123,
+                        height: 16,
+                        decoration: BoxDecoration(
+                            color: Color(0xff2C5E30),
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 10,),
+                            Text(
+                              'Address',style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Prompt"
+                            ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ), //Container
+                    //Container
+                  ],
+                  //<Widget>[]
+                ),
+              ),
+              Center(
+                child: Stack(
+                  fit: StackFit.loose,
+                  clipBehavior: Clip.none, // This is what you need.
+                  children:[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0 ,horizontal: 10),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 15),
+                              child: Text(
+                                phone.toUpperCase(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  fontFamily: 'Prompt'
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ), //Container
+                    Positioned(
+                      top: 0,
+                      left: 20,
+                      child: Container(
+                        width: 123,
+                        height: 16,
+                        decoration: BoxDecoration(
+                            color: Color(0xff2C5E30),
+                            borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 10,),
+                            Text(
+                              'Phone Number',style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
