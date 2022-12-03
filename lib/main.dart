@@ -11,6 +11,7 @@ import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/orderpage.dart';
 import 'package:groceryapp/profilePage.dart';
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -87,7 +88,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
             activeColor: Color(0xff2C5E30),
           ),
           BottomBarItem(
-            icon: Icon(FontAwesomeIcons.cartShopping,size: 18,),
+            icon: Icon(FontAwesomeIcons.bagShopping,size: 18,),
             title: Text('Cart',style: TextStyle(color: Colors.black54),),
             activeColor: Color(0xff2C5E30),
           ),

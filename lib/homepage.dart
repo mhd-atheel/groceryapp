@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/itemPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -195,10 +196,18 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 2,
                   ),
-                  Icon(
-                    FontAwesomeIcons.bell,
-                    size: 23,
-                    color: Color(0xff00e673),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AdminHome()),
+                      );
+                    },
+                    child: Icon(
+                      FontAwesomeIcons.bell,
+                      size: 23,
+                      color: Color(0xff00e673),
+                    ),
                   )
                 ],
               ),

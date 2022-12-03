@@ -189,8 +189,6 @@ class _SignupPageState extends State<SignupPage> {
                   GestureDetector(
                     onTap: () async{
                       FirebaseAuth auth = FirebaseAuth.instance;
-                      AuthCredential credential = EmailAuthProvider.credential(email: emailController.text, password: passwordController.text);
-                      await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(credential);
                        await auth.createUserWithEmailAndPassword(
                            email: emailController.text, password: passwordController.text)
                            .then((value) async {
