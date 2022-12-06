@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/admins/addProducts.dart';
@@ -11,6 +14,16 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  @override
+  void initState() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    firestore.collection('products').doc().get().then<dynamic>((DocumentSnapshot snapshot){
+      Map myData = snapshot.data()as Map;
+      setState(() {
+        print(myData);
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

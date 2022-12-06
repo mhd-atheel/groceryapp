@@ -43,7 +43,7 @@ class _EditProfileState extends State<EditProfile> {
   Future uploadImage() async {
     final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-    Reference ref = FirebaseStorage.instance.ref().child(Data.uuid).child('userprofile').child(posttime);
+    Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(posttime);
     await ref.putFile(_image!);
     downloadURL = await ref.getDownloadURL();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
