@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/main.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 class ItemPage extends StatefulWidget {
   String itemName;
   String net;
@@ -113,16 +115,23 @@ class _ItemPageState extends State<ItemPage> {
                             if(counter<=1){
                               counter = 1;
                               print(counter);
-                              final snackBar= SnackBar(
-                                backgroundColor: Colors.red,
-                                behavior: SnackBarBehavior.floating,
-                                duration: Duration(seconds: 1),
-                                elevation: 0,
-                                width: MediaQuery.of(context).size.width/1.1,
-                                content: const Text('A minimum of 01 item is required',
-                                  style: TextStyle(fontWeight: FontWeight.bold),),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              MotionToast.warning(
+                                width: MediaQuery.of(context).size.width/1.2,
+                                height: 50,
+
+                                title: const Text(
+                                  'System\'s Notification',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                description: const Text('A minimum of 01 item is required',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                layoutOrientation: ToastOrientation.ltr,
+                                animationDuration: const Duration(milliseconds: 500),
+                                position: MotionToastPosition.top,
+                                animationType: AnimationType.fromTop,
+                                dismissable: true,
+                              ).show(context);
                             }
                             else{
                               setState(() {

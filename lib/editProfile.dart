@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/profilePage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 
 import 'data.dart';
 
@@ -347,16 +349,23 @@ class _EditProfileState extends State<EditProfile> {
                             'phone':phoneController.text,
                           }).then((value) {
                             print("Added Fully");
-                            final snackBar= SnackBar(
-                              backgroundColor: Color(0xff27963c),
-                              behavior: SnackBarBehavior.floating,
-                              duration: Duration(seconds: 1),
-                              elevation: 0,
-                              width: MediaQuery.of(context).size.width/1.1,
-                              content: const Text('Updated Successfully',
-                                style: TextStyle(fontWeight: FontWeight.bold),),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            MotionToast.success(
+                              width: MediaQuery.of(context).size.width/1.2,
+                              height: 50,
+
+                              title: const Text(
+                                'System\'s Notification',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              description: const Text('Uploaded Successfully',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              layoutOrientation: ToastOrientation.ltr,
+                              animationDuration: const Duration(milliseconds: 500),
+                              position: MotionToastPosition.top,
+                              animationType: AnimationType.fromTop,
+                              dismissable: true,
+                            ).show(context);
                           });
                         });
 
