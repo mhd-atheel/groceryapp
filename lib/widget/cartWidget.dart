@@ -122,9 +122,8 @@ class _CartWidgetState extends State<CartWidget> {
                       MotionToast.warning(
                         width: MediaQuery.of(context).size.width/1.2,
                         height: 50,
-
                         title: const Text(
-                          'System\'s Notification',
+                          'System\'s Alert',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         description: const Text('A minimum of 01 item is required',

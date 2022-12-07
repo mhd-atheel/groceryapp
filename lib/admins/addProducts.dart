@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 
 import '../data.dart';
 
@@ -377,6 +379,23 @@ class _AddProductsState extends State<AddProducts> {
                         'downloadurl': downloadURL
                       }).then((value){
                        print("Product Inserted");
+                       MotionToast.success(
+                         width: MediaQuery.of(context).size.width/1.2,
+                         height: 50,
+
+                         title: const Text(
+                           'System\'s Notification',
+                           style: TextStyle(fontWeight: FontWeight.bold),
+                         ),
+                         description: const Text('New Product Published Now!!',
+                           style: TextStyle(fontSize: 12),
+                         ),
+                         layoutOrientation: ToastOrientation.ltr,
+                         animationDuration: const Duration(milliseconds: 500),
+                         position: MotionToastPosition.top,
+                         animationType: AnimationType.fromTop,
+                         dismissable: true,
+                       ).show(context);
                       });
 
 

@@ -338,8 +338,12 @@ class _EditProfileState extends State<EditProfile> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: () async{
-                        uploadImage().then((value) async {
-                          Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                         final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
+                         Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                         Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(posttime);
+                         await ref.putFile(_image!);
+                         downloadURL = await ref.getDownloadURL();
+                         Data.uuid = FirebaseAuth.instance.currentUser!.uid;
                           FirebaseFirestore firestore = FirebaseFirestore.instance;
                           await  firestore.collection("biodata").doc(Data.uuid).update({
                             'name':nameController.text,
@@ -347,6 +351,7 @@ class _EditProfileState extends State<EditProfile> {
                             'password':passwordController.text,
                             'address':addressController.text,
                             'phone':phoneController.text,
+                            'downloadurl': downloadURL
                           }).then((value) {
                             print("Added Fully");
                             MotionToast.success(
@@ -361,13 +366,12 @@ class _EditProfileState extends State<EditProfile> {
                                 style: TextStyle(fontSize: 12),
                               ),
                               layoutOrientation: ToastOrientation.ltr,
-                              animationDuration: const Duration(milliseconds: 500),
+                              animationDuration: const Duration(milliseconds: 1300),
                               position: MotionToastPosition.top,
                               animationType: AnimationType.fromTop,
                               dismissable: true,
                             ).show(context);
                           });
-                        });
 
                       },
                       child: Padding(

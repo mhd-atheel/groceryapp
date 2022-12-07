@@ -22,6 +22,8 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   String address = 'your address';
   String phone = 'your number';
+  String downloadURL = 'downloadurl';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +203,7 @@ class _SignupPageState extends State<SignupPage> {
                               'password':passwordController.text,
                               'address':address,
                               'phone':phone,
+                              'downloadurl': downloadURL
                             }).then((value) {
                               print("Added Fully");
                               Navigator.push(
