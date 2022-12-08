@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
@@ -6,12 +7,12 @@ import 'package:groceryapp/main.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 class ItemPage extends StatefulWidget {
-  String itemName;
+  String name;
   String net;
   String img;
   String price;
 
-   ItemPage({Key? key, required this.itemName, required this.net, required this.img, required this.price}) : super(key: key);
+   ItemPage({Key? key, required this.name, required this.net, required this.img, required this.price}) : super(key: key);
   @override
   State<ItemPage> createState() => _ItemPageState();
 }
@@ -62,7 +63,7 @@ class _ItemPageState extends State<ItemPage> {
         children: [
           Column(
             children: [
-              Text(widget.itemName,style: TextStyle(
+              Text(widget.name,style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Prompt'
@@ -83,11 +84,20 @@ class _ItemPageState extends State<ItemPage> {
                     //   ),
                     // ],
                   ),
-                  child: Image.asset(
-                    widget.img,
-                    height: MediaQuery.of(context).size.height/3.5,
-                    width:  MediaQuery.of(context).size.width,
-
+                  child: CachedNetworkImage(
+                    imageUrl: widget.img,
+                    imageBuilder: (context, imageProvider) => Container(
+                      height: MediaQuery.of(context).size.height/3.5,
+                      width:  MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
               ),

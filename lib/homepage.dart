@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late String itemName;
+  late String name;
   late String net;
   late String img = '';
   late String price;
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ItemPage(itemName: name,net: net,img: img,price: price, )),
+              MaterialPageRoute(builder: (context) => ItemPage(name: name,net: net,img: img,price: price, )),
             );
           },
           child: Padding(
@@ -311,7 +311,6 @@ class _HomePageState extends State<HomePage> {
                       shrinkWrap: true,
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        print(data);
                         return ProductContainer(
                             net: data['net'],
                             name: data['name'],

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../itemPage.dart';
+
 
 class ProductContainer extends StatefulWidget {
   final String net;
@@ -28,10 +30,10 @@ class _ProductContainerState extends State<ProductContainer> {
       children: [
         GestureDetector(
           onTap: (){
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => ItemPage(itemName: name,net: net,img: img,price: price, )),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ItemPage(name: widget.name,net: widget.net,img: widget.img,price: widget.price, )),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8.0),
