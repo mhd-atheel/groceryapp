@@ -9,12 +9,14 @@ class ProductContainer extends StatefulWidget {
   final String name;
   final String img;
   final String price;
+  final String symbol;
 
   ProductContainer({super.key,
     required this.net,
     required this.name,
     required this.img,
     required this.price,
+    required this.symbol
   });
 
   @override
@@ -80,7 +82,8 @@ class _ProductContainerState extends State<ProductContainer> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 6),
-                          child: Text(widget.net,style:
+                          child: Text(
+                           '${widget.net}${widget.symbol}',style:
                           TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,

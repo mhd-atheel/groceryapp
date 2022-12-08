@@ -376,7 +376,8 @@ class _AddProductsState extends State<AddProducts> {
                         'categories':dropdownValue,
                         'net':netController.text,
                         'description':descriptionController.text,
-                        'downloadurl': downloadURL
+                        'downloadurl': downloadURL,
+                        'symbol': netIndex == 0 ? 'gr':'kg'
                       }).then((value){
                        print("Product Inserted");
                        MotionToast.success(

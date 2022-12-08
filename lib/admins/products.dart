@@ -206,8 +206,8 @@ class _ProductsState extends State<Products> {
                   name: data['name'],
                   img: data['downloadurl'],
                   price: data['price'],
-                  description: data['description']
-                ,
+                  description: data['description'],
+                  symbol: data['symbol'],
               );
             }).toList(),
           );

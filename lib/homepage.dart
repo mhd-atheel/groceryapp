@@ -316,6 +316,7 @@ class _HomePageState extends State<HomePage> {
                             name: data['name'],
                             img: data['downloadurl'],
                             price: data['price'],
+                            symbol: data['symbol'],
                         );
                       }).toList(),
                     );
