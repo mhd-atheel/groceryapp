@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/itemPage.dart';
+import 'package:groceryapp/widget/productContainer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key }) : super(key: key);
@@ -293,19 +295,32 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(width: 11,),
-                    items("200gr","Spinach",'assets/images/spinach.png',"\$20"),
-                    items("500gr","Broccoli",'assets/images/broc.png',"\$30.5"),
-                    items("1kg","Apple",'assets/images/greenapple.png',"\$24"),
-                    items("500gr","Strawberry",'assets/images/strawberry.png',"\$22"),
-                    items("1kg","Orange",'assets/images/orange.png',"\$18"),
-                    items("1kg","Banana",'assets/images/banana.png',"\$12"),
-
-                  ],
+              SizedBox(
+                height: 200,
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Something went wrong'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return ListView(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        print(data);
+                        return ProductContainer(
+                            net: data['net'],
+                            name: data['name'],
+                            img: data['downloadurl'],
+                            price: data['price'],
+                        );
+                      }).toList(),
+                    );
+                  },
                 ),
               ),
               Padding(
