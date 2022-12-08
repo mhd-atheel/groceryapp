@@ -351,7 +351,7 @@ class _EditProfileState extends State<EditProfile> {
                             'password':passwordController.text,
                             'address':addressController.text,
                             'phone':phoneController.text,
-                            'downloadurl': downloadURL
+                            'downloadurl': downloadURL ?? ''
                           }).then((value) {
                             print("Added Fully");
                             MotionToast.success(
