@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/editProfile.dart';
 import 'package:groceryapp/loginpage.dart';
+import 'package:groceryapp/widget/items.dart';
+import 'package:groceryapp/widget/profileContainer.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'data.dart';
@@ -23,28 +26,28 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String imageUrl = '';
-  late String name = '';
-  late String email= '';
-  late String phone= '';
-  late String address= '';
+  // String imageUrl = '';
+  // late String name = '';
+  // late String email= '';
+  // late String phone= '';
+  // late String address= '';
   @override
-  void initState() {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-  firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
-    Map myData = snapshot.data()as Map;
-    print(myData);
-    setState(() {
-      name = myData['name'];
-      email= myData['email'];
-      phone= myData['phone'];
-      address= myData['address'];
-      imageUrl= myData['dowloadurl'];
-
-    });
-  });
-  }
+  // void initState() {
+  // FirebaseFirestore firestore = FirebaseFirestore.instance;
+  // Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+  // firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
+  //   Map myData = snapshot.data()as Map;
+  //   print(myData);
+  //   setState(() {
+  //     name = myData['name'];
+  //     email= myData['email'];
+  //     phone= myData['phone'];
+  //     address= myData['address'];
+  //     imageUrl= myData['dowloadurl'];
+  //
+  //   });
+  // });
+  // }
 
 
   FirebaseAuth auth  = FirebaseAuth.instance;
@@ -78,275 +81,24 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Container(
-                  //   height: 200,
-                  //   width: 200,
-                  //   decoration: BoxDecoration(
-                  //     shape: BoxShape.circle,
-                  //     // image: Image.network(imageUrl)
-                  //   ),
-                  // )
-                ],
-              ),
-              SizedBox(height: 10,),
-              Center(
-                child: Stack(
-                  fit: StackFit.loose,
-                  clipBehavior: Clip.none, // This is what you need.
-                  children:[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0 ,horizontal: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
+              StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('biodata').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Something went wrong'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 15),
-                              child: Text(
-                                name.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  fontFamily: 'Prompt'
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    Positioned(
-                      top: 0,
-                      left: 20,
-                      child: Container(
-                        width: 123,
-                        height: 16,
-                        decoration: BoxDecoration(
-                            color: Color(0xff2C5E30),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10,),
-                            Text(
-                              'Name',style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Prompt"
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    //Container
-                  ],
-                  //<Widget>[]
-                ),
-              ),
-              Center(
-                child: Stack(
-                  fit: StackFit.loose,
-                  clipBehavior: Clip.none, // This is what you need.
-                  children:[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0 ,horizontal: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 15),
-                              child: Text(
-                                email.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  fontFamily: 'Prompt'
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    Positioned(
-                      top: 0,
-                      left: 20,
-                      child: Container(
-                        width: 123,
-                        height: 16,
-                        decoration: BoxDecoration(
-                            color: Color(0xff2C5E30),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10,),
-                            Text(
-                              'Email',style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Prompt"
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    //Container
-                  ],
-                  //<Widget>[]
-                ),
-              ),
-              Center(
-                child: Stack(
-                  fit: StackFit.loose,
-                  clipBehavior: Clip.none, // This is what you need.
-                  children:[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0 ,horizontal: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 15),
-                              child: Text(
-                                address.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  fontFamily: 'Prompt'
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    Positioned(
-                      top: 0,
-                      left: 20,
-                      child: Container(
-                        width: 123,
-                        height: 16,
-                        decoration: BoxDecoration(
-                            color: Color(0xff2C5E30),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10,),
-                            Text(
-                              'Address',style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Prompt"
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    //Container
-                  ],
-                  //<Widget>[]
-                ),
-              ),
-              Center(
-                child: Stack(
-                  fit: StackFit.loose,
-                  clipBehavior: Clip.none, // This is what you need.
-                  children:[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0 ,horizontal: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 15),
-                              child: Text(
-                                phone.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  fontFamily: 'Prompt'
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    Positioned(
-                      top: 0,
-                      left: 20,
-                      child: Container(
-                        width: 123,
-                        height: 16,
-                        decoration: BoxDecoration(
-                            color: Color(0xff2C5E30),
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 10,),
-                            Text(
-                              'Phone Number',style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Prompt"
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ), //Container
-                    //Container
-                  ],
-                  //<Widget>[]
-                ),
+                  return ProfileContainer(
+                    imageUrl: snapshot.data!['downloadurl'],
+                    name: snapshot.data!['name'],
+                    phone: snapshot.data!['phone'],
+                    address: snapshot.data!['address'],
+                    email: snapshot.data!['email'],
+                  );
+                },
               ),
             ],
           ),

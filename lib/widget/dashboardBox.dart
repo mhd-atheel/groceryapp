@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groceryapp/admins/categories.dart';
 import 'package:groceryapp/admins/userOrders.dart';
+import 'package:groceryapp/admins/users.dart';
 
 import '../admins/products.dart';
 
@@ -22,6 +23,12 @@ class Functions {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const UserOrders()),
+          );
+        }
+        else if (name == "Users") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Users()),
           );
         }
       },

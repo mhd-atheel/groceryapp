@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/main.dart';
 import 'package:groceryapp/signuppage.dart';
 class LoginPage extends StatefulWidget {
@@ -13,6 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
    final emailController = TextEditingController();
    final passwordController = TextEditingController();
+   String emailValue = 'aathil@gmail.com';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,15 +145,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () async{
-                      FirebaseAuth auth = FirebaseAuth.instance;
-                      await auth.signInWithEmailAndPassword(
-                          email: emailController.text, password: passwordController.text).then((value) {
-                             print(auth.currentUser?.uid);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const BottomNavbar()),
-                            );
-                      });
+                      if(emailController.text == 'aathil@gmail.com'){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const AdminHome()),
+                        );
+                      }
+                      else{
+                        FirebaseAuth auth = FirebaseAuth.instance;
+                        await auth.signInWithEmailAndPassword(
+                            email: emailController.text, password: passwordController.text).then((value) {
+                          print(auth.currentUser?.uid);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const BottomNavbar()),
+                          );
+                        });
+                      }
+
 
 
                     },

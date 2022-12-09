@@ -9,6 +9,8 @@ import 'package:groceryapp/widget/items.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
+import 'adminHome.dart';
+
 class Products extends StatefulWidget {
   const Products({Key? key}) : super(key: key);
 
@@ -181,6 +183,15 @@ class _ProductsState extends State<Products> {
               fontWeight: FontWeight.bold,
               fontSize: 25,
               fontFamily: "Poppins"),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AdminHome()),
+            );
+          },
+          icon: Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
         ),
         backgroundColor: Color(0xffF4F4F3),
         foregroundColor: Color(0xff2C5E30),

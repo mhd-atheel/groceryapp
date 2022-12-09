@@ -20,6 +20,8 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  bool success = false;
+  String currentPassword = '';
   File? _image;
   final imagePicker = ImagePicker();
   String? downloadURL;
@@ -64,8 +66,10 @@ class _EditProfileState extends State<EditProfile> {
         nameController.text = myData['name'];
         emailController.text= myData['email'];
         passwordController.text= myData['password'];
+        currentPassword= myData['password'];
         addressController.text= myData['address'];
         phoneController.text= myData['phone'];
+
       });
     });
   }
@@ -344,11 +348,25 @@ class _EditProfileState extends State<EditProfile> {
                          await ref.putFile(_image!);
                          downloadURL = await ref.getDownloadURL();
                          Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                         var user= FirebaseAuth.instance.currentUser!;
                           FirebaseFirestore firestore = FirebaseFirestore.instance;
+                         final cred = await EmailAuthProvider.credential(email: user.email!, password: currentPassword);
+                         await user.reauthenticateWithCredential(cred).then((value) async {
+                           await user.updatePassword(passwordController.text).then((_) {
+                             success = true;
+                             firestore.collection("biodata").doc(Data.uuid).update({
+                               'password':passwordController.text,
+                             });
+                           }).catchError((error) {
+                             print(error);
+                           });
+                         }).catchError((err) {
+                           print(err);
+                         });
                           await  firestore.collection("biodata").doc(Data.uuid).update({
                             'name':nameController.text,
                             'email':emailController.text,
-                            'password':passwordController.text,
+                            // 'password':passwordController.text,
                             'address':addressController.text,
                             'phone':phoneController.text,
                             'downloadurl': downloadURL ?? ''
