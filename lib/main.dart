@@ -10,6 +10,7 @@ import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/orderpage.dart';
 import 'package:groceryapp/profilePage.dart';
+import 'package:groceryapp/test.dart';
 
 
 void main() async{
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
 
       ),
 
-      home:auth.currentUser == null ? LoginPage():BottomNavbar(),
+      home:HomePage()
+      // auth.currentUser == null ? LoginPage():BottomNavbar(),
         // auth.currentUser == null ? LoginPage():HomePage()
     );
   }
