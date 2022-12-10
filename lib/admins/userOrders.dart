@@ -42,7 +42,6 @@ class _UserOrdersState extends State<UserOrders> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
             child: Container(
-              height: 180,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -103,7 +102,89 @@ class _UserOrdersState extends State<UserOrders> {
                           ),
                         ),
                         Text(
+                          "Price",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              fontFamily: 'Prompt'
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "broccoli",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              fontFamily: 'Prompt'
+                          ),
+                        ),
+                        Text(
                           "\$200",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              fontFamily: 'Prompt'
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Green Apple",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              fontFamily: 'Prompt'
+                          ),
+                        ),
+                        Text(
+                          "\$80",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              fontFamily: 'Prompt'
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 16),
+                    child: Divider(
+                      color: Colors.black,
+                      height: 25,
+                      thickness: 1,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Totals",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              fontFamily: 'Prompt'
+                          ),
+                        ),
+                        Text(
+                          "\$280",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
