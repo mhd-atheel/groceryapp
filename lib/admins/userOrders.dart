@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/admins/orderHistory.dart';
 
 import 'adminHome.dart';
 
@@ -37,6 +38,16 @@ class _UserOrdersState extends State<UserOrders> {
           icon: Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const OrderHistory()),
+            );
+          },
+          backgroundColor:Color(0xffffa31a),
+          child: const Icon(Icons.history_rounded,size: 40,)
+      ),
       body: Column(
         children: [
           Padding(
@@ -65,7 +76,7 @@ class _UserOrdersState extends State<UserOrders> {
                     leading: CircleAvatar(
                       backgroundColor: const Color(0xff6ae792),
                       child: CachedNetworkImage(
-                        imageUrl: '',
+                        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/grocery-app-9b16d.appspot.com/o/UserProfiles%2F0qBOYa9ml7SVgG5bZza2cWzwW5j1%2F1670590530628?alt=media&token=9986c87f-7347-4311-ad7b-bcc3d2d18580',
                         imageBuilder: (context, imageProvider) => CircleAvatar(
                           backgroundImage: imageProvider,
                         ),
