@@ -289,7 +289,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     Text(
-                      "Fresh Vegan",
+                      "Products for You",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
@@ -306,49 +306,27 @@ class _HomePageState extends State<HomePage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
-                    return ListView(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return ProductContainer(
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GridView.count(
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        crossAxisCount: 2,
+                        children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                          return ProductContainer(
                             net: data['net'],
                             name: data['name'],
                             img: data['downloadurl'],
                             price: data['price'],
                             symbol: data['symbol'],
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     );
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Recommend for you",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SizedBox(width: 11,),
-                    items("500gr","Strawberry",'assets/images/strawberry.png',"\$22"),
-                    items("1kg","Orange",'assets/images/orange.png',"\$18"),
-                    items("1kg","Banana",'assets/images/banana.png',"\$12"),
-                    items("200gr","Spinach",'assets/images/spinach.png',"\$20"),
-                    items("500gr","Broccoli",'assets/images/broc.png',"\$30.5"),
-                    items("1kg","Apple",'assets/images/greenapple.png',"\$24"),
-
-                  ],
-                ),
-              )
 
             ],
           ),
