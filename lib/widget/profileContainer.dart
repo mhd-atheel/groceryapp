@@ -76,7 +76,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   width: 123,
                   height: 16,
                   decoration: BoxDecoration(
-                      color: Color(0xff2C5E30),
+                      color: Color(0xff27963c),
                       borderRadius: BorderRadius.circular(5)
                   ),
                   child: Row(
@@ -140,7 +140,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   width: 123,
                   height: 16,
                   decoration: BoxDecoration(
-                      color: Color(0xff2C5E30),
+                      color: Color(0xff27963c),
                       borderRadius: BorderRadius.circular(5)
                   ),
                   child: Row(
@@ -204,7 +204,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   width: 123,
                   height: 16,
                   decoration: BoxDecoration(
-                      color: Color(0xff2C5E30),
+                      color: Color(0xff27963c),
                       borderRadius: BorderRadius.circular(5)
                   ),
                   child: Row(
@@ -268,7 +268,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   width: 123,
                   height: 16,
                   decoration: BoxDecoration(
-                      color: Color(0xff2C5E30),
+                      color: Color(0xff27963c),
                       borderRadius: BorderRadius.circular(5)
                   ),
                   child: Row(

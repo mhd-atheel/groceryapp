@@ -1,9 +1,13 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/variables.dart';
 import 'package:groceryapp/widget/cartWidget.dart';
+
+import 'data.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -15,6 +19,18 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   int val = 10;
   int counter = 0;
+  final addressController = TextEditingController();
+  void initState() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+    firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
+      Map myData = snapshot.data()as Map;
+      print(myData);
+      setState(() {
+        addressController.text= myData['address'];
+      });
+    });
+  }
 
   cartContainer(img,name, price){
      int counter = 0;
@@ -135,42 +151,190 @@ class _CartState extends State<Cart> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-            CartWidget(
-              name: "Banana",
-              img: "assets/images/strawberry.png",
-              price: "\$20",
-            ),
-            CartWidget(
-              name: "Orange",
-              img: "assets/images/orange.png",
-              price: "\$15",
-            ),
-              CartWidget(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                CartWidget(
                 name: "Banana",
-                img: "assets/images/banana.png",
-                price: "\$15",
-              ),
-              CartWidget(
-                name: "Spinach",
-                img: "assets/images/spinach.png",
-                price: "\$15",
-              ),
-
-
-             // cartContainer('assets/images/spinach.png',"Spinach","\$0.14"),
-             // cartContainer('assets/images/strawberry.png',"Strawberry","\$0.14"),
-             // cartContainer('assets/images/orange.png',"Orange","\$0.14"),
-             // cartContainer('assets/images/greenapple.png',"Green Apple","\$0.14"),
-             // cartContainer('assets/images/banana.png',"Banana","\$0.14"),
-
-            ],
+                img: "assets/images/strawberry.png",
+                price: "\$20",
           ),
+                CartWidget(
+                name: "Orange",
+                img: "assets/images/orange.png",
+                price: "\$15",
+          ),
+                CartWidget(
+                  name: "Banana",
+                  img: "assets/images/banana.png",
+                  price: "\$15",
+                ),
+                CartWidget(
+                  name: "Spinach",
+                  img: "assets/images/spinach.png",
+                  price: "\$15",
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Delivery Location",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
+                      ),
+                    ],
+                  ),
+
+                ),
+                Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      // 0xfff2f2f2  - like a gray
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black54)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 0),
+                      child: TextField(
+                          controller: addressController,
+                          decoration: InputDecoration(
+                            hintText: 'your name',
+                            labelStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                          )),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Order Info",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
+                      ),
+                    ],
+                  ),
+
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Subtotal",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                            fontFamily: 'Prompt'
+                        ),
+                      ),
+                      Text(
+                        "\$200",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                            fontFamily: 'Prompt'
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Delivery Cost",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                            fontFamily: 'Prompt'
+                        ),
+                      ),
+                      Text(
+                        "\$0",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                            fontFamily: 'Prompt'
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 16),
+                  child: Divider(
+                    color: Colors.black,
+                    height: 25,
+                    thickness: 1,
+                    indent: 5,
+                    endIndent: 5,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Totals",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            fontFamily: 'Prompt'
+                        ),
+                      ),
+                      Text(
+                        "\$200",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            fontFamily: 'Prompt'
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              ],
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color(0xff27963c),
+
+                    ),
+                    child: Center(
+                      child: Text("CHECKOUT (\$200)",style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15
+                      ),),
+                    ),
+                  ),
+                )
+              ],
+            )
+
+
+          ],
         ),
       ),
     );

@@ -117,15 +117,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(0xffffa31a),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color(0xff27963c),
 
                     ),
                     child: Center(
-                      child: Text("Edit Profile",style: TextStyle(
+                      child: Text("EDIT PROFILE",style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18
+                          fontSize: 15
                       ),),
                     ),
                   ),

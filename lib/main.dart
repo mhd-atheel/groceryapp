@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
 
       ),
 
-      home:HomePage()
-      // auth.currentUser == null ? LoginPage():BottomNavbar(),
+      home:auth.currentUser == null ? LoginPage():BottomNavbar(),
+      //
         // auth.currentUser == null ? LoginPage():HomePage()
     );
   }

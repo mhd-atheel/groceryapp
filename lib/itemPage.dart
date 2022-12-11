@@ -108,7 +108,7 @@ class _ItemPageState extends State<ItemPage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 5.0,top: 0),
-                      child: Text('${widget.price}',style:
+                      child: Text('\$${widget.price}',style:
                       TextStyle(
                           color: Color(0xff2F3825),
                           fontSize: 35,
@@ -418,15 +418,15 @@ class _ItemPageState extends State<ItemPage> {
                   width: MediaQuery.of(context).size.width,
                   height: 50,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xffffa31a),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Color(0xff27963c),
 
                   ),
                   child: Center(
-                    child: Text("Add to Cart",style: TextStyle(
+                    child: Text("ADD TO CART",style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18
+                      fontSize: 15
                     ),),
                   ),
                 ),

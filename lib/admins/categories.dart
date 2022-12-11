@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../widget/categoriesContainer.dart';
 import 'adminHome.dart';
 
 
@@ -19,7 +20,7 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
       appBar: AppBar(
         title:const Text(
-          "Users",
+          "Categories",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
@@ -41,41 +42,47 @@ class _CategoriesState extends State<Categories> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 16),
-            child: ListTile(
-              shape: RoundedRectangleBorder( //<-- SEE HERE
-                side: BorderSide(width: 1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              leading: CircleAvatar(
-                backgroundColor: const Color(0xff6ae792),
-                child: CachedNetworkImage(
-                  imageUrl: '',
-                  imageBuilder: (context, imageProvider) => CircleAvatar(
-                    backgroundImage: imageProvider,
-                  ),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-              ),
-              title: Text(
-                'Milk and Egg',
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400
-                ),
-              ),
-              // subtitle: Text('25',
-              //   style: TextStyle(
-              //     fontFamily: 'Poppins',
-              //     fontWeight: FontWeight.w200,
-              //     fontSize: 12,
-              //   ),
-              // ),
-              trailing: Text("2",style: TextStyle(color: Colors.green,fontSize: 20),)
-            ),
+          CategoriesContainer(
+            img: 'assets/images/fruits.png',
+            name: 'Fruits',
+            quantity: '12',
           ),
+          CategoriesContainer(
+            img: 'assets/images/veg.png',
+            name: 'Vegetables',
+            quantity: '10',
+          ),
+          CategoriesContainer(
+            img: 'assets/images/meat.png',
+            name: 'Meats',
+            quantity: '04',
+          ),
+          CategoriesContainer(
+            img: 'assets/images/fish.png',
+            name: 'Sea Foods',
+            quantity: '07',
+          ),
+          CategoriesContainer(
+            img: 'assets/images/milk.png',
+            name: 'Milk and Egg',
+            quantity: '04',
+          ),
+          CategoriesContainer(
+            img: 'assets/images/bread.png',
+            name: 'Breads',
+            quantity: '05',
+          ),
+          CategoriesContainer(
+            img: 'assets/images/frozen.png',
+            name: 'Frozen',
+            quantity: '06',
+          ),
+          CategoriesContainer(
+            img: 'assets/images/organic.png',
+            name: 'Organic',
+            quantity: '01',
+          ),
+
         ],
       ),
     );

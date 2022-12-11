@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/admins/adminHome.dart';
+import 'package:groceryapp/categories.dart';
 import 'package:groceryapp/itemPage.dart';
 import 'package:groceryapp/widget/productContainer.dart';
 
@@ -20,35 +21,43 @@ class _HomePageState extends State<HomePage> {
   late String img = '';
   late String price;
   categories(img,name) {
-    return Column(
-      children: [
-        Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width / 4.7,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade100,
-                spreadRadius: 2,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Image.asset(
-            img,
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Categories()),
+        );
+      },
+      child: Column(
+        children: [
+          Container(
             height: 60,
-            width: 60,
-            scale: 12,
+            width: MediaQuery.of(context).size.width / 4.7,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade100,
+                  spreadRadius: 2,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Image.asset(
+              img,
+              height: 60,
+              width: 60,
+              scale: 12,
+            ),
           ),
-        ),
-        SizedBox(height: 5),
-        Text(name,style: TextStyle(
-          fontFamily: 'Prompt'
-        ),)
-      ],
+          SizedBox(height: 5),
+          Text(name,style: TextStyle(
+            fontFamily: 'Prompt'
+          ),)
+        ],
+      ),
     );
   }
   items(net,name,img,price){
@@ -307,10 +316,10 @@ class _HomePageState extends State<HomePage> {
                       return Center(child: CircularProgressIndicator());
                     }
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(18.0),
                       child: GridView.count(
                         crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                        mainAxisSpacing: 20,
                         crossAxisCount: 2,
                         children: snapshot.data!.docs.map((DocumentSnapshot document) {
                           Map<String, dynamic> data = document.data()! as Map<String, dynamic>;

@@ -324,16 +324,16 @@ class _EditProfileState extends State<EditProfile> {
                           width: MediaQuery.of(context).size.width/2.2,
                           height: 50,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(15),
                               color: Colors.white,
-                              border: Border.all(color:Color(0xffffa31a) )
+                              border: Border.all(color:Color(0xff27963c) )
 
                           ),
                           child: Center(
-                            child: Text("Cencel",style: TextStyle(
-                                color: Color(0xffffa31a),
+                            child: Text("CENCEL",style: TextStyle(
+                                color: Color(0xff27963c),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18
+                                fontSize: 15
                             ),),
                           ),
                         ),
@@ -398,15 +398,15 @@ class _EditProfileState extends State<EditProfile> {
                           width: MediaQuery.of(context).size.width/2.2,
                           height: 50,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(0xffffa31a),
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color(0xff27963c),
 
                           ),
                           child: Center(
-                            child: Text("Save",style: TextStyle(
+                            child: Text("SAVE",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18
+                                fontSize: 15
                             ),),
                           ),
                         ),

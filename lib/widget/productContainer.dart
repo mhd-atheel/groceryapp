@@ -112,20 +112,6 @@ class _ProductContainerState extends State<ProductContainer> {
               )
                 ,),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 10.0,left: 5),
-            //   child: Row(
-            //     children: [
-            //       Text(net,style:
-            //       TextStyle(
-            //         color:Colors.grey.shade600,
-            //         fontWeight: FontWeight.bold,
-            //         fontSize: 15,
-            //       )
-            //         ,)
-            //     ],
-            //   ),
-            // )
           ],
         ),
       ),
