@@ -212,7 +212,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                     children: [
                       SizedBox(width: 10,),
                       Text(
-                        'Address',style: TextStyle(
+                        'Delivery Location',style: TextStyle(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.bold,

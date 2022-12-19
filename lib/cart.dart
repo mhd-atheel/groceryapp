@@ -19,13 +19,17 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   int val = 10;
   int counter = 0;
+  String dropdownvalue = 'At Home';
+  var items = [
+    'At Home',
+    'At Office',
+      ];
   final addressController = TextEditingController();
   void initState() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
     firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
-      Map myData = snapshot.data()as Map;
-      print(myData);
+      Map myData = snapshot.data() as Map;
       setState(() {
         addressController.text= myData['address'];
       });
@@ -205,10 +209,56 @@ class _CartState extends State<Cart> {
                       child: TextField(
                           controller: addressController,
                           decoration: InputDecoration(
-                            hintText: 'your name',
                             labelStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
                           )),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    children: [
+                      Text("Delivery to",style: TextStyle(
+                          fontFamily: "Prompt",
+                          fontSize: 15,
+                          color: Color(0xff2F3825),
+                          fontWeight: FontWeight.bold
+                      ),),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                  child: Container(
+                    height: 50,
+                    width:MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black54),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DropdownButton(
+                        dropdownColor: Colors.white,
+                        underline: DropdownButtonHideUnderline(child: Container()),
+                        value: dropdownvalue,
+                        iconDisabledColor: Colors.transparent,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        isExpanded: true,
+                        items: items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+
+                          );
+                        }).toList(),
+                        onChanged: (String? Value) {
+                          setState(() {
+                            dropdownvalue = Value!;
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ),
