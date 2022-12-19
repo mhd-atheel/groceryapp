@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.2.1
   bottom_bar: ^2.0.2
-  carousel_pro: ^1.0.0
   badges: ^2.0.3
   firebase_core: ^2.3.0
   firebase_auth: ^4.1.4
@@ -46,6 +45,7 @@ dependencies:
   cloud_firestore: ^4.1.0
   motion_toast: ^2.6.4
   cached_network_image: ^3.2.3
+  carousel_slider: ^4.2.1
 
 
 

@@ -362,7 +362,7 @@ class _CartState extends State<Cart> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16),
+                  padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16,top: 10),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,

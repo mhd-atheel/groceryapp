@@ -5,7 +5,8 @@ import 'package:groceryapp/main.dart';
 import 'package:groceryapp/widget/productContainer.dart';
 
 class Categories extends StatefulWidget {
-  const Categories({Key? key}) : super(key: key);
+  String name;
+  Categories({Key? key, required String this.name, }) : super(key: key);
 
   @override
   State<Categories> createState() => _CategoriesState();
@@ -16,8 +17,8 @@ class _CategoriesState extends State<Categories> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text(
-          "Categories",
+        title:Text(
+          widget.name,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,

@@ -1,11 +1,12 @@
 import 'package:badges/badges.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/categories.dart';
 import 'package:groceryapp/itemPage.dart';
+import 'package:groceryapp/widget/categoriesHome.dart';
 import 'package:groceryapp/widget/productContainer.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,46 +21,46 @@ class _HomePageState extends State<HomePage> {
   late String net;
   late String img = '';
   late String price;
-  categories(img,name) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Categories()),
-        );
-      },
-      child: Column(
-        children: [
-          Container(
-            height: 60,
-            width: MediaQuery.of(context).size.width / 4.7,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade100,
-                  spreadRadius: 2,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Image.asset(
-              img,
-              height: 60,
-              width: 60,
-              scale: 12,
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(name,style: TextStyle(
-            fontFamily: 'Prompt'
-          ),)
-        ],
-      ),
-    );
-  }
+  // categories(img,name) {
+  //   return GestureDetector(
+  //     onTap: (){
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => Categories()),
+  //       );
+  //     },
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           height: 60,
+  //           width: MediaQuery.of(context).size.width / 4.7,
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(5),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.grey.shade100,
+  //                 spreadRadius: 2,
+  //                 blurRadius: 7,
+  //                 offset: Offset(0, 3), // changes position of shadow
+  //               ),
+  //             ],
+  //           ),
+  //           child: Image.asset(
+  //             img,
+  //             height: 60,
+  //             width: 60,
+  //             scale: 12,
+  //           ),
+  //         ),
+  //         SizedBox(height: 5),
+  //         Text(name,style: TextStyle(
+  //           fontFamily: 'Prompt'
+  //         ),)
+  //       ],
+  //     ),
+  //   );
+  // }
   items(net,name,img,price){
     return Stack(
       clipBehavior: Clip.none,
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
 
-                  Container(
+                  SizedBox(
                     height: 100,
                     width: 110,
                     child: Image.asset(img,height: 120 ,fit: BoxFit.contain,),
@@ -166,7 +167,11 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
+  final List<String> images = [
+   'assets/images/banner3.jpg',
+   'assets/images/banner2.jpg',
+   'assets/images/banner1.jpg',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,10 +244,11 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    categories('assets/images/veg.png',"Vegitables"),
-                    categories('assets/images/fruits.png',"Fruits"),
-                    categories('assets/images/meat.png',"Meats"),
-                    categories('assets/images/fish.png',"Sea foods"),
+                    CategoriesHome(name: "Vegetables", img: 'assets/images/veg.png'),
+                    CategoriesHome(name: "Fruits", img: 'assets/images/fruits.png'),
+                    CategoriesHome(name: "Meats", img: 'assets/images/meat.png'),
+                    CategoriesHome(name: "Sea foods", img: 'assets/images/fish.png'),
+
                   ],
                 ),
               ),
@@ -251,10 +257,11 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    categories('assets/images/milk.png',"Milk & Egg"),
-                    categories('assets/images/bread.png',"Breads"),
-                    categories('assets/images/frozen.png',"Frozen"),
-                    categories('assets/images/organic.png',"Organic"),
+                    CategoriesHome(name: "Milk & Egg", img: 'assets/images/milk.png'),
+                    CategoriesHome(name: "Breads", img: 'assets/images/bread.png'),
+                    CategoriesHome(name: "Frozen", img: 'assets/images/frozen.png'),
+                    CategoriesHome(name: "Organic", img: 'assets/images/organic.png'),
+
                   ],
                 ),
               ),
@@ -270,29 +277,23 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
-                    height: 180.0,
+              SizedBox(
+                  height: 180.0,
+                  width: MediaQuery.of(context).size.width,
+                  child: CarouselSlider.builder(
+                    itemCount:images.length,
+                    options: CarouselOptions(
+                      autoPlay: true,
 
-                    width: MediaQuery.of(context).size.width,
-                    child: Carousel(
-                      images: [
-                        Image.asset('assets/images/banner3.jpg',fit: BoxFit.cover,),
-                        Image.asset('assets/images/banner1.jpg',fit: BoxFit.cover,),
-                        Image.asset('assets/images/banner2.jpg',fit: BoxFit.cover,),
-                      ],
-                      dotSize: 0.0,
-                      dotSpacing: 15.0,
-                      dotColor: Colors.lightGreenAccent,
-                      indicatorBgPadding: 5.0,
-                      dotBgColor: Colors.transparent,
-                      borderRadius: true,
-                      autoplay: false,
-
-                    )
-                ),
-              ),
+                    ),
+                    itemBuilder: (context, index, realIdx) {
+                      return Container(
+                        child: Center(
+                            child: Image.asset(images[index],
+                                fit: BoxFit.cover,)),
+                      );
+                    },
+                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -317,10 +318,16 @@ class _HomePageState extends State<HomePage> {
                     }
                     return Padding(
                       padding: const EdgeInsets.all(18.0),
-                      child: GridView.count(
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 20,
-                        crossAxisCount: 2,
+                      child: GridView(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                           mainAxisSpacing: 20,
+                        ),
+                        primary: false,
+                        // crossAxisSpacing: 10,
+                        // mainAxisSpacing: 20,
+                        // crossAxisCount: 2,
                         children: snapshot.data!.docs.map((DocumentSnapshot document) {
                           Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                           return ProductContainer(
