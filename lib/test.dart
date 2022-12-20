@@ -28,11 +28,7 @@ class TestPage extends StatelessWidget {
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return ProductContainer(
-                  net: data['net'],
-                  name: data['name'],
-                  img: data['downloadurl'],
-                  price: data['price'],
-                  symbol: data['symbol'],
+                  data: data,
                 );
               }).toList(),
             ),

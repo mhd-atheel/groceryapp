@@ -5,18 +5,12 @@ import '../itemPage.dart';
 
 
 class ProductContainer extends StatefulWidget {
-  final String net;
-  final String name;
-  final String img;
-  final String price;
-  final String symbol;
+
+  final Map data;
 
   ProductContainer({super.key,
-    required this.net,
-    required this.name,
-    required this.img,
-    required this.price,
-    required this.symbol
+    required this.data,
+
   });
 
   @override
@@ -30,7 +24,7 @@ class _ProductContainerState extends State<ProductContainer> {
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ItemPage(name: widget.name,net: widget.net,img: widget.img,price: widget.price, )),
+          MaterialPageRoute(builder: (context) => ItemPage(data: widget.data, )),
         );
       },
       child: Container(
@@ -51,7 +45,7 @@ class _ProductContainerState extends State<ProductContainer> {
         child: Column(
           children: [
             CachedNetworkImage(
-              imageUrl: widget.img,
+              imageUrl:  widget.data['downloadurl'],
               imageBuilder: (context, imageProvider) => Container(
                 height: 100,
                 width: 110,
@@ -77,7 +71,7 @@ class _ProductContainerState extends State<ProductContainer> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 6),
                     child: Text(
-                     '${widget.net}${widget.symbol}',style:
+                     '${ widget.data['net']}${ widget.data['symbol']}',style:
                     TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -92,7 +86,7 @@ class _ProductContainerState extends State<ProductContainer> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 5.0,top:0),
-              child: Text(widget.name,style:
+              child: Text( widget.data['name'],style:
               TextStyle(
                   color: Color(0xff2F3825),
                   fontSize: 15,
@@ -103,7 +97,7 @@ class _ProductContainerState extends State<ProductContainer> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 5.0,top: 0),
-              child: Text('\$${widget.price}',style:
+              child: Text('\$${ widget.data['price']}',style:
               TextStyle(
                   color: Color(0xff2C5E30),
                   fontSize: 18,

@@ -61,112 +61,7 @@ class _HomePageState extends State<HomePage> {
   //     ),
   //   );
   // }
-  items(net,name,img,price){
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.topLeft,
-      children: [
-        GestureDetector(
-          onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ItemPage(name: name,net: net,img: img,price: price, )),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8.0),
-            child: Container(
-              height: 180,
-              width: 130,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade100,
-                    spreadRadius: 2,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
 
-                  SizedBox(
-                    height: 100,
-                    width: 110,
-                    child: Image.asset(img,height: 120 ,fit: BoxFit.contain,),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 5,),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xff2C5E30),
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 6),
-                          child: Text(net,style:
-                          TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12
-                          )
-                            ,),
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0,top:0),
-                    child: Text(name,style:
-                    TextStyle(
-                        color: Color(0xff2F3825),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Prompt'
-                    )
-                      ,),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0,top: 0),
-                    child: Text(price,style:
-                    TextStyle(
-                        color: Color(0xff2C5E30),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Prompt'
-                    )
-                      ,),
-                  ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 10.0,left: 5),
-                  //   child: Row(
-                  //     children: [
-                  //       Text(net,style:
-                  //       TextStyle(
-                  //         color:Colors.grey.shade600,
-                  //         fontWeight: FontWeight.bold,
-                  //         fontSize: 15,
-                  //       )
-                  //         ,)
-                  //     ],
-                  //   ),
-                  // )
-                ],
-              ),
-            ),
-          ),
-        ),
-
-      ],
-    );
-  }
   final List<String> images = [
    'assets/images/banner3.jpg',
    'assets/images/banner2.jpg',
@@ -305,43 +200,39 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 200,
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Something went wrong'));
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: GridView(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                           mainAxisSpacing: 20,
-                        ),
-                        primary: false,
-                        // crossAxisSpacing: 10,
-                        // mainAxisSpacing: 20,
-                        // crossAxisCount: 2,
-                        children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                          return ProductContainer(
-                            net: data['net'],
-                            name: data['name'],
-                            img: data['downloadurl'],
-                            price: data['price'],
-                            symbol: data['symbol'],
-                          );
-                        }).toList(),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('products').snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Something went wrong'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: GridView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                         mainAxisSpacing: 20,
                       ),
-                    );
-                  },
-                ),
+                      primary: false,
+                      // crossAxisSpacing: 10,
+                      // mainAxisSpacing: 20,
+                      // crossAxisCount: 2,
+                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        data['id'] = document.id;
+                        return ProductContainer(
+                          data: data,
+                        );
+                      }).toList(),
+                    ),
+                  );
+                },
               ),
 
             ],

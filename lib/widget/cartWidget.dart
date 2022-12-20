@@ -37,13 +37,15 @@ class _CartWidgetState extends State<CartWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: 120,
-                  width: 130,
-                  child: Image.asset(
-                    widget.img,
+                Expanded(
+                  child: Container(
                     height: 120,
-                    fit: BoxFit.contain,
+                    width: 130,
+                    child: Image.asset(
+                      widget.img,
+                      height: 120,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
                 Padding(
@@ -81,7 +83,7 @@ class _CartWidgetState extends State<CartWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.price,
+                            Text('\$'+ '${double.parse(widget.price)*counter}',
                               style: TextStyle(
                                 color: Color(0xff00be5e),
                                 fontWeight: FontWeight.bold,
@@ -157,7 +159,6 @@ class _CartWidgetState extends State<CartWidget> {
                     setState(() {
                       counter ++;
                       print(counter);
-
                     });
                   },
                   child: Icon(Icons.add_circle_outline_rounded,size: 30,),

@@ -16,6 +16,9 @@ import 'package:groceryapp/test.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  if(FirebaseAuth.instance.currentUser!=null) {
+    Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+  }
   runApp( MyApp());
 }
 

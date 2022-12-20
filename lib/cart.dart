@@ -34,6 +34,7 @@ class _CartState extends State<Cart> {
         addressController.text= myData['address'];
       });
     });
+
   }
 
   cartContainer(img,name, price){
@@ -163,22 +164,22 @@ class _CartState extends State<Cart> {
                 CartWidget(
                 name: "Banana",
                 img: "assets/images/strawberry.png",
-                price: "\$20",
+                price: "20",
           ),
                 CartWidget(
                 name: "Orange",
                 img: "assets/images/orange.png",
-                price: "\$15",
+                price: "15",
           ),
                 CartWidget(
                   name: "Banana",
                   img: "assets/images/banana.png",
-                  price: "\$15",
+                  price: "15",
                 ),
                 CartWidget(
                   name: "Spinach",
                   img: "assets/images/spinach.png",
-                  price: "\$15",
+                  price: "15",
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -359,28 +360,33 @@ class _CartState extends State<Cart> {
 
               ],
             ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16,top: 10),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Color(0xff27963c),
+            GestureDetector(
+              onTap: () async {
 
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16,top: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xff27963c),
+
+                      ),
+                      child: Center(
+                        child: Text("CHECKOUT (\$200)",style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                        ),),
+                      ),
                     ),
-                    child: Center(
-                      child: Text("CHECKOUT (\$200)",style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15
-                      ),),
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             )
 
 
