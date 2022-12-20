@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/variables.dart';
 import 'package:groceryapp/widget/cartWidget.dart';
+import 'package:groceryapp/widget/items.dart';
 
 import 'data.dart';
 
@@ -161,25 +162,33 @@ class _CartState extends State<Cart> {
           children: [
             Column(
               children: [
-                CartWidget(
-                name: "Banana",
-                img: "assets/images/strawberry.png",
-                price: "20",
-          ),
-                CartWidget(
-                name: "Orange",
-                img: "assets/images/orange.png",
-                price: "15",
-          ),
-                CartWidget(
-                  name: "Banana",
-                  img: "assets/images/banana.png",
-                  price: "15",
-                ),
-                CartWidget(
-                  name: "Spinach",
-                  img: "assets/images/spinach.png",
-                  price: "15",
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection('cart').doc(Data.uuid).collection('items').snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Something went wrong'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    return ListView(
+                      shrinkWrap: true,
+                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        print(data);
+                        return CartWidget(
+                            img: data['downloadurl'],
+                            name:data['name'],
+                            price: data['price'].toString(),
+                            quantity:data['quantity'],
+                            net: data['net'],
+                            symbol:data['symbol'],
+                        );
+
+                      }).toList(),
+                    );
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

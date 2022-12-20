@@ -115,7 +115,7 @@ class _ItemPageState extends State<ItemPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5.0,top: 0),
-                        child: Text('\$${ widget.data['price']}',style:
+                        child: Text('\$${ double.parse(widget.data['price'])*counter}',style:
                         TextStyle(
                             color: Color(0xff2F3825),
                             fontSize: 35,
@@ -430,7 +430,12 @@ class _ItemPageState extends State<ItemPage> {
                       .doc(widget.data['id'])
                       .set(
                       {
-                        'name': widget.data['name']
+                        'name': widget.data['name'],
+                        'downloadurl': widget.data['downloadurl'],
+                        'net': widget.data['net'],
+                        'symbol': widget.data['symbol'],
+                        'price': double.parse(widget.data['price'])*counter,
+                        'quantity':counter
                       }
                   );
                 } else {

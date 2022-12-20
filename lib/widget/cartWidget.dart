@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:motion_toast/motion_toast.dart';
@@ -7,13 +8,18 @@ class CartWidget extends StatefulWidget{
   final String img;
   final String name;
   final String price;
+  final String net;
+  final String symbol;
+  final int quantity;
 
   CartWidget({
     super.key,
     required this.img,
     required this.name,
-    required this.price
-
+    required this.price,
+    required this.quantity,
+    required this.symbol,
+    required this.net
   });
 
   @override
@@ -21,7 +27,7 @@ class CartWidget extends StatefulWidget{
 }
 
 class _CartWidgetState extends State<CartWidget> {
-  int counter = 1;
+  late int counter =  widget.quantity;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +44,20 @@ class _CartWidgetState extends State<CartWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Container(
-                    height: 120,
-                    width: 130,
-                    child: Image.asset(
-                      widget.img,
-                      height: 120,
-                      fit: BoxFit.contain,
+                  child:CachedNetworkImage(
+                    imageUrl: widget.img,
+                    imageBuilder: (context, imageProvider) => Container(
+                      height: 180,
+                      width: MediaQuery.of(context).size.width/1.2,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
                 Padding(
@@ -68,7 +80,7 @@ class _CartWidgetState extends State<CartWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "2.00kg",
+                              "${widget.net}${widget.symbol}",
                               style: TextStyle(
                                   color: Color(0xff000000),
                                   fontWeight: FontWeight.bold,
@@ -83,7 +95,7 @@ class _CartWidgetState extends State<CartWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('\$'+ '${double.parse(widget.price)*counter}',
+                            Text('\$'+'${widget.price}',
                               style: TextStyle(
                                 color: Color(0xff00be5e),
                                 fontWeight: FontWeight.bold,
@@ -150,7 +162,7 @@ class _CartWidgetState extends State<CartWidget> {
                   ),
                 ),
                 SizedBox(width: 3,),
-                Text("$counter",style: TextStyle(
+                Text("${counter}",style: TextStyle(
                fontSize: 20
                    ),),
                 SizedBox(width: 3,),
