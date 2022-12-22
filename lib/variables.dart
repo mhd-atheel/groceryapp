@@ -1,5 +1,8 @@
 
 
-class  Variable {
-  double totalPrice = 0;
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
+class  Variable extends GetxController {
+   RxInt totalPrice = 0.obs;
 }

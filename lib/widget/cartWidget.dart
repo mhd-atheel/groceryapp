@@ -1,8 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:groceryapp/variables.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+
+
+
 
 class CartWidget extends StatefulWidget{
   final String img;
@@ -19,7 +24,7 @@ class CartWidget extends StatefulWidget{
     required this.price,
     required this.quantity,
     required this.symbol,
-    required this.net
+    required this.net,
   });
 
   @override
@@ -28,6 +33,8 @@ class CartWidget extends StatefulWidget{
 
 class _CartWidgetState extends State<CartWidget> {
   late int counter =  widget.quantity;
+  final Variable c = Get.find();
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +123,6 @@ class _CartWidgetState extends State<CartWidget> {
           Padding(
             padding: const EdgeInsets.all(0),
             child: Row(
-
               children: [
                 GestureDetector(
                   onTap:(){
@@ -155,6 +161,8 @@ class _CartWidgetState extends State<CartWidget> {
                         counter--;
                         print(counter);
                       });
+                      c.totalPrice.value -= int.parse(widget.price);
+
                     }
 
                   },
@@ -172,6 +180,9 @@ class _CartWidgetState extends State<CartWidget> {
                       counter ++;
                       print(counter);
                     });
+
+                      c.totalPrice.value += int.parse(widget.price);
+
                   },
                   child: Icon(Icons.add_circle_outline_rounded,size: 30,),
                 ),

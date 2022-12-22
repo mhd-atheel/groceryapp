@@ -1,13 +1,16 @@
 
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:groceryapp/variables.dart';
 import 'package:groceryapp/widget/cartWidget.dart';
-import 'package:groceryapp/widget/items.dart';
-
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
 import 'data.dart';
 
 class Cart extends StatefulWidget {
@@ -26,6 +29,7 @@ class _CartState extends State<Cart> {
     'At Office',
       ];
   final addressController = TextEditingController();
+  final Variable c = Get.put(Variable());
   void initState() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
@@ -35,12 +39,26 @@ class _CartState extends State<Cart> {
         addressController.text= myData['address'];
       });
     });
+    getCart();
+  }
 
+  getCart(){
+    c.totalPrice.value = 0;
+    FirebaseFirestore.instance.collection('cart').doc(Data.uuid).collection('items').get().then((value) {
+      for (var element in value.docs) {
+        int price = element.data()['price'];
+        int quantity = element.data()['quantity'];
+        c.totalPrice.value = c.totalPrice.value + price * quantity;
+      }
+      setState(() {
+
+      });
+      print(c.totalPrice.value);
+    });
   }
 
   cartContainer(img,name, price){
      int counter = 0;
-
      return  Container(
         height: 120,
 
@@ -171,22 +189,41 @@ class _CartState extends State<Cart> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
-
-                    return ListView(
-                      shrinkWrap: true,
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        print(data);
-                        return CartWidget(
+                    return Column(
+                      children: [
+                        // ListView(
+                        //   shrinkWrap: true,
+                        //   physics: NeverScrollableScrollPhysics(),
+                        //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        //     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        //     print(data['price']);
+                        //     return CartWidget(
+                        //         img: data['downloadurl'],
+                        //         name:data['name'],
+                        //         price: data['price'].toString(),
+                        //         quantity:data['quantity'],
+                        //         net: data['net'],
+                        //         symbol:data['symbol'],
+                        //       changeState: setState,
+                        //     );
+                        //
+                        //   }).toList(),
+                        // ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context,index){
+                              Map<String, dynamic> data = snapshot.data!.docs[index].data()! as Map<String, dynamic>;
+                              return CartWidget(
                             img: data['downloadurl'],
                             name:data['name'],
                             price: data['price'].toString(),
                             quantity:data['quantity'],
                             net: data['net'],
                             symbol:data['symbol'],
-                        );
-
-                      }).toList(),
+                          );
+                        })
+                      ],
                     );
                   },
                 ),
@@ -297,14 +334,14 @@ class _CartState extends State<Cart> {
                             fontFamily: 'Prompt'
                         ),
                       ),
-                      Text(
-                        "\$200",
+                      Obx(() => Text(
+                        "\$${c.totalPrice.value}",
                         style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 15,
                             fontFamily: 'Prompt'
                         ),
-                      ),
+                      ))
                     ],
                   ),
                 ),
@@ -320,15 +357,14 @@ class _CartState extends State<Cart> {
                             fontSize: 15,
                             fontFamily: 'Prompt'
                         ),
-                      ),
-                      Text(
-                        "\$0",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
+                      ),Text(
+                    "\$0",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                        fontFamily: 'Prompt'
+                  ))
+                      ,
                     ],
                   ),
                 ),
@@ -355,14 +391,14 @@ class _CartState extends State<Cart> {
                             fontFamily: 'Prompt'
                         ),
                       ),
-                      Text(
-                        "\$200",
+                      Obx(() => Text(
+                        "\$${c.totalPrice.value}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                             fontFamily: 'Prompt'
                         ),
-                      ),
+                      )),
                     ],
                   ),
                 ),
@@ -371,7 +407,31 @@ class _CartState extends State<Cart> {
             ),
             GestureDetector(
               onTap: () async {
-
+                     int MAX = 10000000;
+                      await FirebaseFirestore.instance.collection('orders').doc(Data.uuid).collection('items').doc().set({
+                        'orderedAt': new DateTime.now().subtract(new Duration(minutes: 15)),
+                        'deliveryAt':dropdownvalue,
+                        'total':c.totalPrice.value,
+                        'orderId':new Random().nextInt(MAX),
+                        'status':'Waiting',
+                      }).then((value){
+                        MotionToast.success(
+                          width: MediaQuery.of(context).size.width/1.2,
+                          height: 50,
+                          title: const Text(
+                            'System\'s Notification',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          description: const Text('Checkout Successfully',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          layoutOrientation: ToastOrientation.ltr,
+                          animationDuration: const Duration(milliseconds: 1300),
+                          position: MotionToastPosition.top,
+                          animationType: AnimationType.fromTop,
+                          dismissable: true,
+                        ).show(context);
+                      });
               },
               child: Column(
                 children: [
@@ -386,11 +446,11 @@ class _CartState extends State<Cart> {
 
                       ),
                       child: Center(
-                        child: Text("CHECKOUT (\$200)",style: TextStyle(
+                        child: Obx(() => Text("CHECKOUT (\$${c.totalPrice.value})",style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15
-                        ),),
+                        ),)) ,
                       ),
                     ),
                   )

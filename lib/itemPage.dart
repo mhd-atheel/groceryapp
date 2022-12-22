@@ -434,7 +434,7 @@ class _ItemPageState extends State<ItemPage> {
                         'downloadurl': widget.data['downloadurl'],
                         'net': widget.data['net'],
                         'symbol': widget.data['symbol'],
-                        'price': double.parse(widget.data['price'])*counter,
+                        'price': int.parse(widget.data['price'])*counter,
                         'quantity':counter
                       }
                   );
