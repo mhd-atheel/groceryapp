@@ -46,7 +46,7 @@ class OrderContainer extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Color(0xffffebcc),
+                      color:status =='Waiting'?Colors.orangeAccent:status=='Decline'?Colors.red:Colors.green,
                     ),
                     child: Center(
                       child: Padding(
@@ -54,7 +54,7 @@ class OrderContainer extends StatelessWidget {
                         child: Text(
                           status,
                           style: TextStyle(
-                              color: Color(0xffffcc80),
+                              color:status =='Waiting'?Colors.white:status=='Decline'?Colors.white:Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 12
                           ),

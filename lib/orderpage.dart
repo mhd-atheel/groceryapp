@@ -48,7 +48,7 @@ class _OrderPageState extends State<OrderPage> {
                   orderId: data['orderId'].toString(),
                   deliveryAt: data['deliveryAt'],
                   total: data['total'].toString(),
-                  date: data['orderedAt'].toString(),
+                  date: data['orderedAt.month'].toString(),
                   status: data['status']);
             }).toList(),
           );

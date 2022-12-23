@@ -30,6 +30,8 @@ class _CartState extends State<Cart> {
       ];
   final addressController = TextEditingController();
   final Variable c = Get.put(Variable());
+  late final String name;
+  late final String email;
   void initState() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
@@ -37,6 +39,8 @@ class _CartState extends State<Cart> {
       Map myData = snapshot.data() as Map;
       setState(() {
         addressController.text= myData['address'];
+        name= myData['name'];
+        email= myData['email'];
       });
     });
     getCart();
@@ -409,11 +413,14 @@ class _CartState extends State<Cart> {
               onTap: () async {
                      int MAX = 10000000;
                       await FirebaseFirestore.instance.collection('orders').doc(Data.uuid).collection('items').doc().set({
-                        'orderedAt': new DateTime.now().subtract(new Duration(minutes: 15)),
+                        'orderedAt': Timestamp.now(),
                         'deliveryAt':dropdownvalue,
                         'total':c.totalPrice.value,
                         'orderId':new Random().nextInt(MAX),
                         'status':'Waiting',
+                        'name':name,
+                        'email':email,
+
                       }).then((value){
                         MotionToast.success(
                           width: MediaQuery.of(context).size.width/1.2,
@@ -432,6 +439,9 @@ class _CartState extends State<Cart> {
                           dismissable: true,
                         ).show(context);
                       });
+                     await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
+                       'address':addressController.text,
+                     });
               },
               child: Column(
                 children: [
