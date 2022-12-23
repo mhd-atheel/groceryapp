@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groceryapp/loginpage.dart';
 
 import '../widget/dashboardBox.dart';
 
@@ -26,6 +27,14 @@ class _AdminHomeState extends State<AdminHome> {
         foregroundColor: Color(0xff2C5E30),
         automaticallyImplyLeading: false,
         elevation: 0,
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            );
+          }, child: const Text("Logout",style: TextStyle(color: Colors.red),))
+        ],
       ),
         body: SingleChildScrollView(
           child: Column(

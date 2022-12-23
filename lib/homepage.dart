@@ -107,18 +107,10 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 2,
                   ),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AdminHome()),
-                      );
-                    },
-                    child: Icon(
-                      FontAwesomeIcons.bell,
-                      size: 23,
-                      color: Color(0xff00e673),
-                    ),
+                  Icon(
+                    FontAwesomeIcons.bell,
+                    size: 23,
+                    color: Color(0xff00e673),
                   )
                 ],
               ),

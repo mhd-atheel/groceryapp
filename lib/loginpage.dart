@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +15,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
    final emailController = TextEditingController();
    final passwordController = TextEditingController();
-   String emailValue = 'aathil@gmail.com';
+   @override
+  void initState() {
+     FirebaseFirestore.instance.collection('admin').get().then((QuerySnapshot snapshot){
+       final myData = snapshot.docs as Map;
+       print(myData);
+     });
+
+     super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () async{
-                      if(emailController.text == 'aathil@gmail.com'){
+                      if(emailController.text == 'aathil@gmail.com'&& passwordController.text=='Aathil1#'){
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const AdminHome()),
