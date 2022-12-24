@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/data.dart';
 import 'package:groceryapp/homepage.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
 
       ),
 
-      home:auth.currentUser == null ? LoginPage():BottomNavbar(),
+      home:auth.currentUser == null ? LoginPage():auth.currentUser!.email =='aathil@gmail.com'?AdminHome():BottomNavbar(),
       //
         // auth.currentUser == null ? LoginPage():HomePage()
     );

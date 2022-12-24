@@ -28,7 +28,7 @@ class _ProductContainerState extends State<ProductContainer> {
         );
       },
       child: Container(
-        height: 180,
+        height: 200,
         width: MediaQuery.of(context).size.width/2.3,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -47,7 +47,7 @@ class _ProductContainerState extends State<ProductContainer> {
             CachedNetworkImage(
               imageUrl:  widget.data['downloadurl'],
               imageBuilder: (context, imageProvider) => Container(
-                height: 100,
+                height: 80,
                 width: 110,
                 decoration: BoxDecoration(
                   image: DecorationImage(

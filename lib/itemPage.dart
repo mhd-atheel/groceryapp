@@ -21,6 +21,7 @@ class _ItemPageState extends State<ItemPage> {
   int counter = 1;
   bool itemExist = false;
   bool isLoading = false;
+  bool isAdd = false;
   @override
   void initState() {
     checkCart();
@@ -437,7 +438,11 @@ class _ItemPageState extends State<ItemPage> {
                         'price': int.parse(widget.data['price'])*counter,
                         'quantity':counter
                       }
-                  );
+                  ).then((value) {
+                    setState(() {
+                      isAdd = true;
+                    });
+                  });
                 } else {
 
                 }
@@ -455,7 +460,7 @@ class _ItemPageState extends State<ItemPage> {
 
                       ),
                       child: !isLoading ? Center(
-                        child: Text( itemExist ? "Already added to cart": "ADD TO CART",style: TextStyle(
+                        child: Text( itemExist ? "Already added to cart":isAdd?'Added':"ADD TO CART",style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 15

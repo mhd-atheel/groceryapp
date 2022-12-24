@@ -155,11 +155,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () async{
-                      if(emailController.text == 'aathil@gmail.com'&& passwordController.text=='Aathil1#'){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const AdminHome()),
-                        );
+                      if(emailController.text == 'aathil@gmail.com'){
+                         await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AdminHome()),
+                            );
+                         });
                       }
                       else{
                         FirebaseAuth auth = FirebaseAuth.instance;
