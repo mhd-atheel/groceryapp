@@ -17,6 +17,7 @@ class Items extends StatefulWidget {
   final String symbol;
   final String id;
   final String description;
+  final String categories;
    Items({super.key,
     required this.net,
     required this.name,
@@ -25,6 +26,7 @@ class Items extends StatefulWidget {
     required this.description,
     required this.symbol,
     required this.id,
+    required this.categories
   });
 
   @override
@@ -74,6 +76,7 @@ class _ItemsState extends State<Items> {
                                 price:widget.price,
                                 symbol:widget.symbol,
                                 description:widget.description,
+                                categories:widget.categories,
                               )),
                             ).then((value) =>Navigator.of(context).pop());
                           },

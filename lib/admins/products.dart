@@ -220,6 +220,8 @@ class _ProductsState extends State<Products> {
                   description: data['description'],
                   symbol: data['symbol'],
                   id: document.id,
+                  categories:data['categories'],
+
               );
             }).toList(),
           );

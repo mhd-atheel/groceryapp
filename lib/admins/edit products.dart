@@ -16,6 +16,7 @@ class EditProducts extends StatefulWidget {
   final price;
   final symbol;
   final description;
+  final categories;
   const EditProducts({Key? key,
     required  this.productId,
     required  this.net,
@@ -24,6 +25,7 @@ class EditProducts extends StatefulWidget {
     required  this.price,
     required  this.symbol,
     required  this.description,
+    required  this.categories,
     }) : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class _EditProductsState extends State<EditProducts> {
     priceController.text = widget.price;
     netController.text = widget.net;
     descriptionController.text = widget.description;
+    dropdownvalue = widget.categories;
     if(widget.symbol == 'gr'){
       setState(() {
         netIndex = 0;
@@ -387,10 +390,39 @@ class _EditProductsState extends State<EditProducts> {
                 GestureDetector(
                   onTap: () async {
                     //final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
-                    if(widget.img == null){
+                    if(_image!=null || widget.img ==null){
                       Reference ref = FirebaseStorage.instance.ref().child('ProductImage').child(productController.text);
                       await ref.putFile(_image!);
                       downloadURL = await ref.getDownloadURL();
+                      FirebaseFirestore dataFire = FirebaseFirestore.instance;
+                      await dataFire.collection("products").doc(widget.productId).update({
+                        'name':productController.text,
+                        'price':priceController.text,
+                        'categories':dropdownvalue,
+                        'net':netController.text,
+                        'description':descriptionController.text,
+                        'downloadurl':downloadURL,
+                        'symbol': netIndex == 0 ? 'gr':'kg'
+                      }).then((value){
+                        print("Product Updated");
+                        MotionToast.success(
+                          width: MediaQuery.of(context).size.width/1.2,
+                          height: 50,
+
+                          title: const Text(
+                            'System\'s Notification',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          description: Text('${widget.name} Product Updated Now!!',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          layoutOrientation: ToastOrientation.ltr,
+                          animationDuration: const Duration(milliseconds: 500),
+                          position: MotionToastPosition.top,
+                          animationType: AnimationType.fromTop,
+                          dismissable: true,
+                        ).show(context);
+                      });
                     }
                     else{
                       FirebaseFirestore dataFire = FirebaseFirestore.instance;
