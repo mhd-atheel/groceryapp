@@ -4,21 +4,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
-import '../data.dart';
-
-class AddProducts extends StatefulWidget {
-  const AddProducts({Key? key}) : super(key: key);
+class EditProducts extends StatefulWidget {
+  final productId;
+  final net;
+  final name;
+  final img;
+  final price;
+  final symbol;
+  final description;
+  const EditProducts({Key? key,
+    required  this.productId,
+    required  this.net,
+    required  this.name,
+    required  this.img,
+    required  this.price,
+    required  this.symbol,
+    required  this.description,
+    }) : super(key: key);
 
   @override
-  State<AddProducts> createState() => _AddProductsState();
+  State<EditProducts> createState() => _EditProductsState();
 }
 
-class _AddProductsState extends State<AddProducts> {
+class _EditProductsState extends State<EditProducts> {
   String dropdownvalue = 'Vegetables';
   var items = [
     'Vegetables',
@@ -30,7 +42,8 @@ class _AddProductsState extends State<AddProducts> {
     'Frozen',
     'Organic',
   ];
-  int netIndex = 0;
+
+   int netIndex = 0;
   File? _image;
   final imagePicker = ImagePicker();
   String? downloadURL;
@@ -50,17 +63,26 @@ class _AddProductsState extends State<AddProducts> {
       // }
     });
   }
-  Future uploadImage() async {
-    final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
-    Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-    Reference ref = FirebaseStorage.instance.ref().child(Data.uuid).child('userprofile').child(posttime);
-    await ref.putFile(_image!);
-    downloadURL = await ref.getDownloadURL();
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    await  firestore.collection("products").doc().update({
-      'downloadurl': downloadURL
-    });
-    print(downloadURL);
+  @override
+  void initState() {
+    productController.text = widget.name;
+    priceController.text = widget.price;
+    netController.text = widget.net;
+    descriptionController.text = widget.description;
+    if(widget.symbol == 'gr'){
+      setState(() {
+        netIndex = 0;
+      });
+    }else{
+      setState(() {
+        netIndex = 1;
+      });
+    }
+    // print(widget.productId);
+    // print(widget.name);
+    // print(widget.net);
+    // print(widget.price);
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -93,7 +115,7 @@ class _AddProductsState extends State<AddProducts> {
                       },
                       child: _image == null?CircleAvatar(
                         radius: 60,
-                        child: Image.asset("assets/images/logo.png"),
+                        child: Image.network(widget.img),
                         backgroundColor: Colors.black,
                         foregroundColor: Colors.white,
                       ):CircleAvatar(
@@ -132,7 +154,7 @@ class _AddProductsState extends State<AddProducts> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20, top: 0),
                       child: TextField(
-                        controller: productController,
+                          controller: productController,
                           decoration: InputDecoration(
                             hintText: 'Product Name ',
                             labelStyle: TextStyle(color: Colors.grey),
@@ -255,8 +277,8 @@ class _AddProductsState extends State<AddProducts> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20, top: 0),
                           child: TextField(
-                            controller: netController,
-                            keyboardType: TextInputType.number,
+                              controller: netController,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: '0.00gr',
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -276,16 +298,16 @@ class _AddProductsState extends State<AddProducts> {
                           width:MediaQuery.of(context).size.width/5,
                           decoration: BoxDecoration(
                               color: netIndex ==0 ?Color(0xff2C5E30):Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: netIndex ==0 ?Colors.white:Color(0xff2C5E30),
-                              width: 2
-                            )
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: netIndex ==0 ?Colors.white:Color(0xff2C5E30),
+                                  width: 2
+                              )
                           ),
                           child: Center(
                             child: Text("gr",style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                              color: netIndex ==0 ?Colors.white:Color(0xff2C5E30)
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: netIndex ==0 ?Colors.white:Color(0xff2C5E30)
                             ),),
                           ),
                         ),
@@ -302,16 +324,16 @@ class _AddProductsState extends State<AddProducts> {
                           width:MediaQuery.of(context).size.width/5,
                           decoration: BoxDecoration(
                               color: netIndex ==1 ?Color(0xff2C5E30):Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: netIndex ==1 ?Colors.white:Color(0xff2C5E30),
-                              width: 2
-                            )
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: netIndex ==1 ?Colors.white:Color(0xff2C5E30),
+                                  width: 2
+                              )
                           ),
                           child: Center(
                             child: Text("kg",style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                              color: netIndex ==1 ?Colors.white:Color(0xff2C5E30)
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: netIndex ==1 ?Colors.white:Color(0xff2C5E30)
                             ),),
                           ),
                         ),
@@ -346,7 +368,7 @@ class _AddProductsState extends State<AddProducts> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20, top: 0),
                       child: TextField(
-                        controller: descriptionController,
+                          controller: descriptionController,
                           minLines: 2,
                           maxLines: 4,
                           decoration: InputDecoration(
@@ -364,39 +386,44 @@ class _AddProductsState extends State<AddProducts> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                      //final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
+                    //final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
+                    if(widget.img == null){
                       Reference ref = FirebaseStorage.instance.ref().child('ProductImage').child(productController.text);
                       await ref.putFile(_image!);
                       downloadURL = await ref.getDownloadURL();
+                    }
+                    else{
                       FirebaseFirestore dataFire = FirebaseFirestore.instance;
-                      await dataFire.collection("products").doc().set({
+                      await dataFire.collection("products").doc(widget.productId).update({
                         'name':productController.text,
                         'price':priceController.text,
                         'categories':dropdownvalue,
                         'net':netController.text,
                         'description':descriptionController.text,
-                        'downloadurl': downloadURL,
+                        'downloadurl':widget.img !=null ?widget.img: downloadURL,
                         'symbol': netIndex == 0 ? 'gr':'kg'
                       }).then((value){
-                       print("Product Inserted");
-                       MotionToast.success(
-                         width: MediaQuery.of(context).size.width/1.2,
-                         height: 50,
+                        print("Product Updated");
+                        MotionToast.success(
+                          width: MediaQuery.of(context).size.width/1.2,
+                          height: 50,
 
-                         title: const Text(
-                           'System\'s Notification',
-                           style: TextStyle(fontWeight: FontWeight.bold),
-                         ),
-                         description: const Text('New Product Published Now!!',
-                           style: TextStyle(fontSize: 12),
-                         ),
-                         layoutOrientation: ToastOrientation.ltr,
-                         animationDuration: const Duration(milliseconds: 500),
-                         position: MotionToastPosition.top,
-                         animationType: AnimationType.fromTop,
-                         dismissable: true,
-                       ).show(context);
+                          title: const Text(
+                            'System\'s Notification',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          description: Text('${widget.name} Product Updated Now!!',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          layoutOrientation: ToastOrientation.ltr,
+                          animationDuration: const Duration(milliseconds: 500),
+                          position: MotionToastPosition.top,
+                          animationType: AnimationType.fromTop,
+                          dismissable: true,
+                        ).show(context);
                       });
+                    }
+
 
 
 

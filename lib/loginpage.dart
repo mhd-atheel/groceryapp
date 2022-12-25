@@ -15,15 +15,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
    final emailController = TextEditingController();
    final passwordController = TextEditingController();
-   @override
-  void initState() {
-     FirebaseFirestore.instance.collection('admin').get().then((QuerySnapshot snapshot){
-       final myData = snapshot.docs as Map;
-       print(myData);
-     });
-
-     super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

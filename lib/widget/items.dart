@@ -1,8 +1,13 @@
 
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
+
+import '../admins/edit products.dart';
 
 class Items extends StatefulWidget {
   final String net;
@@ -10,7 +15,7 @@ class Items extends StatefulWidget {
   final String img;
   final String price;
   final String symbol;
-
+  final String id;
   final String description;
    Items({super.key,
     required this.net,
@@ -19,6 +24,7 @@ class Items extends StatefulWidget {
     required this.price,
     required this.description,
     required this.symbol,
+    required this.id,
   });
 
   @override
@@ -33,31 +39,99 @@ class _ItemsState extends State<Items> {
       alignment: Alignment.topLeft,
       children: [
         GestureDetector(
-          onLongPress: (){
+          onTap: (){
             showDialog<void>(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Are you sure to Delete?',style: TextStyle(fontFamily: 'Prompt'),),
                   actions: <Widget>[
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: Theme.of(context).textTheme.labelLarge,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.green,
+                            width: 2
+                          ),
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          child: Center(child: const Text('Edit',style: TextStyle(fontFamily: 'Prompt',color: Colors.green,fontWeight: FontWeight.bold),)),
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  EditProducts(
+                                productId:widget.id,
+                                net:widget.net,
+                                name:widget.name,
+                                img:widget.img,
+                                price:widget.price,
+                                symbol:widget.symbol,
+                                description:widget.description,
+                              )),
+                            ).then((value) =>Navigator.of(context).pop());
+                          },
+                        ),
                       ),
-                      child: const Text('Delete',style: TextStyle(color: Colors.red,fontFamily: 'Prompt'),),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: Colors.red,
+                                width: 2
+                            ),
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            textStyle: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          child: Center(child: const Text('Delete',style: TextStyle(fontFamily: 'Prompt',color: Colors.red,fontWeight: FontWeight.bold))),
+                          onPressed: () async{
+                               FirebaseFirestore.instance.collection('products').doc(widget.id).delete().then((value) {
+                                 Navigator.of(context).pop();
+                                  MotionToast.warning(
+                                   width: MediaQuery.of(context).size.width/1.2,
+                                   height: 50,
+                                   title: const Text(
+                                     'System\'s Notification',
+                                     style: TextStyle(fontWeight: FontWeight.bold),
+                                   ),
+                                   description: const Text('Product Deleted Successfully',
+                                     style: TextStyle(fontSize: 12),
+                                   ),
+                                   layoutOrientation: ToastOrientation.ltr,
+                                   animationDuration: const Duration(milliseconds: 1300),
+                                   position: MotionToastPosition.top,
+                                   animationType: AnimationType.fromTop,
+                                   dismissable: true,
+                                 ).show(context);
+                               }
+                            );
+                          },
+                        ),
+                      ),
                     ),
                     TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: Theme.of(context).textTheme.labelLarge,
+                     style: TextButton.styleFrom(
+                       textStyle: Theme.of(context).textTheme.labelLarge,
+                     ),
+                     child: Center(child: const Text('Cancel',style: TextStyle(fontFamily: 'Prompt'),)),
+                     onPressed: () {
+                       Navigator.of(context).pop();
+                     },
                       ),
-                      child: const Text('Cancel',style: TextStyle(fontFamily: 'Prompt'),),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
+
                   ],
                 );
               },
@@ -135,7 +209,7 @@ class _ItemsState extends State<Items> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 5.0,top: 0),
-                    child: Text(widget.price,style:
+                    child: Text('\$'+widget.price,style:
                     TextStyle(
                         color: Color(0xff2C5E30),
                         fontSize: 18,

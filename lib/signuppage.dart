@@ -22,7 +22,7 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   String address = 'your address';
   String phone = 'your number';
-  String downloadURL = 'downloadurl';
+  String downloadURL = 'https://firebasestorage.googleapis.com/v0/b/grocery-app-9b16d.appspot.com/o/UserProfiles%2F1wRMDyT0dWUJnK2wc1ewfWIMJ3o2%2F1671905574438?alt=media&token=8998c2fc-b581-4f62-98ee-1e678d328cec';
 
   @override
   Widget build(BuildContext context) {

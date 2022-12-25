@@ -219,6 +219,7 @@ class _ProductsState extends State<Products> {
                   price: data['price'],
                   description: data['description'],
                   symbol: data['symbol'],
+                  id: document.id,
               );
             }).toList(),
           );
