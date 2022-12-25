@@ -69,6 +69,7 @@ class _EditProfileState extends State<EditProfile> {
         currentPassword= myData['password'];
         addressController.text= myData['address'];
         phoneController.text= myData['phone'];
+        downloadURL= myData['downloadurl'];
 
       });
     });
@@ -113,7 +114,7 @@ class _EditProfileState extends State<EditProfile> {
                       },
                       child: _image == null?CircleAvatar(
                         radius: 60,
-                        child: Image.asset("assets/images/logo.png"),
+                        child: Image.network(downloadURL!),
                         backgroundColor: Colors.black,
                         foregroundColor: Colors.white,
                       ):CircleAvatar(
@@ -226,6 +227,8 @@ class _EditProfileState extends State<EditProfile> {
                       padding: const EdgeInsets.only(left: 20, top: 0),
                       child: TextField(
                           controller: passwordController,
+                          enabled: false,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: 'password ',
                             labelStyle: TextStyle(color: Colors.grey),
@@ -342,34 +345,20 @@ class _EditProfileState extends State<EditProfile> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: () async{
-                         final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
-                         Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-                         Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(posttime);
-                         await ref.putFile(_image!);
-                         downloadURL = await ref.getDownloadURL();
-                         Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-                         var user= FirebaseAuth.instance.currentUser!;
+                        if(_image!=null || downloadURL==null){
+                          final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
+                          Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                          Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(posttime);
+                          await ref.putFile(_image!);
+                          downloadURL = await ref.getDownloadURL();
+                          Data.uuid = FirebaseAuth.instance.currentUser!.uid;
                           FirebaseFirestore firestore = FirebaseFirestore.instance;
-                         final cred = await EmailAuthProvider.credential(email: user.email!, password: currentPassword);
-                         await user.reauthenticateWithCredential(cred).then((value) async {
-                           await user.updatePassword(passwordController.text).then((_) {
-                             success = true;
-                             firestore.collection("biodata").doc(Data.uuid).update({
-                               'password':passwordController.text,
-                             });
-                           }).catchError((error) {
-                             print(error);
-                           });
-                         }).catchError((err) {
-                           print(err);
-                         });
                           await  firestore.collection("biodata").doc(Data.uuid).update({
                             'name':nameController.text,
                             'email':emailController.text,
-                            // 'password':passwordController.text,
                             'address':addressController.text,
                             'phone':phoneController.text,
-                            'downloadurl': downloadURL ?? ''
+                            'downloadurl': downloadURL
                           }).then((value) {
                             print("Added Fully");
                             MotionToast.success(
@@ -390,6 +379,37 @@ class _EditProfileState extends State<EditProfile> {
                               dismissable: true,
                             ).show(context);
                           });
+                        }else{
+                          Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                          FirebaseFirestore firestore = FirebaseFirestore.instance;
+                          await  firestore.collection("biodata").doc(Data.uuid).update({
+                            'name':nameController.text,
+                            'email':emailController.text,
+                            // 'password':passwordController.text,
+                            'address':addressController.text,
+                            'phone':phoneController.text,
+                            'downloadurl': downloadURL
+                          }).then((value) {
+                            print("Added Fully");
+                            MotionToast.success(
+                              width: MediaQuery.of(context).size.width/1.2,
+                              height: 50,
+
+                              title: const Text(
+                                'System\'s Notification',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              description: const Text('Uploaded Successfully',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              layoutOrientation: ToastOrientation.ltr,
+                              animationDuration: const Duration(milliseconds: 1300),
+                              position: MotionToastPosition.top,
+                              animationType: AnimationType.fromTop,
+                              dismissable: true,
+                            ).show(context);
+                          });
+                        }
 
                       },
                       child: Padding(
