@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
    }
    String? validatePassword(String? formPassword) {
      if (formPassword == null || formPassword.isEmpty)
-       return errorMsg('Password address is required');
+       return errorMsg('Password is required');
      String pattern =
          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
      RegExp regex = RegExp(pattern);
