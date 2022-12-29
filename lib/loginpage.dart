@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/main.dart';
 import 'package:groceryapp/signuppage.dart';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
    final GlobalKey<FormState> _key = GlobalKey<FormState>();
    FirebaseAuth auth = FirebaseAuth.instance;
    String errorMessage = '';
+   String? adminEmail = '';
    errorMsg(msg){
      MotionToast.error(
        title:  Text("System's Notification",style: TextStyle(fontWeight: FontWeight.bold)),
@@ -52,7 +54,19 @@ class _LoginPageState extends State<LoginPage> {
        ) ;
      return null;
    }
+  @override
+  void initState() {
 
+    FirebaseFirestore.instance
+        .collection('admin')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        adminEmail=doc["email"];
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                        onTap: () async{
                          if (_key.currentState!.validate()) {
                            try {
-                             if(emailController.text == 'aathil@gmail.com'){
+                             if( adminEmail ==emailController.text){
                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
                                  Navigator.push(
                                    context,

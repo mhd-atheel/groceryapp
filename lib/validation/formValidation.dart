@@ -7,7 +7,7 @@ import 'package:motion_toast/resources/arrays.dart';
 
 class validation {
 
-    final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
     FirebaseAuth auth = FirebaseAuth.instance;
     String errorMessage = '';
    static  errorMsg(msg){
