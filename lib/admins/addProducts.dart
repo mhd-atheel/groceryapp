@@ -373,21 +373,41 @@ class _AddProductsState extends State<AddProducts> {
                     onTap: () async {
                       if(_key.currentState!.validate()){
                         try{
-                          Reference ref = FirebaseStorage.instance.ref().child('ProductImage').child(productController.text);
-                          await ref.putFile(_image!);
-                          downloadURL = await ref.getDownloadURL();
-                          FirebaseFirestore dataFire = FirebaseFirestore.instance;
-                          await dataFire.collection("products").doc().set({
-                            'name':productController.text,
-                            'price':priceController.text,
-                            'categories':dropdownvalue,
-                            'net':netController.text,
-                            'description':descriptionController.text,
-                            'downloadurl': downloadURL,
-                            'symbol': netIndex == 0 ? 'gr':'kg'
-                          }).then((value){
-                            print("Product Inserted");
-                            MotionToast.success(
+                          if(_image!=null){
+                            Reference ref = FirebaseStorage.instance.ref().child('ProductImage').child(productController.text);
+                            await ref.putFile(_image!);
+                            downloadURL = await ref.getDownloadURL();
+                            FirebaseFirestore dataFire = FirebaseFirestore.instance;
+                            await dataFire.collection("products").doc().set({
+                              'name':productController.text,
+                              'price':priceController.text,
+                              'categories':dropdownvalue,
+                              'net':netController.text,
+                              'description':descriptionController.text,
+                              'downloadurl': downloadURL,
+                              'symbol': netIndex == 0 ? 'gr':'kg'
+                            }).then((value){
+                              print("Product Inserted");
+                              MotionToast.success(
+                                width: MediaQuery.of(context).size.width/1.2,
+                                height: 50,
+
+                                title: const Text(
+                                  'System\'s Notification',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                description: const Text('New Product Published Now!!',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                layoutOrientation: ToastOrientation.ltr,
+                                animationDuration: const Duration(milliseconds: 500),
+                                position: MotionToastPosition.top,
+                                animationType: AnimationType.fromTop,
+                                dismissable: true,
+                              ).show(context);
+                            });
+                          }else{
+                            return MotionToast.error(
                               width: MediaQuery.of(context).size.width/1.2,
                               height: 50,
 
@@ -395,7 +415,7 @@ class _AddProductsState extends State<AddProducts> {
                                 'System\'s Notification',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              description: const Text('New Product Published Now!!',
+                              description: const Text('Please select image',
                                 style: TextStyle(fontSize: 12),
                               ),
                               layoutOrientation: ToastOrientation.ltr,
@@ -404,7 +424,7 @@ class _AddProductsState extends State<AddProducts> {
                               animationType: AnimationType.fromTop,
                               dismissable: true,
                             ).show(context);
-                          });
+                          }
                           errorMessage='';
                         } on FirebaseAuthException catch (error) {
                           errorMessage = error.message!;
@@ -454,33 +474,21 @@ class _AddProductsState extends State<AddProducts> {
 
 String?  validatePrice(String? formEmail) {
   if (formEmail == null || formEmail.isEmpty)
-    return 'Name is required';
-  String pattern = r'\w+@\w+\.\w+';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
+    return 'Price is required';
   return null;
 }
 String?   validateName(String? formEmail) {
   if (formEmail == null || formEmail.isEmpty)
     return 'Name is required';
-  String pattern = r'\w+@\w+\.\w+';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
   return null;
 }
 String?   validateNet(String? formEmail) {
   if (formEmail == null || formEmail.isEmpty)
-    return 'Name is required';
-  String pattern = r'\w+@\w+\.\w+';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
+    return 'Net is required';
   return null;
 }
 String?   validateDescription(String? formEmail) {
   if (formEmail == null || formEmail.isEmpty)
-    return 'Name is required';
-  String pattern = r'\w+@\w+\.\w+';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
+    return 'Description is required';
   return null;
 }

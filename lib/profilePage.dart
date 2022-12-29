@@ -26,28 +26,28 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // String imageUrl = '';
-  // late String name = '';
-  // late String email= '';
-  // late String phone= '';
-  // late String address= '';
+  String imageUrl = '';
+  late String name = '';
+  late String email= '';
+  late String phone= '';
+  late String address= '';
   @override
-  // void initState() {
-  // FirebaseFirestore firestore = FirebaseFirestore.instance;
-  // Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-  // firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
-  //   Map myData = snapshot.data()as Map;
-  //   print(myData);
-  //   setState(() {
-  //     name = myData['name'];
-  //     email= myData['email'];
-  //     phone= myData['phone'];
-  //     address= myData['address'];
-  //     imageUrl= myData['dowloadurl'];
-  //
-  //   });
-  // });
-  // }
+  void initState() {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+  firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
+    Map myData = snapshot.data()as Map;
+    print(myData);
+    setState(() {
+      name = myData['name'];
+      email= myData['email'];
+      phone= myData['phone'];
+      address= myData['address'];
+      imageUrl= myData['dowloadurl'];
+
+    });
+  });
+  }
 
 
   FirebaseAuth auth  = FirebaseAuth.instance;
