@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/admins/orderHistory.dart';
 
+import '../data.dart';
 import 'adminHome.dart';
 
 class UserOrders extends StatefulWidget {
@@ -243,6 +245,21 @@ class _UserOrdersState extends State<UserOrders> {
                       ),
                       GestureDetector(
                         onTap: (){
+                          FirebaseFirestore.instance
+                              .collection('orders').
+                          doc().
+                          collection('items')
+                              .get()
+                              .then((QuerySnapshot querySnapshot) {
+                            for (var doc in querySnapshot.docs) {
+                              print(doc['email']);
+                              // print(doc['price']);
+                              // print(doc['description']);
+                              // print(doc['categories']);
+                              // print(doc['net']);
+                              // print(doc['downloadurl']);
+                            }
+                          });
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 15.0,left: 0,right: 0),

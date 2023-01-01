@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
 
       ),
       home:
-      auth.currentUser == null ? LoginPage():auth.currentUser!.email =='aathil@gmail.com'?AdminHome():BottomNavbar(),
+       auth.currentUser == null ? LoginPage():auth.currentUser!.email =='aathil@gmail.com'?AdminHome():BottomNavbar(),
       //
         // auth.currentUser == null ? LoginPage():HomePage()
     );

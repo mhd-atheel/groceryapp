@@ -9,6 +9,8 @@ import 'package:groceryapp/itemPage.dart';
 import 'package:groceryapp/widget/categoriesHome.dart';
 import 'package:groceryapp/widget/productContainer.dart';
 
+import 'data.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key }) : super(key: key);
 
@@ -107,10 +109,29 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 2,
                   ),
-                  Icon(
-                    FontAwesomeIcons.bell,
-                    size: 23,
-                    color: Color(0xff00e673),
+                  GestureDetector(
+                    onTap: (){
+                      FirebaseFirestore.instance
+                          .collection('orders').
+                      doc(Data.uuid).
+                      collection('items')
+                          .get()
+                          .then((QuerySnapshot querySnapshot) {
+                        for (var doc in querySnapshot.docs) {
+                          print(doc['email']);
+                          print(doc['deliveryAt']);
+                          print(doc['name']);
+                          print(doc['orderId']);
+                          print(doc['status']);
+                          print(doc['total']);
+                        }
+                      });
+                    },
+                    child: Icon(
+                      FontAwesomeIcons.bell,
+                      size: 23,
+                      color: Color(0xff00e673),
+                    ),
                   )
                 ],
               ),

@@ -17,38 +17,45 @@ class TestPage extends StatelessWidget {
             child: ElevatedButton(
                 onPressed: () async {
                   FirebaseFirestore.instance
-                      .collection('admin')
+                      .collection('orders').
+                      doc(Data.uuid).
+                      collection('items')
                       .get()
                       .then((QuerySnapshot querySnapshot) {
-                    querySnapshot.docs.forEach((doc) {
-                      print(doc["email"]);
-                    });
+                    for (var doc in querySnapshot.docs) {
+                      print(doc['email']);
+                      // print(doc['price']);
+                      // print(doc['description']);
+                      // print(doc['categories']);
+                      // print(doc['net']);
+                      // print(doc['downloadurl']);
+                    }
                   });
                 },
                 child: Text("CLick"))),
-        StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('admin').snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Something went wrong'));
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return ListView(
-              shrinkWrap: true,
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
-                return ListTile(
-                  title:  Text(data['email']),
-                  subtitle:  Text(data['password']),
-                );
-              }).toList(),
-            );
-          },
-        )
+        // StreamBuilder(
+        //   stream: FirebaseFirestore.instance.collection('admin').snapshots(),
+        //   builder:
+        //       (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //     if (snapshot.hasError) {
+        //       return Center(child: Text('Something went wrong'));
+        //     }
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       return Center(child: CircularProgressIndicator());
+        //     }
+        //     return ListView(
+        //       shrinkWrap: true,
+        //       children: snapshot.data!.docs.map((DocumentSnapshot document) {
+        //         Map<String, dynamic> data =
+        //             document.data()! as Map<String, dynamic>;
+        //         return ListTile(
+        //           title:  Text(data['email']),
+        //           subtitle:  Text(data['password']),
+        //         );
+        //       }).toList(),
+        //     );
+        //   },
+        // )
       ],
     ));
   }
