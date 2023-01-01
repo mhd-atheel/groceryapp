@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                        onTap: () async{
                          if (_key.currentState!.validate()) {
                            try {
-                             if( adminEmail ==emailController.text){
+                             if( emailController.text=='aathil@gmail.com'){
                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
                                  Navigator.push(
                                    context,

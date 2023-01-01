@@ -111,19 +111,18 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: (){
+
                       FirebaseFirestore.instance
-                          .collection('orders').
-                      doc(Data.uuid).
-                      collection('items')
+                          .collection('orders')
                           .get()
                           .then((QuerySnapshot querySnapshot) {
                         for (var doc in querySnapshot.docs) {
-                          print(doc['email']);
-                          print(doc['deliveryAt']);
-                          print(doc['name']);
-                          print(doc['orderId']);
-                          print(doc['status']);
-                          print(doc['total']);
+                          print(doc.data());
+                          // print(doc['deliveryAt']);
+                          // print(doc['name']);
+                          // print(doc['orderId']);
+                          // print(doc['status']);
+                          // print(doc['total']);
                         }
                       });
                     },

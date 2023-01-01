@@ -1,32 +1,23 @@
 import 'package:bottom_bar/bottom_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/cart.dart';
-import 'package:groceryapp/data.dart';
 import 'package:groceryapp/homepage.dart';
-import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/orderpage.dart';
 import 'package:groceryapp/profilePage.dart';
-import 'package:groceryapp/test.dart';
+import 'package:groceryapp/splashScreen.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  if(FirebaseAuth.instance.currentUser!=null) {
-    Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-  }
-  runApp( MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-  // This widget is the root of your application.
-  FirebaseAuth auth = FirebaseAuth.instance;
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,19 +25,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Color(0xffF4F4F3),
+        scaffoldBackgroundColor: const Color(0xffF4F4F3),
         textTheme:
         Theme.of(context).textTheme.apply(
-          bodyColor: Color(0xff2F3825), //<-- SEE HERE
-          displayColor: Color(0xff2F3825), //<-- SEE HERE
+          bodyColor: const Color(0xff2F3825), //<-- SEE HERE
+          displayColor: const Color(0xff2F3825), //<-- SEE HERE
         ),
         fontFamily: 'Prompt',
 
 
 
       ),
-      home:
-       auth.currentUser == null ? LoginPage():auth.currentUser!.email =='aathil@gmail.com'?AdminHome():BottomNavbar(),
+      home:  SplashScreen()
       //
         // auth.currentUser == null ? LoginPage():HomePage()
     );

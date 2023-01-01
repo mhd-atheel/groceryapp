@@ -32,7 +32,7 @@ class _CartState extends State<Cart> {
   final Variable c = Get.put(Variable());
   late final String name;
   late final String email;
-  late bool isEmpty =false;
+  bool isEmpty =false;
   void initState() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
@@ -191,10 +191,6 @@ class _CartState extends State<Cart> {
                     if (snapshot.hasError) {
                       return Center(child: Text('Something went wrong'));
                     }
-                    if(snapshot.data!.docs.isEmpty){
-                          isEmpty =true;
-
-                    }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
@@ -231,251 +227,254 @@ class _CartState extends State<Cart> {
                             net: data['net'],
                             symbol:data['symbol'],
                           );
-                        })
+                        }),
+                        snapshot.data!.docs.isEmpty ?Text("No Items"):Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Delivery Location",
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
+                                  ),
+                                ],
+                              ),
+
+                            ),
+                            Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  // 0xfff2f2f2  - like a gray
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Colors.black54)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 20, top: 0),
+                                  child: TextField(
+                                      controller: addressController,
+                                      decoration: InputDecoration(
+                                        labelStyle: TextStyle(color: Colors.grey),
+                                        border: InputBorder.none,
+                                      )),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Row(
+                                children: [
+                                  Text("Delivery to",style: TextStyle(
+                                      fontFamily: "Prompt",
+                                      fontSize: 15,
+                                      color: Color(0xff2F3825),
+                                      fontWeight: FontWeight.bold
+                                  ),),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                              child: Container(
+                                height: 50,
+                                width:MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black54),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DropdownButton(
+                                    dropdownColor: Colors.white,
+                                    underline: DropdownButtonHideUnderline(child: Container()),
+                                    value: dropdownvalue,
+                                    iconDisabledColor: Colors.transparent,
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    isExpanded: true,
+                                    items: items.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? Value) {
+                                      setState(() {
+                                        dropdownvalue = Value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Order Info",
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
+                                  ),
+                                ],
+                              ),
+
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Subtotal",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        fontFamily: 'Prompt'
+                                    ),
+                                  ),
+                                  Obx(() => Text(
+                                    "\$${c.totalPrice.value}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        fontFamily: 'Prompt'
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Delivery Cost",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15,
+                                        fontFamily: 'Prompt'
+                                    ),
+                                  ),Text(
+                                      "\$0",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                          fontFamily: 'Prompt'
+                                      ))
+                                  ,
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 16),
+                              child: Divider(
+                                color: Colors.black,
+                                height: 25,
+                                thickness: 1,
+                                indent: 5,
+                                endIndent: 5,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Totals",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        fontFamily: 'Prompt'
+                                    ),
+                                  ),
+                                  Obx(() => Text(
+                                    "\$${c.totalPrice.value}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        fontFamily: 'Prompt'
+                                    ),
+                                  )),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            int MAX = 10000000;
+                            await FirebaseFirestore.instance.collection('orders').doc().set({
+                              'orderedAt': Timestamp.now(),
+                              'deliveryAt':dropdownvalue,
+                              'total':c.totalPrice.value,
+                              'orderId':new Random().nextInt(MAX),
+                              'status':'Waiting',
+                              'name':name,
+                              'email':email,
+                              'userId':Data.uuid,
+
+                            }).then((value){
+                              MotionToast.success(
+                                width: MediaQuery.of(context).size.width/1.2,
+                                height: 50,
+                                title: const Text(
+                                  'System\'s Notification',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                description: const Text('Checkout Successfully',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                layoutOrientation: ToastOrientation.ltr,
+                                animationDuration: const Duration(milliseconds: 1300),
+                                position: MotionToastPosition.top,
+                                animationType: AnimationType.fromTop,
+                                dismissable: true,
+                              ).show(context);
+                            });
+                            await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
+                              'address':addressController.text,
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16,top: 10),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xff27963c),
+
+                                  ),
+                                  child: Center(
+                                    child: Obx(() => Text("CHECKOUT (\$${c.totalPrice.value})",style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15
+                                    ),)) ,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     );
                   },
                 ),
-                isEmpty==true?Text("No Items"):Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Delivery Location",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
-                          ),
-                        ],
-                      ),
 
-                    ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          // 0xfff2f2f2  - like a gray
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black54)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 0),
-                          child: TextField(
-                              controller: addressController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                              )),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Row(
-                        children: [
-                          Text("Delivery to",style: TextStyle(
-                              fontFamily: "Prompt",
-                              fontSize: 15,
-                              color: Color(0xff2F3825),
-                              fontWeight: FontWeight.bold
-                          ),),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-                      child: Container(
-                        height: 50,
-                        width:MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton(
-                            dropdownColor: Colors.white,
-                            underline: DropdownButtonHideUnderline(child: Container()),
-                            value: dropdownvalue,
-                            iconDisabledColor: Colors.transparent,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            isExpanded: true,
-                            items: items.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-
-                              );
-                            }).toList(),
-                            onChanged: (String? Value) {
-                              setState(() {
-                                dropdownvalue = Value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Order Info",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
-                          ),
-                        ],
-                      ),
-
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Subtotal",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                                fontFamily: 'Prompt'
-                            ),
-                          ),
-                          Obx(() => Text(
-                            "\$${c.totalPrice.value}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                                fontFamily: 'Prompt'
-                            ),
-                          ))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Delivery Cost",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
-                                fontFamily: 'Prompt'
-                            ),
-                          ),Text(
-                        "\$0",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                      ))
-                          ,
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 16),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 25,
-                        thickness: 1,
-                        indent: 5,
-                        endIndent: 5,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Totals",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                fontFamily: 'Prompt'
-                            ),
-                          ),
-                          Obx(() => Text(
-                            "\$${c.totalPrice.value}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                fontFamily: 'Prompt'
-                            ),
-                          )),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
 
               ],
             ),
-            GestureDetector(
-              onTap: () async {
-                     int MAX = 10000000;
-                      await FirebaseFirestore.instance.collection('orders').doc(Data.uuid).collection('items').doc().set({
-                        'orderedAt': Timestamp.now(),
-                        'deliveryAt':dropdownvalue,
-                        'total':c.totalPrice.value,
-                        'orderId':new Random().nextInt(MAX),
-                        'status':'Waiting',
-                        'name':name,
-                        'email':email,
 
-                      }).then((value){
-                        MotionToast.success(
-                          width: MediaQuery.of(context).size.width/1.2,
-                          height: 50,
-                          title: const Text(
-                            'System\'s Notification',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          description: const Text('Checkout Successfully',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          layoutOrientation: ToastOrientation.ltr,
-                          animationDuration: const Duration(milliseconds: 1300),
-                          position: MotionToastPosition.top,
-                          animationType: AnimationType.fromTop,
-                          dismissable: true,
-                        ).show(context);
-                      });
-                     await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
-                       'address':addressController.text,
-                     });
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16,top: 10),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Color(0xff27963c),
-
-                      ),
-                      child: Center(
-                        child: Obx(() => Text("CHECKOUT (\$${c.totalPrice.value})",style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15
-                        ),)) ,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
 
 
           ],

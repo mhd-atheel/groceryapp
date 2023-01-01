@@ -32,7 +32,7 @@ class _OrderPageState extends State<OrderPage> {
         elevation: 0,
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('orders').doc(Data.uuid).collection('items').snapshots(),
+        stream: FirebaseFirestore.instance.collection('orders').where('userId',isEqualTo: Data.uuid) .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Something went wrong'));
