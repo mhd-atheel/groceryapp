@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryapp/admins/adminHome.dart';
-import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/loginpage.dart';
 
 import 'data.dart';
@@ -29,7 +28,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Icon(Icons.home)),
+      backgroundColor: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.black
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Image.asset(
+            'assets/images/logo.png',
+            height: 200,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
     );
   }
 

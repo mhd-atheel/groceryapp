@@ -228,7 +228,20 @@ class _CartState extends State<Cart> {
                             symbol:data['symbol'],
                           );
                         }),
-                        snapshot.data!.docs.isEmpty ?Text("No Items"):Column(
+                        snapshot.data!.docs.isEmpty ?Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width/3,
+                            decoration: BoxDecoration(
+                                color:  Color(0xff27963c),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Center(
+                              child: Text('Cart is Empty',style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white
+                              ),
+                              ),
+                            )):Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -407,7 +420,7 @@ class _CartState extends State<Cart> {
                             ),
                           ],
                         ),
-                        GestureDetector(
+                        snapshot.data!.docs.isEmpty ?Container():GestureDetector(
                           onTap: () async {
                             int MAX = 10000000;
                             await FirebaseFirestore.instance.collection('orders').doc().set({
