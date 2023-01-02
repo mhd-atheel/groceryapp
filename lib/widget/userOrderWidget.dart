@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class UserOrderWidget extends StatefulWidget {
   final String name;
   final String email;
-  final String OrderId;
+  final String orderId;
   final String address;
   final String imageUrl;
   UserOrderWidget(
-      {required this.name, required this.email, required this.OrderId, required this.address, required this.imageUrl});
+      {required this.name, required this.email, required this.orderId, required this.address, required this.imageUrl});
 
   @override
   State<UserOrderWidget> createState() => _UserOrderWidgetState();
@@ -55,7 +55,7 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                     ),
                   ),
                   title: Text(
-                    'Najath Mohamed',
+                    widget.name,
                     style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400
