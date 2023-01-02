@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserOrderWidget extends StatefulWidget {
   final String name;
   final String email;
-  final String orderId;
-  final String address;
-  final String imageUrl;
+  final String total;
+  final String id;
   UserOrderWidget(
-      {required this.name, required this.email, required this.orderId, required this.address, required this.imageUrl});
+      {required this.name, required this.email, required this.total,required this.id});
 
   @override
   State<UserOrderWidget> createState() => _UserOrderWidgetState();
@@ -61,94 +61,12 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                         fontWeight: FontWeight.w400
                     ),
                   ),
-                  subtitle: Text('najath@gmail.com',
+                  subtitle: Text(widget.email,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w200,
                       fontSize: 12,
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Orders",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
-                      Text(
-                        "Price",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "broccoli",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
-                      Text(
-                        "\$200",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Green Apple",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
-                      Text(
-                        "\$80",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15,
-                            fontFamily: 'Prompt'
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 16),
-                  child: Divider(
-                    color: Colors.black,
-                    height: 25,
-                    thickness: 1,
-                    indent: 5,
-                    endIndent: 5,
                   ),
                 ),
                 Padding(
@@ -165,7 +83,7 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                         ),
                       ),
                       Text(
-                        "\$280",
+                       '\$'+widget.total ,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
@@ -181,6 +99,11 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                   children: [
                     GestureDetector(
                       onTap: (){
+                        FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
+                            {
+                              'status':'Decline'
+                            }
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15.0,left: 0,right: 0),
@@ -213,6 +136,11 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                     ),
                     GestureDetector(
                       onTap: (){
+                        FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
+                          {
+                            'status':'Accepted'
+                          }
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15.0,left: 0,right: 0),
