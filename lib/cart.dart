@@ -51,8 +51,43 @@ class _CartState extends State<Cart> {
     // set up the button
     Widget okButton = TextButton(
       child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
+      onPressed: () async {
+
+        int MAX = 10000000;
+        await FirebaseFirestore.instance.collection('orders').doc().set({
+          'orderedAt': Timestamp.now(),
+          'deliveryAt':dropdownvalue,
+          'total':c.totalPrice.value,
+          'orderId':new Random().nextInt(MAX),
+          'status':'Waiting',
+          'name':name,
+          'email':email,
+          'isExpand':false,
+          'userId':Data.uuid,
+        }).then((value){
+          MotionToast.success(
+            width: MediaQuery.of(context).size.width/1.2,
+            height: 50,
+            title: const Text(
+              'System\'s Notification',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            description: const Text('Checkout Successfully',
+              style: TextStyle(fontSize: 12),
+            ),
+            layoutOrientation: ToastOrientation.ltr,
+            animationDuration: const Duration(milliseconds: 1300),
+            position: MotionToastPosition.top,
+            animationType: AnimationType.fromTop,
+            dismissable: true,
+          ).show(context);
+        });
+        await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
+          'address':addressController.text,
+        }).then((value) {
+          Navigator.pop(context);
+        });
+
       },
     );
 
@@ -492,38 +527,6 @@ class _CartState extends State<Cart> {
                         snapshot.data!.docs.isEmpty ?Container():GestureDetector(
                           onTap: () async {
                             startOneTimePayment(context);
-                            int MAX = 10000000;
-                            await FirebaseFirestore.instance.collection('orders').doc().set({
-                              'orderedAt': Timestamp.now(),
-                              'deliveryAt':dropdownvalue,
-                              'total':c.totalPrice.value,
-                              'orderId':new Random().nextInt(MAX),
-                              'status':'Waiting',
-                              'name':name,
-                              'email':email,
-                              'isExpand':false,
-                              'userId':Data.uuid,
-                            }).then((value){
-                              MotionToast.success(
-                                width: MediaQuery.of(context).size.width/1.2,
-                                height: 50,
-                                title: const Text(
-                                  'System\'s Notification',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                description: const Text('Checkout Successfully',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                layoutOrientation: ToastOrientation.ltr,
-                                animationDuration: const Duration(milliseconds: 1300),
-                                position: MotionToastPosition.top,
-                                animationType: AnimationType.fromTop,
-                                dismissable: true,
-                              ).show(context);
-                            });
-                            await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
-                              'address':addressController.text,
-                            });
                           },
                           child: Column(
                             children: [
