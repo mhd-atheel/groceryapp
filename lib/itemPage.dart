@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
-import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/main.dart';
+import 'package:groceryapp/widget/relatedProductsContainer.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
@@ -157,7 +157,6 @@ class _ItemPageState extends State<ItemPage> {
                                   print(counter);
                                 });
                               }
-
                             },
                             child: Icon(Icons.remove_circle_outline_rounded,size: 40,
                             ),
@@ -215,205 +214,30 @@ class _ItemPageState extends State<ItemPage> {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.topLeft,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => BottomNavbar()),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 0.0),
-                              child: Container(
-                                height: 130,
-                                width: 130,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color(0xffEEF2F9),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade100,
-                                      spreadRadius: 2,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-
-                                    Container(
-                                      height: 100,
-                                      width: 110,
-                                      child: Image.asset('assets/images/broc.png',height: 120 ,fit: BoxFit.contain,),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 5,),
-
-                                        SizedBox(width: 5,),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0,top:0),
-                                      child: Text('Orange',style:
-                                      TextStyle(
-                                          color: Color(0xff2F3825),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Prompt'
-                                      )
-                                        ,),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                        ],
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: widget.data['categories']).snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Something went wrong'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return SizedBox(
+                      height: 370,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                          return RelatedProductsContainer(
+                            name: data['name'],
+                            downloadUrl: data['downloadurl'],
+                          );
+                        }).toList(),
                       ),
-                      Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.topLeft,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => BottomNavbar()),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 0.0),
-                              child: Container(
-                                height: 130,
-                                width: 130,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color(0xffEEF2F9),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade100,
-                                      spreadRadius: 2,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-
-                                    Container(
-                                      height: 100,
-                                      width: 110,
-                                      child: Image.asset('assets/images/orange.png',height: 120 ,fit: BoxFit.contain,),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 5,),
-
-                                        SizedBox(width: 5,),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0,top:0),
-                                      child: Text('Orange',style:
-                                      TextStyle(
-                                          color: Color(0xff2F3825),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Prompt'
-                                      )
-                                        ,),
-                                    ),
-
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.topLeft,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => BottomNavbar()),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 0.0),
-                              child: Container(
-                                height: 130,
-                                width: 130,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Color(0xffEEF2F9),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade100,
-                                      spreadRadius: 2,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-
-                                    Container(
-                                      height: 100,
-                                      width: 110,
-                                      child: Image.asset('assets/images/spinach.png',height: 120 ,fit: BoxFit.contain,),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 5,),
-
-                                        SizedBox(width: 5,),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0,top:0),
-                                      child: Text('Orange',style:
-                                      TextStyle(
-                                          color: Color(0xff2F3825),
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Prompt'
-                                      )
-                                        ,),
-                                    ),
-
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 SizedBox(height: 70,)
               ],

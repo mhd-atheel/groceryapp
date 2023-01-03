@@ -29,19 +29,27 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.black
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 200,
-            fit: BoxFit.contain,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.black
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 200,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -61,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
           } else {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  BottomNavbar()),
+              MaterialPageRoute(builder: (context) =>  const BottomNavbar()),
             );
           }
         }

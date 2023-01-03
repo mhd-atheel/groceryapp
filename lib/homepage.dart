@@ -23,46 +23,6 @@ class _HomePageState extends State<HomePage> {
   late String net;
   late String img = '';
   late String price;
-  // categories(img,name) {
-  //   return GestureDetector(
-  //     onTap: (){
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => Categories()),
-  //       );
-  //     },
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           height: 60,
-  //           width: MediaQuery.of(context).size.width / 4.7,
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(5),
-  //             boxShadow: [
-  //               BoxShadow(
-  //                 color: Colors.grey.shade100,
-  //                 spreadRadius: 2,
-  //                 blurRadius: 7,
-  //                 offset: Offset(0, 3), // changes position of shadow
-  //               ),
-  //             ],
-  //           ),
-  //           child: Image.asset(
-  //             img,
-  //             height: 60,
-  //             width: 60,
-  //             scale: 12,
-  //           ),
-  //         ),
-  //         SizedBox(height: 5),
-  //         Text(name,style: TextStyle(
-  //           fontFamily: 'Prompt'
-  //         ),)
-  //       ],
-  //     ),
-  //   );
-  // }
 
   final List<String> images = [
    'assets/images/banner3.jpg',
@@ -109,28 +69,10 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 2,
                   ),
-                  GestureDetector(
-                    onTap: (){
-
-                      FirebaseFirestore.instance
-                          .collection('orders')
-                          .get()
-                          .then((QuerySnapshot querySnapshot) {
-                        for (var doc in querySnapshot.docs) {
-                          print(doc.data());
-                          // print(doc['deliveryAt']);
-                          // print(doc['name']);
-                          // print(doc['orderId']);
-                          // print(doc['status']);
-                          // print(doc['total']);
-                        }
-                      });
-                    },
-                    child: Icon(
-                      FontAwesomeIcons.bell,
-                      size: 23,
-                      color: Color(0xff00e673),
-                    ),
+                  Icon(
+                    FontAwesomeIcons.bell,
+                    size: 23,
+                    color: Color(0xff00e673),
                   )
                 ],
               ),
@@ -154,8 +96,7 @@ class _HomePageState extends State<HomePage> {
                     CategoriesHome(name: "Vegetables", img: 'assets/images/veg.png'),
                     CategoriesHome(name: "Fruits", img: 'assets/images/fruits.png'),
                     CategoriesHome(name: "Meats", img: 'assets/images/meat.png'),
-                    CategoriesHome(name: "Sea foods", img: 'assets/images/fish.png'),
-
+                    CategoriesHome(name: "SeaFoods", img: 'assets/images/fish.png'),
                   ],
                 ),
               ),
@@ -164,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CategoriesHome(name: "Milk & Egg", img: 'assets/images/milk.png'),
+                    CategoriesHome(name: "Milk and Egg", img: 'assets/images/milk.png'),
                     CategoriesHome(name: "Breads", img: 'assets/images/bread.png'),
                     CategoriesHome(name: "Frozen", img: 'assets/images/frozen.png'),
                     CategoriesHome(name: "Organic", img: 'assets/images/organic.png'),

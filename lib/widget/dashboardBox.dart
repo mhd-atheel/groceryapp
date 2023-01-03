@@ -48,7 +48,7 @@ class Functions {
                     color: Color(bgcolor),
                     // 0xffEA40A6
                   ),
-                  height: 150,
+                  height:MediaQuery.of(context).size.height/5.4,
                   width: MediaQuery.of(context).size.width/1.2,
                   child: Column(
                     children: [

@@ -431,8 +431,8 @@ class _CartState extends State<Cart> {
                               'status':'Waiting',
                               'name':name,
                               'email':email,
+                              'isExpand':false,
                               'userId':Data.uuid,
-
                             }).then((value){
                               MotionToast.success(
                                 width: MediaQuery.of(context).size.width/1.2,

@@ -10,6 +10,8 @@ import 'package:groceryapp/signuppage.dart';
 import 'package:groceryapp/validation/formValidation.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+
+import 'data.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -205,25 +207,26 @@ class _LoginPageState extends State<LoginPage> {
                        onTap: () async{
                          if (_key.currentState!.validate()) {
                            try {
-                             if( emailController.text=='aathil@gmail.com'){
                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
-                                 Navigator.push(
-                                   context,
-                                   MaterialPageRoute(builder: (context) => const AdminHome()),
-                                 );
+                                 Data.uuid = FirebaseAuth.instance.currentUser!.uid;
+                                 FirebaseFirestore.instance.collection('biodata').doc(Data.uuid).get().then((value) {
+                                   if(value.exists) {
+                                     String userType = value.data()!['userType'];
+                                     print(userType);
+                                     if(userType=='admin') {
+                                       Navigator.push(
+                                         context,
+                                         MaterialPageRoute(builder: (context) => const AdminHome()),
+                                       );
+                                     } else {
+                                       Navigator.push(
+                                         context,
+                                         MaterialPageRoute(builder: (context) =>  const BottomNavbar()),
+                                       );
+                                     }
+                                   }
+                                 });
                                });
-                             }
-                             else{
-                               FirebaseAuth auth = FirebaseAuth.instance;
-                               await auth.signInWithEmailAndPassword(
-                                   email: emailController.text, password: passwordController.text).then((value) {
-                                 print(auth.currentUser?.uid);
-                                 Navigator.push(
-                                   context,
-                                   MaterialPageRoute(builder: (context) => const BottomNavbar()),
-                                 );
-                               });
-                             }
                              errorMessage = '';
                            } on FirebaseAuthException catch (error) {
                              errorMessage = error.message!;

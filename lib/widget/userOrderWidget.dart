@@ -6,16 +6,18 @@ class UserOrderWidget extends StatefulWidget {
   final String name;
   final String email;
   final String total;
+  final String status;
   final String id;
+  bool isExpand;
   UserOrderWidget(
-      {required this.name, required this.email, required this.total,required this.id});
+      {required this.name, required this.email, required this.total,required this.id,required this.isExpand,required this.status});
 
   @override
   State<UserOrderWidget> createState() => _UserOrderWidgetState();
 }
 
 class _UserOrderWidgetState extends State<UserOrderWidget> {
-
+   bool isPress =false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,6 +70,13 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                       fontSize: 12,
                     ),
                   ),
+                  trailing: Container(
+
+                    child: Text(widget.status,style: TextStyle(
+                      color: widget.status =='Waiting'?Colors.orangeAccent:widget.status=='Decline'?Colors.red:Colors.green,
+                      fontWeight: FontWeight.bold
+                    ),),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
@@ -94,7 +103,7 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                   ),
                 ),
                 SizedBox(height: 10,),
-                Row(
+               widget.isExpand==false?Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
@@ -103,7 +112,13 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                             {
                               'status':'Decline'
                             }
-                        );
+                        ).then((value) {
+                          FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
+                              {
+                                'isExpand':true
+                              }
+                          );
+                        });
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15.0,left: 0,right: 0),
@@ -140,7 +155,13 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                           {
                             'status':'Accepted'
                           }
-                        );
+                        ).then((value) {
+                          FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
+                              {
+                                'isExpand':true
+                              }
+                          );
+                        });
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15.0,left: 0,right: 0),
@@ -164,7 +185,7 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                       ),
                     ),
                   ],
-                )
+                ):Container()
               ],
             ),
           ),

@@ -24,6 +24,7 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   String address = 'your address';
   String phone = 'your number';
+  String userType = 'user';
   String downloadURL = 'https://firebasestorage.googleapis.com/v0/b/grocery-app-9b16d.appspot.com/o/logo.png?alt=media&token=80b8001d-cdce-447a-a535-07b979bed2cf';
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -39,18 +40,16 @@ class _SignupPageState extends State<SignupPage> {
   }
   String?  validateEmail(String? formEmail) {
     if (formEmail == null || formEmail.isEmpty)
-      return errorMsg("Name is required ");
+      return errorMsg("Email address is required");
     String pattern = r'\w+@\w+\.\w+';
     RegExp regex = RegExp(pattern);
     if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
     return null;
   }
   String?   validateName(String? formEmail) {
-    if (formEmail == null || formEmail.isEmpty)
-      return errorMsg("Email address is required ");
-    String pattern = r'\w+@\w+\.\w+';
-    RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
+    if (formEmail == null || formEmail.isEmpty) {
+      return errorMsg("Name is required");
+    }
     return null;
   }
   String? validatePassword(String? formPassword) {
@@ -251,7 +250,8 @@ class _SignupPageState extends State<SignupPage> {
                                 'password':passwordController.text,
                                 'address':address,
                                 'phone':phone,
-                                'downloadurl': downloadURL
+                                'downloadurl': downloadURL,
+                                'userType': userType,
                               }).then((value) {
                                 print("Added Fully");
                                 Navigator.push(

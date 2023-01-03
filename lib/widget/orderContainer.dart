@@ -54,7 +54,7 @@ class OrderContainer extends StatelessWidget {
                         child: Text(
                           status,
                           style: TextStyle(
-                              color:status =='Waiting'?Colors.white:status=='Decline'?Colors.white:Colors.white,
+                              color:Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 12
                           ),
