@@ -11,6 +11,7 @@ import 'package:groceryapp/variables.dart';
 import 'package:groceryapp/widget/cartWidget.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+import 'package:payhere_mobilesdk_flutter/payhere_mobilesdk_flutter.dart';
 import 'data.dart';
 
 class Cart extends StatefulWidget {
@@ -45,6 +46,74 @@ class _CartState extends State<Cart> {
       });
     });
     getCart();
+  }
+  void showAlert(BuildContext context, String title, String msg) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  void startOneTimePayment(BuildContext context) async {
+    Map paymentObject = {
+      "sandbox": true, // true if using Sandbox Merchant ID
+      "merchant_id": "1221820", // Replace your Merchant ID
+      "notify_url": "https://ent13zfovoz7d.x.pipedream.net/",
+      "order_id": "ItemNo12345",
+      "items": "Hello from Flutter!",
+      "item_number_1": "001",
+      "item_name_1": "Test Item #1",
+      "amount_1": "5.00",
+      "quantity_1": "2",
+      "item_number_2": "002",
+      "item_name_2": "Test Item #2",
+      "amount_2": "20.00",
+      "quantity_2": "1",
+      "amount": 30.00,
+      "currency": "LKR",
+      "first_name": "Saman",
+      "last_name": "Perera",
+      "email": "samanp@gmail.com",
+      "phone": "0771234567",
+      "address": "No.1, Galle Road",
+      "city": "Colombo",
+      "country": "Sri Lanka",
+      "delivery_address": "No. 46, Galle road, Kalutara South",
+      "delivery_city": "Kalutara",
+      "delivery_country": "Sri Lanka",
+      "custom_1": "",
+      "custom_2": ""
+    };
+
+    PayHere.startPayment(paymentObject, (paymentId) {
+      print("One Time Payment Success. Payment Id: $paymentId");
+      showAlert(context, "Payment Success!", "Payment Id: $paymentId");
+    }, (error) {
+      print("One Time Payment Failed. Error: $error");
+      showAlert(context, "Payment Failed", "$error");
+    }, () {
+      print("One Time Payment Dismissed");
+      showAlert(context, "Payment Dismissed", "");
+    });
   }
 
   getCart(){
@@ -422,6 +491,7 @@ class _CartState extends State<Cart> {
                         ),
                         snapshot.data!.docs.isEmpty ?Container():GestureDetector(
                           onTap: () async {
+                            startOneTimePayment(context);
                             int MAX = 10000000;
                             await FirebaseFirestore.instance.collection('orders').doc().set({
                               'orderedAt': Timestamp.now(),
