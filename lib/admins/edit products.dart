@@ -4,9 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:groceryapp/variables.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+
+import '../widget/loading.dart';
 
 class EditProducts extends StatefulWidget {
   final productId;
@@ -67,6 +70,9 @@ class _EditProductsState extends State<EditProducts> {
   }
   @override
   void initState() {
+    setState(() {
+      IsLoading.isLoading=false;
+    });
     productController.text = widget.name;
     priceController.text = widget.price;
     netController.text = widget.net;
@@ -389,6 +395,9 @@ class _EditProductsState extends State<EditProducts> {
               children: [
                 GestureDetector(
                   onTap: () async {
+                    setState(() {
+                      IsLoading.isLoading=true;
+                    });
                     //final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
                     if(_image!=null || widget.img ==null){
                       Reference ref = FirebaseStorage.instance.ref().child('ProductImage').child(productController.text);
@@ -404,7 +413,9 @@ class _EditProductsState extends State<EditProducts> {
                         'downloadurl':downloadURL,
                         'symbol': netIndex == 0 ? 'gr':'kg'
                       }).then((value){
-                        print("Product Updated");
+                        setState(() {
+                          IsLoading.isLoading=false;
+                        });
                         MotionToast.success(
                           width: MediaQuery.of(context).size.width/1.2,
                           height: 50,
@@ -435,7 +446,9 @@ class _EditProductsState extends State<EditProducts> {
                         'downloadurl':widget.img !=null ?widget.img: downloadURL,
                         'symbol': netIndex == 0 ? 'gr':'kg'
                       }).then((value){
-                        print("Product Updated");
+                        setState(() {
+                          IsLoading.isLoading=false;
+                        });
                         MotionToast.success(
                           width: MediaQuery.of(context).size.width/1.2,
                           height: 50,
@@ -456,13 +469,6 @@ class _EditProductsState extends State<EditProducts> {
                       });
                     }
 
-
-
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) =>  const EditProfile()),
-                    // );
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 15.0,left: 16,right: 16),
@@ -471,15 +477,14 @@ class _EditProductsState extends State<EditProducts> {
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: Color(0xffffa31a),
-
+                        color: Color(0xff27963c),
                       ),
                       child: Center(
-                        child: Text("Publish",style: TextStyle(
+                        child: IsLoading.isLoading==false?Text("Update",style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18
-                        ),),
+                        ),):Loading(),
                       ),
                     ),
                   ),

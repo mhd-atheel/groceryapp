@@ -173,7 +173,8 @@ class _ProductsState extends State<Products> {
               MaterialPageRoute(builder: (context) => const AddProducts()),
             );
           },
-          backgroundColor:Color(0xffffa31a),
+          //0xffffa31a like a orange color-this color used to old button color
+          backgroundColor:Color(0xff27963c),
           child: const FaIcon(FontAwesomeIcons.plus)
       ),
       appBar: AppBar(

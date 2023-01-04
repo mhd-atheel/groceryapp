@@ -50,6 +50,7 @@ dependencies:
   carousel_slider: ^4.2.1
   get: ^4.6.5
   payhere_mobilesdk_flutter: ^3.0.4
+  flutter_native_splash: ^2.2.16
 
 dev_dependencies:
   flutter_test:
@@ -66,9 +67,9 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/logo.png"
-#flutter_native_splash:
-##  color: "#ffffff"
-##  image: assets/images/logo.png
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logo.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

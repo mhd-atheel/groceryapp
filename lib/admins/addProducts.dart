@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:groceryapp/variables.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
 import '../data.dart';
+import '../widget/loading.dart';
 
 class AddProducts extends StatefulWidget {
   const AddProducts({Key? key}) : super(key: key);
@@ -371,6 +373,9 @@ class _AddProductsState extends State<AddProducts> {
                 children: [
                   GestureDetector(
                     onTap: () async {
+                      setState(() {
+                        IsLoading.isLoading=true;
+                      });
                       if(_key.currentState!.validate()){
                         try{
                           if(_image!=null){
@@ -387,6 +392,9 @@ class _AddProductsState extends State<AddProducts> {
                               'downloadurl': downloadURL,
                               'symbol': netIndex == 0 ? 'gr':'kg'
                             }).then((value){
+                              setState(() {
+                                IsLoading.isLoading =false;
+                              });
                               print("Product Inserted");
                               MotionToast.success(
                                 width: MediaQuery.of(context).size.width/1.2,
@@ -449,15 +457,14 @@ class _AddProductsState extends State<AddProducts> {
                         height: 50,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffffa31a),
-
+                          color: Color(0xff27963c),
                         ),
                         child: Center(
-                          child: Text("Publish",style: TextStyle(
+                          child:IsLoading.isLoading==false?Text("Publish",style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18
-                          ),),
+                          ),):Loading(),
                         ),
                       ),
                     ),

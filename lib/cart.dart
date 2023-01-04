@@ -87,7 +87,6 @@ class _CartState extends State<Cart> {
         }).then((value) {
           Navigator.pop(context);
         });
-
       },
     );
 

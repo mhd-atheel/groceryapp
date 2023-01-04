@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/profilePage.dart';
+import 'package:groceryapp/variables.dart';
+import 'package:groceryapp/widget/loading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
@@ -20,7 +22,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  bool success = false;
   String currentPassword = '';
   File? _image;
   final imagePicker = ImagePicker();
@@ -32,8 +33,15 @@ class _EditProfileState extends State<EditProfile> {
   final phoneController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
-
-  Future ImagePickerMethod() async{
+    showLoadingIndicator() {
+     showDialog(
+       context: context,
+       builder: (BuildContext context) {
+         return CircularProgressIndicator();
+       },
+     );
+   }
+   Future ImagePickerMethod() async{
     final pick =await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       if(pick != null){
@@ -57,6 +65,9 @@ class _EditProfileState extends State<EditProfile> {
     print(downloadURL);
   }
   void initState() {
+      setState(() {
+        IsLoading.isLoading=false;
+      });
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
     firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
@@ -345,6 +356,9 @@ class _EditProfileState extends State<EditProfile> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: () async{
+                        setState(() {
+                          IsLoading.isLoading=true;
+                        });
                         if(_image!=null || downloadURL==null){
                           final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
                           Data.uuid = FirebaseAuth.instance.currentUser!.uid;
@@ -360,7 +374,11 @@ class _EditProfileState extends State<EditProfile> {
                             'phone':phoneController.text,
                             'downloadurl': downloadURL
                           }).then((value) {
-                            print("Added Fully");
+
+                            setState(() {
+                              IsLoading.isLoading =false;
+
+                            });
                             MotionToast.success(
                               width: MediaQuery.of(context).size.width/1.2,
                               height: 50,
@@ -390,11 +408,12 @@ class _EditProfileState extends State<EditProfile> {
                             'phone':phoneController.text,
                             'downloadurl': downloadURL
                           }).then((value) {
-                            print("Added Fully");
+                            setState(() {
+                              IsLoading.isLoading =false;
+                            });
                             MotionToast.success(
                               width: MediaQuery.of(context).size.width/1.2,
                               height: 50,
-
                               title: const Text(
                                 'System\'s Notification',
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -423,11 +442,11 @@ class _EditProfileState extends State<EditProfile> {
 
                           ),
                           child: Center(
-                            child: Text("SAVE",style: TextStyle(
+                            child:IsLoading.isLoading==false?Text("SAVE",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15
-                            ),),
+                            ),):Loading()
                           ),
                         ),
                       ),

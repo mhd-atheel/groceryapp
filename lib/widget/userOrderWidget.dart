@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:groceryapp/variables.dart';
+
+import 'loading.dart';
 
 class UserOrderWidget extends StatefulWidget {
   final String name;
@@ -18,6 +21,7 @@ class UserOrderWidget extends StatefulWidget {
 
 class _UserOrderWidgetState extends State<UserOrderWidget> {
    bool isPress =false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -108,16 +112,24 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                   children: [
                     GestureDetector(
                       onTap: (){
+                        setState(() {
+                          IsLoading.isLoading=true;
+                        });
                         FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
                             {
                               'status':'Decline'
                             }
                         ).then((value) {
+
                           FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
                               {
                                 'isExpand':true
                               }
-                          );
+                          ).then((value) {
+                            setState(() {
+                              IsLoading.isLoading=false;
+                            });
+                          });
                         });
                       },
                       child: Padding(
@@ -140,17 +152,20 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
 
                           ),
                           child: Center(
-                            child: Text("Decline",style: TextStyle(
+                            child:IsLoading.isLoading==false?Text("Decline",style: TextStyle(
                                 color: Color(0xff999999),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
-                            ),),
+                            ),):Loading(),
                           ),
                         ),
                       ),
                     ),
                     GestureDetector(
                       onTap: (){
+                        setState(() {
+                          IsLoading.isLoading=true;
+                        });
                         FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
                           {
                             'status':'Accepted'
@@ -160,7 +175,11 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                               {
                                 'isExpand':true
                               }
-                          );
+                          ).then((value) {
+                            setState(() {
+                              IsLoading.isLoading=false;
+                            });
+                          });
                         });
                       },
                       child: Padding(
@@ -175,11 +194,11 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
 
                           ),
                           child: Center(
-                            child: Text("Accept",style: TextStyle(
+                            child:IsLoading.isLoading==false? Text("Accept",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
-                            ),),
+                            ),):Loading(),
                           ),
                         ),
                       ),

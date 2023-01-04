@@ -8,6 +8,8 @@ import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/main.dart';
 import 'package:groceryapp/signuppage.dart';
 import 'package:groceryapp/validation/formValidation.dart';
+import 'package:groceryapp/variables.dart';
+import 'package:groceryapp/widget/loading.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
@@ -206,18 +208,21 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                        onTap: () async{
                          if (_key.currentState!.validate()) {
+                           setState(() {
+                             IsLoading.isLoading=true;
+                           });
                            try {
                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text).then((value) {
                                  Data.uuid = FirebaseAuth.instance.currentUser!.uid;
                                  FirebaseFirestore.instance.collection('biodata').doc(Data.uuid).get().then((value) {
                                    if(value.exists) {
                                      String userType = value.data()!['userType'];
-                                     print(userType);
                                      if(userType=='admin') {
                                        Navigator.push(
                                          context,
                                          MaterialPageRoute(builder: (context) => const AdminHome()),
                                        );
+
                                      } else {
                                        Navigator.push(
                                          context,
@@ -225,10 +230,17 @@ class _LoginPageState extends State<LoginPage> {
                                        );
                                      }
                                    }
+                                 }
+                                 );
+                                 setState(() {
+                                   IsLoading.isLoading=false;
                                  });
                                });
                              errorMessage = '';
                            } on FirebaseAuthException catch (error) {
+                             setState(() {
+                               IsLoading.isLoading=false;
+                             });
                              errorMessage = error.message!;
                            }
                            setState(() {});
@@ -246,11 +258,11 @@ class _LoginPageState extends State<LoginPage> {
 
                           ),
                           child: Center(
-                            child: Text("Login",style: TextStyle(
+                            child:IsLoading.isLoading==false?Text("Login",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
-                            ),),
+                            ),):Loading(),
                           ),
                         ),
                       ),

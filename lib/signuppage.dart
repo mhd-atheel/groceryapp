@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryapp/loginpage.dart';
+import 'package:groceryapp/variables.dart';
+import 'package:groceryapp/widget/loading.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
@@ -237,6 +239,9 @@ class _SignupPageState extends State<SignupPage> {
                       onTap: () async{
                         if(_key.currentState!.validate()){
                           try{
+                            setState(() {
+                              IsLoading.isLoading=true;
+                            });
                             FirebaseAuth auth = FirebaseAuth.instance;
                             await auth.createUserWithEmailAndPassword(
                                 email: emailController.text, password: passwordController.text)
@@ -253,16 +258,22 @@ class _SignupPageState extends State<SignupPage> {
                                 'downloadurl': downloadURL,
                                 'userType': userType,
                               }).then((value) {
-                                print("Added Fully");
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const BottomNavbar()),
                                 );
+                                setState(() {
+                                  IsLoading.isLoading=false;
+                                });
                               });
 
                             });
                             errorMessage = '';
                           } on FirebaseAuthException catch (error) {
+                            setState(() {
+                              IsLoading.isLoading=false;
+                            });
                             errorMessage = error.message!;
                           }
                           setState(() {});
@@ -279,11 +290,11 @@ class _SignupPageState extends State<SignupPage> {
 
                           ),
                           child: Center(
-                            child: Text("Create Account",style: TextStyle(
+                            child:IsLoading.isLoading==false? Text("Create Account",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
-                            ),),
+                            ),):Loading(),
                           ),
                         ),
                       ),
