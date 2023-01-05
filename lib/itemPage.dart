@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/main.dart';
@@ -192,7 +193,7 @@ class _ItemPageState extends State<ItemPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 3.0),
+                  padding: const EdgeInsets.only(left: 16.0,top: 3.0,right: 16.0),
                   child: Row(
                     children: [
                       Expanded(
@@ -207,6 +208,61 @@ class _ItemPageState extends State<ItemPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Products Reviews",style: TextStyle(
+                          fontWeight: FontWeight.w600
+                      ),),
+                      TextButton(onPressed: (){
+                        _showDialog(context);
+                      }, child: Text(
+                        'Add Review'
+                      ))
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
+                  child: ListTile(
+
+                    leading: CircleAvatar(child: Image.asset('assets/images/logo.png')),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Aathil Mohamed",style: TextStyle(
+                            fontWeight: FontWeight.w600,fontFamily: 'Prompt',fontSize: 15
+                        ),),
+                        RatingBar.builder(
+                          initialRating: 3,
+                          minRating: 1,
+                          itemSize: 12,
+                          direction: Axis.horizontal,
+                          allowHalfRating: false,
+                          itemCount: 5,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                        ),
+                      ],
+                    ),
+                    subtitle: Expanded(
+                      child: Text("It is a long established fact that a reader will be distra byact that a reader will be distra by t"
+                          "he readable  will be distracted by thunge is state controller established  t"
+                          "he readable  will be distracted by thunge is state controller established fact life",style: TextStyle(
+                          fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
+                      ),),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
+                  child: Row(
                     children: [
                       Text("Realated Products",style: TextStyle(
                           fontWeight: FontWeight.w600
@@ -214,6 +270,7 @@ class _ItemPageState extends State<ItemPage> {
                     ],
                   ),
                 ),
+
                 StreamBuilder(
                   stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: widget.data['categories']).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -239,7 +296,7 @@ class _ItemPageState extends State<ItemPage> {
                     );
                   },
                 ),
-                SizedBox(height: 70,)
+                SizedBox(height: 70,),
               ],
             ),
           ),
@@ -320,3 +377,84 @@ class _ItemPageState extends State<ItemPage> {
     });
   }
 }
+_showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Center(child: new Text("Add Deparment")),
+        insetPadding: EdgeInsets.all(20),
+        titlePadding: EdgeInsets.only(top: 14.0, bottom: 4),
+
+        //content: new Text("You are awesome!"),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              height: 200,
+              width: 500,
+              color: Colors.white,
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.deepPurpleAccent)),
+                      hintText: 'Add Department',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: ElevatedButton(
+                              onPressed: () async {
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                MaterialStateProperty.all<Color>(
+                                    Colors.black),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text("Submit"),
+                              ))),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                // Navigator.pop(context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                MaterialStateProperty.all<Color>(
+                                    Colors.white),
+                                foregroundColor:
+                                MaterialStateProperty.all<Color>(
+                                    Colors.black),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text("Cancel"),
+                              ))),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      );
+    },
+  );
+}
+

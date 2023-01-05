@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class RelatedProductsContainer extends StatefulWidget {
@@ -24,7 +25,7 @@ class _RelatedProductsContainerState extends State<RelatedProductsContainer> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 0.0),
             child: Container(
-              height: 130,
+              height: 150,
               width: 130,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -40,11 +41,20 @@ class _RelatedProductsContainerState extends State<RelatedProductsContainer> {
               ),
               child: Column(
                 children: [
-
-                  Container(
-                    height: 100,
-                    width: 110,
-                    child: Image.network(widget.downloadUrl,height: 120 ,fit: BoxFit.contain,),
+                  CachedNetworkImage(
+                    imageUrl:  widget.downloadUrl,
+                    imageBuilder: (context, imageProvider) => Container(
+                      height: 120,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
