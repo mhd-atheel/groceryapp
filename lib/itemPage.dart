@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/main.dart';
+import 'package:groceryapp/variables.dart';
+import 'package:groceryapp/widget/loading.dart';
 import 'package:groceryapp/widget/relatedProductsContainer.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
@@ -20,13 +23,154 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   int counter = 1;
+  double newRating = 4;
   bool itemExist = false;
   bool isLoading = false;
   bool isAdd = false;
+  TextEditingController reviewController = TextEditingController();
   @override
   void initState() {
+    FirebaseFirestore.instance.collection('biodata').doc(Data.uuid).get().then((value) {
+
+    });
     checkCart();
     super.initState();
+  }
+  _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(child: new Text("Your review & rating")),
+          insetPadding: EdgeInsets.all(20),
+          titlePadding: EdgeInsets.only(top: 14.0, bottom: 4),
+
+          //content: new Text("You are awesome!"),
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                height: 300,
+                width: 500,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                      const EdgeInsets.symmetric(vertical: 10),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          // 0xfff2f2f2  - like a gray
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black54)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 0),
+                          child: TextFormField(
+                              controller: reviewController,
+                              minLines: 2,
+                              maxLines: 4,
+                              decoration: InputDecoration(
+                                hintText: 'Your review',
+                                labelStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none,
+
+                              )),
+                        ),
+                      ),
+                    ),
+
+                    RatingBar.builder(
+                      initialRating: 4,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        newRating=rating;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    IsLoading.isLoading=true;
+                                  });
+                                  Map data={};
+                                  await FirebaseFirestore.instance.collection('biodata').doc(Data.uuid).get().then((value) {
+                                    data = value.data() as Map;
+                                  }).then((value){
+                                    FirebaseFirestore.instance.collection('reviews').doc().set({
+                                      'name':data['name'],
+                                      'downloadurl':data['downloadurl'],
+                                      'review':reviewController.text,
+                                      'rating':newRating,
+                                      'date':Timestamp.now(),
+                                      'categories':widget.data['categories'],
+                                    });
+                                  }).then((value) {
+                                    setState(() {
+                                      IsLoading.isLoading=false;
+                                      Navigator.pop(context);
+                                    });
+                                  });
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                      Color(0xff27963c)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child:IsLoading.isLoading==false?Text("Submit"):Loading(),
+                                ))),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                      Colors.white),
+                                  foregroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                      Colors.black),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text("Cancel"),
+                                ))),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -221,45 +365,76 @@ class _ItemPageState extends State<ItemPage> {
                     ],
                   ),
                 ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
-                  child: ListTile(
-
-                    leading: CircleAvatar(child: Image.asset('assets/images/logo.png')),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Aathil Mohamed",style: TextStyle(
-                            fontWeight: FontWeight.w600,fontFamily: 'Prompt',fontSize: 15
-                        ),),
-                        RatingBar.builder(
-                          initialRating: 3,
-                          minRating: 1,
-                          itemSize: 12,
-                          direction: Axis.horizontal,
-                          allowHalfRating: false,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance.collection('reviews').where('categories',isEqualTo: widget.data['categories']).orderBy('date',descending: true).snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Something went wrong'));
+                    }
+                    if(snapshot.data!.docs.isEmpty){
+                      return Center(child: Center(
+                        child: Text('No Product Review',style: TextStyle(
+                            fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                    subtitle: Expanded(
-                      child: Text("It is a long established fact that a reader will be distra byact that a reader will be distra by t"
-                          "he readable  will be distracted by thunge is state controller established  t"
-                          "he readable  will be distracted by thunge is state controller established fact life",style: TextStyle(
-                          fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
-                      ),),
-                    ),
-                  ),
+                        ),
+                      ));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    return  ListView(
+                      shrinkWrap: true,
+                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
+                          child: ListTile(
+
+                            leading:ClipRRect(
+                              borderRadius: BorderRadius.circular(22), // Image border
+                              child: SizedBox.fromSize(
+                                size: Size.fromRadius(22), // Image radius
+                                child: Image.network(data['downloadurl'], fit: BoxFit.cover),
+                              ),
+                            ),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(data['name'],style: TextStyle(
+                                    fontWeight: FontWeight.w600,fontFamily: 'Prompt',fontSize: 15
+                                ),),
+                                RatingBar.builder(
+                                  initialRating:data['rating'],
+                                  minRating: 1,
+                                  itemSize: 12,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  ignoreGestures: true,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    print(rating);
+                                  },
+                                ),
+                              ],
+                            ),
+                            subtitle: Expanded(
+                              child: Text(data['review'],style: TextStyle(
+                                  fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
+                              ),),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
                 ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
                   child: Row(
@@ -377,84 +552,5 @@ class _ItemPageState extends State<ItemPage> {
     });
   }
 }
-_showDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Center(child: new Text("Add Deparment")),
-        insetPadding: EdgeInsets.all(20),
-        titlePadding: EdgeInsets.only(top: 14.0, bottom: 4),
 
-        //content: new Text("You are awesome!"),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              height: 200,
-              width: 500,
-              color: Colors.white,
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: Colors.deepPurpleAccent)),
-                      hintText: 'Add Department',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: ElevatedButton(
-                              onPressed: () async {
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                MaterialStateProperty.all<Color>(
-                                    Colors.black),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Text("Submit"),
-                              ))),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: ElevatedButton(
-                              onPressed: () {
-                                // Navigator.pop(context);
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                MaterialStateProperty.all<Color>(
-                                    Colors.white),
-                                foregroundColor:
-                                MaterialStateProperty.all<Color>(
-                                    Colors.black),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Text("Cancel"),
-                              ))),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      );
-    },
-  );
-}
 
