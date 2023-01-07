@@ -384,13 +384,13 @@ class _ItemPageState extends State<ItemPage> {
                     }
 
                     return  ListView(
+                      physics:NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
                           child: ListTile(
-
                             leading:ClipRRect(
                               borderRadius: BorderRadius.circular(22), // Image border
                               child: SizedBox.fromSize(

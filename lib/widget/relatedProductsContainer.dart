@@ -29,12 +29,13 @@ class _RelatedProductsContainerState extends State<RelatedProductsContainer> {
               width: 130,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Color(0xffEEF2F9),
+                border: Border.all(color: Colors.black12),
+                color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.shade100,
                     spreadRadius: 2,
-                    blurRadius: 7,
+                    blurRadius: 10,
                     offset: Offset(0, 3), // changes position of shadow
                   ),
                 ],

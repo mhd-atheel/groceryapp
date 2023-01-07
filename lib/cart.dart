@@ -50,44 +50,9 @@ class _CartState extends State<Cart> {
   void showAlert(BuildContext context, String title, String msg) {
     // set up the button
     Widget okButton = TextButton(
+      onPressed: () { },
       child: Text("OK"),
-      onPressed: () async {
 
-        int MAX = 10000000;
-        await FirebaseFirestore.instance.collection('orders').doc().set({
-          'orderedAt': Timestamp.now(),
-          'deliveryAt':dropdownvalue,
-          'total':c.totalPrice.value,
-          'orderId':new Random().nextInt(MAX),
-          'status':'Waiting',
-          'name':name,
-          'email':email,
-          'isExpand':false,
-          'userId':Data.uuid,
-        }).then((value){
-          MotionToast.success(
-            width: MediaQuery.of(context).size.width/1.2,
-            height: 50,
-            title: const Text(
-              'System\'s Notification',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            description: const Text('Checkout Successfully',
-              style: TextStyle(fontSize: 12),
-            ),
-            layoutOrientation: ToastOrientation.ltr,
-            animationDuration: const Duration(milliseconds: 1300),
-            position: MotionToastPosition.top,
-            animationType: AnimationType.fromTop,
-            dismissable: true,
-          ).show(context);
-        });
-        await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
-          'address':addressController.text,
-        }).then((value) {
-          Navigator.pop(context);
-        });
-      },
     );
 
     // set up the AlertDialog
@@ -165,110 +130,12 @@ class _CartState extends State<Cart> {
     });
   }
 
-  cartContainer(img,name, price){
-     int counter = 0;
-     return  Container(
-        height: 120,
 
-        child: Row(
-          children: [
-            Container(
-              height: 120,
-              width: 130,
-              child: Image.asset(
-                img,
-                height: 120,
-                fit: BoxFit.contain,
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height:20),
-                Text(
-                 name,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      fontFamily: "Poppins"),
-                ),
-                SizedBox(height:5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "2.00kg",
-                      style: TextStyle(
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      "2.20kg",
-                      style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          decoration: TextDecoration.lineThrough),
-                    ),
-                  ],
-                ),
-                SizedBox(height:5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(price,
-                      style: TextStyle(
-                        color: Color(0xff00be5e),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(width: 120,),
-                    Row(
-
-                      children: [
-                        GestureDetector(
-                          onTap:(){
-                            setState(() {
-                              counter--;
-
-                            });
-                          },
-                          child: Icon(FontAwesomeIcons.minus,size: 15,
-                          ),
-                        ),
-                        SizedBox(width: 3,),
-                        Text("$counter"),
-                        SizedBox(width: 3,),
-                        GestureDetector(
-                          onTap:(){
-                            setState(() {
-                              counter ++;
-                              print(counter);
-                            });
-                          },
-                          child: Icon(FontAwesomeIcons.plus,size: 15,),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-
-              ],
-            )
-          ],
-        ),
-      );
-   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
       appBar: AppBar(
         title:  Text(
           "Cart",
@@ -277,7 +144,7 @@ class _CartState extends State<Cart> {
               fontSize: 25,
               fontFamily: "Poppins"),
         ),
-        backgroundColor: Color(0xffF4F4F3),
+        backgroundColor: Colors.white,
         foregroundColor: Color(0xff2C5E30),
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -299,26 +166,9 @@ class _CartState extends State<Cart> {
                     }
                     return Column(
                       children: [
-                        // ListView(
-                        //   shrinkWrap: true,
-                        //   physics: NeverScrollableScrollPhysics(),
-                        //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        //     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        //     print(data['price']);
-                        //     return CartWidget(
-                        //         img: data['downloadurl'],
-                        //         name:data['name'],
-                        //         price: data['price'].toString(),
-                        //         quantity:data['quantity'],
-                        //         net: data['net'],
-                        //         symbol:data['symbol'],
-                        //       changeState: setState,
-                        //     );
-                        //
-                        //   }).toList(),
-                        // ),
                         ListView.builder(
                           shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context,index){
                               Map<String, dynamic> data = snapshot.data!.docs[index].data()! as Map<String, dynamic>;
@@ -524,9 +374,47 @@ class _CartState extends State<Cart> {
                           ],
                         ),
                         snapshot.data!.docs.isEmpty ?Container():GestureDetector(
-                          onTap: () async {
-                            startOneTimePayment(context);
-                          },
+
+                            onTap: () async {
+                              int MAX = 10000000;
+                              await FirebaseFirestore.instance.collection('orders').doc().set({
+                                'orderedAt': Timestamp.now(),
+                                'deliveryAt':dropdownvalue,
+                                'total':c.totalPrice.value,
+                                'orderId':new Random().nextInt(MAX),
+                                'status':'Waiting',
+                                'name':name,
+                                'email':email,
+                                'isExpand':false,
+                                'userId':Data.uuid,
+                              }).then((value){
+                                MotionToast.success(
+                                  width: MediaQuery.of(context).size.width/1.2,
+                                  height: 50,
+                                  title: const Text(
+                                    'System\'s Notification',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  description: const Text('Checkout Successfully',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  layoutOrientation: ToastOrientation.ltr,
+                                  animationDuration: const Duration(milliseconds: 1300),
+                                  position: MotionToastPosition.top,
+                                  animationType: AnimationType.fromTop,
+                                  dismissable: true,
+                                ).show(context);
+                              });
+                              await FirebaseFirestore.instance.collection("biodata").doc(Data.uuid).update({
+                                'address':addressController.text,
+                              });
+                              await FirebaseFirestore.instance
+                                  .collection("cart")
+                                  .doc(Data.uuid).delete().then((value)
+                              {
+                                print('Cart Item Deleted SuccessFully');
+                              });
+                            },
                           child: Column(
                             children: [
                               Padding(
