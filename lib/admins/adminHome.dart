@@ -47,7 +47,7 @@ class _AdminHomeState extends State<AdminHome> {
               Functions.Dashboard_box(context,0xff3F9CBA,"Orders","07"),
               Functions.Dashboard_box(context,0xffEA40A6,"Users","10"),
               Functions.Dashboard_box(context,0xffF14B4B,"Products","03"),
-              Functions.Dashboard_box(context,0xff519557,"Categories","\$1.5K"),
+              Functions.Dashboard_box(context,0xff519557,"Categories","08"),
                const SizedBox(height: 20,),
             ],
           ),

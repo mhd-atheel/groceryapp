@@ -1,13 +1,10 @@
-import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:groceryapp/admins/adminHome.dart';
-import 'package:groceryapp/categories.dart';
-import 'package:groceryapp/itemPage.dart';
 import 'package:groceryapp/widget/categoriesHome.dart';
 import 'package:groceryapp/widget/productContainer.dart';
+
 
 import 'data.dart';
 
@@ -23,12 +20,68 @@ class _HomePageState extends State<HomePage> {
   late String net;
   late String img = '';
   late String price;
+  String productName = 'Meats';
+  int isState = 0;
 
   final List<String> images = [
    'assets/images/banner3.jpg',
    'assets/images/banner2.jpg',
    'assets/images/banner1.jpg',
   ];
+  tabWidget(name){
+    GestureDetector(
+      onTap: (){
+        if(name=="Vegetables"){
+          setState(() {
+            productName= 'Vegetables';
+            isState=1;
+          });
+        }else{
+          setState(() {
+            productName= 'Fruits';
+            isState=1;
+          });
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8),
+        child: Container(
+          height: 32,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color:isState==0?Color(0xff27963c):Colors.white,
+              border: Border.all(
+                  color: isState==0?Colors.white:Color(0xff27963c)
+              )
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom:8.0,left: 16,right: 16,top: 8),
+                child: Text(name,style: TextStyle(
+                    color: isState==0?Colors.white:Color(0xff27963c),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12
+                ),),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,6 +195,21 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   )),
+
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: SingleChildScrollView(
+              //     scrollDirection: Axis.horizontal,
+              //     child: Column(
+              //       children: [
+              //
+              //        tabWidget('Vegetables'),
+              //        tabWidget('Vegetables'),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -153,8 +221,14 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+              ElevatedButton(onPressed: (){
+                setState(() {
+                  productName= 'Fruits';
+                });
+                print('clicked');
+              }, child: Text("Click")),
               StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('products').snapshots(),
+                stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: productName).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Something went wrong'));

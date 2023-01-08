@@ -5,8 +5,8 @@ import 'package:groceryapp/admins/categories.dart';
 import 'package:groceryapp/widget/adminCategoriesContainer.dart';
 
 class ViewCategories extends StatefulWidget {
-  Map data;
-   ViewCategories({Key? key, required Map<dynamic, dynamic> this.data, required String name}) : super(key: key);
+  final String name;
+   ViewCategories({Key? key,required this.name}) : super(key: key);
 
   @override
   State<ViewCategories> createState() => _ViewCategoriesState();
@@ -18,7 +18,7 @@ class _ViewCategoriesState extends State<ViewCategories> {
     return Scaffold(
       appBar: AppBar(
         title:Text(
-          widget.data['name'],
+          widget.name,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
@@ -39,7 +39,7 @@ class _ViewCategoriesState extends State<ViewCategories> {
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: widget.data['name']).snapshots(),
+        stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: widget.name).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('Something went wrong'));

@@ -59,7 +59,7 @@ class _CategoriesState extends State<Categories> {
           ),
           CategoriesContainer(
             img: 'assets/images/fish.png',
-            name: 'Sea Foods',
+            name: 'SeaFoods',
             quantity: '07',
           ),
           CategoriesContainer(

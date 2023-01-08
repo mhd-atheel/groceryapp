@@ -98,7 +98,7 @@ class _EditProductsState extends State<EditProducts> {
     return Scaffold(
       appBar: AppBar(
         title:  Text(
-          "Add New Products",
+          "Update Products",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
@@ -480,7 +480,7 @@ class _EditProductsState extends State<EditProducts> {
                         color: Color(0xff27963c),
                       ),
                       child: Center(
-                        child: IsLoading.isLoading==false?Text("Update",style: TextStyle(
+                        child: IsLoading.isLoading==false?Text("Re Publish",style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18

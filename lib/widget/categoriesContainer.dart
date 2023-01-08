@@ -27,7 +27,7 @@ class _CategoriesContainerState extends State<CategoriesContainer> {
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  ViewCategories(name: widget.name,)),
+          MaterialPageRoute(builder: (context) => ViewCategories(name: widget.name)),
         );
       },
       child: Padding(

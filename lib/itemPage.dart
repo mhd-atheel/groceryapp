@@ -119,7 +119,7 @@ class _ItemPageState extends State<ItemPage> {
                                       'review':reviewController.text,
                                       'rating':newRating,
                                       'date':Timestamp.now(),
-                                      'categories':widget.data['categories'],
+                                      'productName':widget.data['name'],
                                     });
                                   }).then((value) {
                                     setState(() {
@@ -366,18 +366,18 @@ class _ItemPageState extends State<ItemPage> {
                   ),
                 ),
                 StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('reviews').where('categories',isEqualTo: widget.data['categories']).orderBy('date',descending: true).snapshots(),
+                  stream: FirebaseFirestore.instance.collection('reviews').where('productName',isEqualTo: widget.data['name']).orderBy('date',descending: true).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Something went wrong'));
-                    }
                     if(snapshot.data!.docs.isEmpty){
                       return Center(child: Center(
                         child: Text('No Product Review',style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                         ),
                       ));
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Something went wrong'));
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -395,7 +395,21 @@ class _ItemPageState extends State<ItemPage> {
                               borderRadius: BorderRadius.circular(22), // Image border
                               child: SizedBox.fromSize(
                                 size: Size.fromRadius(22), // Image radius
-                                child: Image.network(data['downloadurl'], fit: BoxFit.cover),
+                                child:CachedNetworkImage(
+                                  imageUrl:  widget.data['downloadurl'],
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    height: 80,
+                                    width: 110,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                ),
                               ),
                             ),
                             title: Row(
