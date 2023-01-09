@@ -6,7 +6,7 @@ import 'package:groceryapp/admins/users.dart';
 import '../admins/products.dart';
 
 class Functions {
-  static Dashboard_box(context, bgcolor, name, count) {
+  static Dashboard_box(context, bgcolor, name, int count) {
     return GestureDetector(
       onTap: () {
         if (name == "Categories") {
@@ -68,17 +68,17 @@ class Functions {
                           ],
                         ),
                       ),
-                      Padding(
+                      count!=-1 ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          count,
+                          count.toString(),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
 
                               fontSize: 40),
                         ),
-                      )
+                      ):CircularProgressIndicator()
                     ],
                   ),
                 ),

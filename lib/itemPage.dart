@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/main.dart';
 import 'package:groceryapp/variables.dart';
@@ -22,14 +24,15 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  int counter = 1;
   double newRating = 4;
   bool itemExist = false;
   bool isLoading = false;
   bool isAdd = false;
+  final Variable variable = Get.find();
   TextEditingController reviewController = TextEditingController();
   @override
   void initState() {
+    variable.itemCount.value = 1;
     checkCart();
     super.initState();
   }
@@ -259,7 +262,7 @@ class _ItemPageState extends State<ItemPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5.0,top: 0),
-                        child: Text('\$${ double.parse(widget.data['price'])*counter}',style:
+                        child: Text('\$${ double.parse(widget.data['price'])*variable.itemCount.value}',style:
                         TextStyle(
                             color: Color(0xff2F3825),
                             fontSize: 35,
@@ -268,14 +271,13 @@ class _ItemPageState extends State<ItemPage> {
                         )
                           ,),
                       ),
-                      Row(
-
+                      Obx(()=> Row(
                         children: [
                           GestureDetector(
                             onTap:(){
-                              if(counter<=1){
-                                counter = 1;
-                                print(counter);
+                              if(variable.itemCount.value<=1){
+                                variable.itemCount.value = 1;
+                                print(variable.itemCount.value);
                                 MotionToast.warning(
                                   width: MediaQuery.of(context).size.width/1.2,
                                   height: 50,
@@ -295,32 +297,28 @@ class _ItemPageState extends State<ItemPage> {
                                 ).show(context);
                               }
                               else{
-                                setState(() {
-                                  counter--;
-                                  print(counter);
-                                });
+                                  variable.itemCount.value--;
+                                  print(variable.itemCount.value);
                               }
                             },
                             child: Icon(Icons.remove_circle_outline_rounded,size: 40,
                             ),
                           ),
                           SizedBox(width: 6,),
-                          Text("$counter",style: TextStyle(
-                            fontSize: 25
+                          Text("${variable.itemCount.value}",style: TextStyle(
+                              fontSize: 25
                           ),),
                           SizedBox(width: 6,),
                           GestureDetector(
                             onTap:(){
-                              setState(() {
-                                counter ++;
-                                print(counter);
+                                variable.itemCount.value ++;
+                                print(variable.itemCount.value);
 
-                              });
                             },
                             child: Icon(Icons.add_circle_outline_rounded,size: 40,),
                           ),
                         ],
-                      ),
+                      )),
                     ],
                   ),
                 ),
@@ -366,14 +364,6 @@ class _ItemPageState extends State<ItemPage> {
                 StreamBuilder(
                   stream: FirebaseFirestore.instance.collection('reviews').where('productName',isEqualTo: widget.data['name']).orderBy('date',descending: true).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if(snapshot.data!.docs.isEmpty){
-                      return Center(child: Center(
-                        child: Text('No Product Review',style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        ),
-                      ));
-                    }
                     if (snapshot.hasError) {
                       return Center(child: Text('Something went wrong'));
                     }
@@ -381,8 +371,13 @@ class _ItemPageState extends State<ItemPage> {
                       return Center(child: CircularProgressIndicator());
                     }
 
-                    return  ListView(
-                      physics:NeverScrollableScrollPhysics(),
+                    return snapshot.data!.docs.isEmpty ?  Center(child: Center(
+                      child: Text('No Product Review',style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
+                    )):ListView(
+                      physics:const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
@@ -405,7 +400,10 @@ class _ItemPageState extends State<ItemPage> {
                                       ),
                                     ),
                                   ),
-                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  placeholder: (context, url) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(),
+                                  ),
                                   errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
                               ),
@@ -435,11 +433,9 @@ class _ItemPageState extends State<ItemPage> {
                                 ),
                               ],
                             ),
-                            subtitle: Expanded(
-                              child: Text(data['review'],style: TextStyle(
-                                  fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
-                              ),),
-                            ),
+                            subtitle: Text(data['review'],style: TextStyle(
+                                fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
+                            ),),
                           ),
                         );
                       }).toList(),
@@ -503,8 +499,8 @@ class _ItemPageState extends State<ItemPage> {
                         'downloadurl': widget.data['downloadurl'],
                         'net': widget.data['net'],
                         'symbol': widget.data['symbol'],
-                        'price': int.parse(widget.data['price'])*counter,
-                        'quantity':counter
+                        'price': int.parse(widget.data['price'])*variable.itemCount.value,
+                        'quantity':variable.itemCount.value
                       }
                   ).then((value) {
                     setState(() {

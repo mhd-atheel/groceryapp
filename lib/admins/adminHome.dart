@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryapp/loginpage.dart';
@@ -13,6 +14,28 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  late int ordersCount = -1;
+  @override
+  void initState() {
+    print('Hi1');
+    check();
+    super.initState();
+  }
+  check() async {
+    await FirebaseFirestore.instance.collection('orders').get(
+    ).then((value) {
+      setState(() {
+        ordersCount = value.size;
+      });
+    });
+    await FirebaseFirestore.instance.collection('biodata').get(
+    ).then((value) {
+      setState(() {
+        ordersCount = value.size;
+      });
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +67,10 @@ class _AdminHomeState extends State<AdminHome> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(height: 20,),
-              Functions.Dashboard_box(context,0xff3F9CBA,"Orders","07"),
-              Functions.Dashboard_box(context,0xffEA40A6,"Users","10"),
-              Functions.Dashboard_box(context,0xffF14B4B,"Products","03"),
-              Functions.Dashboard_box(context,0xff519557,"Categories","08"),
+              Functions.Dashboard_box(context,0xff3F9CBA,"Orders",ordersCount),
+              Functions.Dashboard_box(context,0xffEA40A6,"Users",11),
+              Functions.Dashboard_box(context,0xffF14B4B,"Products",334),
+              Functions.Dashboard_box(context,0xff519557,"Categories",2),
                const SizedBox(height: 20,),
             ],
           ),
