@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryapp/widget/categoriesHome.dart';
@@ -17,71 +19,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String name;
+  String? searchValue;
   late String net;
   late String img = '';
   late String price;
-  String productName = 'Meats';
-  int isState = 0;
+  String productName = 'All';
+  int tabVale=1;
+  late int isState;
 
   final List<String> images = [
    'assets/images/banner3.jpg',
    'assets/images/banner2.jpg',
    'assets/images/banner1.jpg',
   ];
-  tabWidget(name){
-    GestureDetector(
-      onTap: (){
-        if(name=="Vegetables"){
-          setState(() {
-            productName= 'Vegetables';
-            isState=1;
-          });
-        }else{
-          setState(() {
-            productName= 'Fruits';
-            isState=1;
-          });
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 8),
-        child: Container(
-          height: 32,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color:isState==0?Color(0xff27963c):Colors.white,
-              border: Border.all(
-                  color: isState==0?Colors.white:Color(0xff27963c)
-              )
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom:8.0,left: 16,right: 16,top: 8),
-                child: Text(name,style: TextStyle(
-                    color: isState==0?Colors.white:Color(0xff27963c),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12
-                ),),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    isState=0;
+    super.initState();
   }
-
-
-
-
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +62,9 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextField(
+                            onChanged: (val){
+                              searchValue=val;
+                            },
                             decoration: InputDecoration(
                                 labelText: 'Search Products ',
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -196,39 +154,91 @@ class _HomePageState extends State<HomePage> {
                     },
                   )),
 
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: SingleChildScrollView(
-              //     scrollDirection: Axis.horizontal,
-              //     child: Column(
-              //       children: [
-              //
-              //        tabWidget('Vegetables'),
-              //        tabWidget('Vegetables'),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0,left: 8,right: 8,bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomSlidingSegmentedControl<int>(
+                      initialValue: tabVale,
+                      children: {
+                        1: Text('All',style: TextStyle(color:tabVale==1?Colors.white:Color(0xff27963c)),),
+                        2: Text('Vegetables',style: TextStyle(color:tabVale==2?Colors.white:Color(0xff27963c))),
+                        3: Text('Fruits',style: TextStyle(color:tabVale==3?Colors.white:Color(0xff27963c))),
+                        4: Text('Meats',style: TextStyle(color:tabVale==4?Colors.white:Color(0xff27963c))),
+                      },
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.lightBackgroundGray,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      thumbDecoration: BoxDecoration(
+                        color: Color(0xff27963c),
+                        borderRadius: BorderRadius.circular(6),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(.3),
+                            blurRadius: 4.0,
+                            spreadRadius: 1.0,
+                            offset: Offset(
+                              0.0,
+                              2.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInToLinear,
+                      onValueChanged: (v) {
+                        tabVale=v;
+                        print(tabVale);
+                        print(v);
+                        if(tabVale==1){
+                          setState(() {
+                            productName= 'All';
+                            isState = 0;
+                          });
+                        }
+                        if(tabVale==2){
+                          setState(() {
+                            isState = 1;
+                            productName= 'Vegetables';
+                          });
+                        }
+                        if(tabVale==3){
+                          setState(() {
+                            isState = 1;
+                            productName= 'Fruits';
+                          });
+                        }
+                        if(tabVale==4){
+                          setState(() {
+                            isState = 1;
+                            productName= 'Meats';
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "Products for You",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
+                    Text(
+                      productName,
+                      style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15,fontFamily: 'Prompt'),
+                    ),
                   ],
                 ),
               ),
-              ElevatedButton(onPressed: (){
-                setState(() {
-                  productName= 'Fruits';
-                });
-                print('clicked');
-              }, child: Text("Click")),
               StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: productName).snapshots(),
+                stream:isState==0?FirebaseFirestore.instance.collection('products').snapshots():FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: productName).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Something went wrong'));
@@ -244,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
-                         mainAxisSpacing: 20,
+                         mainAxisSpacing: 10,
                       ),
                       primary: false,
                       // crossAxisSpacing: 10,

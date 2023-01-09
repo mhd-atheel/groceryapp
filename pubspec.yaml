@@ -52,6 +52,7 @@ dependencies:
   payhere_mobilesdk_flutter: ^3.0.4
   flutter_native_splash: ^2.2.16
   flutter_rating_bar: ^4.0.1
+  custom_sliding_segmented_control: ^1.7.3
 
 dev_dependencies:
   flutter_test:

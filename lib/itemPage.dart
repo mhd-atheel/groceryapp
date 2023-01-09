@@ -30,9 +30,6 @@ class _ItemPageState extends State<ItemPage> {
   TextEditingController reviewController = TextEditingController();
   @override
   void initState() {
-    FirebaseFirestore.instance.collection('biodata').doc(Data.uuid).get().then((value) {
-
-    });
     checkCart();
     super.initState();
   }
@@ -123,6 +120,7 @@ class _ItemPageState extends State<ItemPage> {
                                     });
                                   }).then((value) {
                                     setState(() {
+                                      print('success');
                                       IsLoading.isLoading=false;
                                       Navigator.pop(context);
                                     });
@@ -396,7 +394,7 @@ class _ItemPageState extends State<ItemPage> {
                               child: SizedBox.fromSize(
                                 size: Size.fromRadius(22), // Image radius
                                 child:CachedNetworkImage(
-                                  imageUrl:  widget.data['downloadurl'],
+                                  imageUrl: data['downloadurl'],
                                   imageBuilder: (context, imageProvider) => Container(
                                     height: 80,
                                     width: 110,
@@ -475,10 +473,10 @@ class _ItemPageState extends State<ItemPage> {
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                          Map<String, dynamic> myData = document.data()! as Map<String, dynamic>;
                           return RelatedProductsContainer(
-                            name: data['name'],
-                            downloadUrl: data['downloadurl'],
+                            name: myData['name'],
+                            downloadUrl: myData['downloadurl'],
                           );
                         }).toList(),
                       ),

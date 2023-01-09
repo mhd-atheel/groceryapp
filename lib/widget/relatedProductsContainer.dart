@@ -76,7 +76,6 @@ class _RelatedProductsContainerState extends State<RelatedProductsContainer> {
                       ,),
                   ),
 
-
                 ],
               ),
             ),
