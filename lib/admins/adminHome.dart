@@ -15,6 +15,8 @@ class AdminHome extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHome> {
   late int ordersCount = -1;
+  late int userCount = -1;
+  late int productCount = -1;
   @override
   void initState() {
     print('Hi1');
@@ -31,7 +33,13 @@ class _AdminHomeState extends State<AdminHome> {
     await FirebaseFirestore.instance.collection('biodata').get(
     ).then((value) {
       setState(() {
-        ordersCount = value.size;
+        userCount = value.size;
+      });
+    });
+    await FirebaseFirestore.instance.collection('products').get(
+    ).then((value) {
+      setState(() {
+        productCount = value.size;
       });
     });
 
@@ -68,9 +76,9 @@ class _AdminHomeState extends State<AdminHome> {
             children: [
               const SizedBox(height: 20,),
               Functions.Dashboard_box(context,0xff3F9CBA,"Orders",ordersCount),
-              Functions.Dashboard_box(context,0xffEA40A6,"Users",11),
-              Functions.Dashboard_box(context,0xffF14B4B,"Products",334),
-              Functions.Dashboard_box(context,0xff519557,"Categories",2),
+              Functions.Dashboard_box(context,0xffEA40A6,"Users",userCount),
+              Functions.Dashboard_box(context,0xffF14B4B,"Products",productCount),
+              Functions.Dashboard_box(context,0xff519557,"Categories",8),
                const SizedBox(height: 20,),
             ],
           ),

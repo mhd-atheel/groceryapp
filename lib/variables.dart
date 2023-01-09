@@ -8,6 +8,9 @@ class  Variable extends GetxController {
    RxInt itemCount = 1.obs;
 
 }
+class  ItemVariable extends GetxController {
+   RxInt itemCount = 1.obs;
+}
 class IsLoading{
    static bool isLoading  = false;
 }

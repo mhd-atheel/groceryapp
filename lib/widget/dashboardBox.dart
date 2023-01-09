@@ -71,7 +71,7 @@ class Functions {
                       count!=-1 ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          count.toString(),
+                          count<=9&&count>=0?'0'+count.toString():count.toString(),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

@@ -28,11 +28,12 @@ class _ItemPageState extends State<ItemPage> {
   bool itemExist = false;
   bool isLoading = false;
   bool isAdd = false;
-  final Variable variable = Get.find();
+  // final Variable variable = Get.find();
+  final ItemVariable c = Get.put(ItemVariable());
   TextEditingController reviewController = TextEditingController();
   @override
   void initState() {
-    variable.itemCount.value = 1;
+    c.itemCount.value = 1;
     checkCart();
     super.initState();
   }
@@ -262,7 +263,7 @@ class _ItemPageState extends State<ItemPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 5.0,top: 0),
-                        child: Text('\$${ double.parse(widget.data['price'])*variable.itemCount.value}',style:
+                        child: Text('\$${ double.parse(widget.data['price'])*c.itemCount.value}',style:
                         TextStyle(
                             color: Color(0xff2F3825),
                             fontSize: 35,
@@ -275,9 +276,9 @@ class _ItemPageState extends State<ItemPage> {
                         children: [
                           GestureDetector(
                             onTap:(){
-                              if(variable.itemCount.value<=1){
-                                variable.itemCount.value = 1;
-                                print(variable.itemCount.value);
+                              if(c.itemCount<=1){
+                                c.itemCount.value = 1;
+                                print(c.itemCount.value);
                                 MotionToast.warning(
                                   width: MediaQuery.of(context).size.width/1.2,
                                   height: 50,
@@ -297,22 +298,22 @@ class _ItemPageState extends State<ItemPage> {
                                 ).show(context);
                               }
                               else{
-                                  variable.itemCount.value--;
-                                  print(variable.itemCount.value);
+                                c.itemCount.value--;
+                                  print(c.itemCount.value);
                               }
                             },
                             child: Icon(Icons.remove_circle_outline_rounded,size: 40,
                             ),
                           ),
                           SizedBox(width: 6,),
-                          Text("${variable.itemCount.value}",style: TextStyle(
+                          Text("${c.itemCount.value}",style: TextStyle(
                               fontSize: 25
                           ),),
                           SizedBox(width: 6,),
                           GestureDetector(
                             onTap:(){
-                                variable.itemCount.value ++;
-                                print(variable.itemCount.value);
+                              c.itemCount.value ++;
+                                print(c.itemCount.value);
 
                             },
                             child: Icon(Icons.add_circle_outline_rounded,size: 40,),
@@ -499,8 +500,8 @@ class _ItemPageState extends State<ItemPage> {
                         'downloadurl': widget.data['downloadurl'],
                         'net': widget.data['net'],
                         'symbol': widget.data['symbol'],
-                        'price': int.parse(widget.data['price'])*variable.itemCount.value,
-                        'quantity':variable.itemCount.value
+                        'price': int.parse(widget.data['price'])*c.itemCount.value,
+                        'quantity':c.itemCount.value
                       }
                   ).then((value) {
                     setState(() {
