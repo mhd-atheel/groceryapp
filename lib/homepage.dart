@@ -4,11 +4,12 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:groceryapp/variables.dart';
 import 'package:groceryapp/widget/categoriesHome.dart';
 import 'package:groceryapp/widget/productContainer.dart';
 
-
-import 'data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key }) : super(key: key);
@@ -24,8 +25,9 @@ class _HomePageState extends State<HomePage> {
   late String img = '';
   late String price;
   String productName = 'All';
-  int tabVale=1;
-  late int isState;
+  // int tabVale=1;
+  final HomeVariable c = Get.put(HomeVariable());
+  // late int isState;
 
   final List<String> images = [
    'assets/images/banner3.jpg',
@@ -34,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   void initState() {
-    isState=0;
+    c.isState.value=0;
     super.initState();
   }
   @override
@@ -154,71 +156,66 @@ class _HomePageState extends State<HomePage> {
                     },
                   )),
 
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0,left: 8,right: 8,bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomSlidingSegmentedControl<int>(
-                      initialValue: tabVale,
-                      children: {
-                        1: Text('All',style: TextStyle(color:tabVale==1?Colors.white:Color(0xff27963c)),),
-                        2: Text('Vegetables',style: TextStyle(color:tabVale==2?Colors.white:Color(0xff27963c))),
-                        3: Text('Fruits',style: TextStyle(color:tabVale==3?Colors.white:Color(0xff27963c))),
-                        4: Text('Meats',style: TextStyle(color:tabVale==4?Colors.white:Color(0xff27963c))),
-                      },
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.lightBackgroundGray,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      thumbDecoration: BoxDecoration(
-                        color: Color(0xff27963c),
-                        borderRadius: BorderRadius.circular(6),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(.3),
-                            blurRadius: 4.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(
-                              0.0,
-                              2.0,
+              Obx(()=> Padding(
+                  padding: const EdgeInsets.only(top: 16.0,left: 8,right: 8,bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomSlidingSegmentedControl<int>(
+                        initialValue: c.tabVale.value,
+                        children: {
+                          1: Text('All',style: TextStyle(color:c.tabVale.value==1?Colors.white:Color(0xff27963c)),),
+                          2: Text('Vegetables',style: TextStyle(color:c.tabVale.value==2?Colors.white:Color(0xff27963c))),
+                          3: Text('Fruits',style: TextStyle(color:c.tabVale.value==3?Colors.white:Color(0xff27963c))),
+                          4: Text('Meats',style: TextStyle(color:c.tabVale.value==4?Colors.white:Color(0xff27963c))),
+                        },
+                        decoration: BoxDecoration(
+                          color: CupertinoColors.lightBackgroundGray,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        thumbDecoration: BoxDecoration(
+                          color: Color(0xff27963c),
+                          borderRadius: BorderRadius.circular(6),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.3),
+                              blurRadius: 4.0,
+                              spreadRadius: 1.0,
+                              offset: Offset(
+                                0.0,
+                                2.0,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInToLinear,
+                        onValueChanged: (v) {
+                          c.tabVale.value=v;
+                          print(c.tabVale.value);
+                          print(v);
+                          if(c.tabVale.value==1){
+                              c.productName.value= 'All';
+                              c.isState.value = 0;
+
+                          }
+                          if(c.tabVale.value==2){
+                              c.isState.value = 1;
+                              c.productName.value= 'Vegetables';
+                          }
+                          if(c.tabVale.value==3){
+                              c.isState.value = 1;
+                              c.productName.value= 'Fruits';
+
+                          }
+                          if(c.tabVale.value==4){
+                              c.isState.value = 1;
+                              c.productName.value= 'Meats';
+                          }
+                        },
                       ),
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInToLinear,
-                      onValueChanged: (v) {
-                        tabVale=v;
-                        print(tabVale);
-                        print(v);
-                        if(tabVale==1){
-                          setState(() {
-                            productName= 'All';
-                            isState = 0;
-                          });
-                        }
-                        if(tabVale==2){
-                          setState(() {
-                            isState = 1;
-                            productName= 'Vegetables';
-                          });
-                        }
-                        if(tabVale==3){
-                          setState(() {
-                            isState = 1;
-                            productName= 'Fruits';
-                          });
-                        }
-                        if(tabVale==4){
-                          setState(() {
-                            isState = 1;
-                            productName= 'Meats';
-                          });
-                        }
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -231,45 +228,46 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                     Text(
-                      productName,
+                      c.productName.value,
                       style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
                 ),
               ),
-              StreamBuilder(
-                stream:isState==0?FirebaseFirestore.instance.collection('products').snapshots():FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: productName).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Something went wrong'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: GridView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                         mainAxisSpacing: 10,
+              Obx(()=> StreamBuilder(
+                  stream: c.isState.value==0?FirebaseFirestore.instance.collection('products').snapshots():FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: c.productName.value).snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Something went wrong'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: GridView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                           mainAxisSpacing: 10,
+                        ),
+                        primary: false,
+                        // crossAxisSpacing: 10,
+                        // mainAxisSpacing: 20,
+                        // crossAxisCount: 2,
+                        children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                          data['id'] = document.id;
+                          return ProductContainer(
+                            data: data,
+                          );
+                        }).toList(),
                       ),
-                      primary: false,
-                      // crossAxisSpacing: 10,
-                      // mainAxisSpacing: 20,
-                      // crossAxisCount: 2,
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        data['id'] = document.id;
-                        return ProductContainer(
-                          data: data,
-                        );
-                      }).toList(),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
 
             ],

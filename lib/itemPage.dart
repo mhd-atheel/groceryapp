@@ -33,7 +33,7 @@ class _ItemPageState extends State<ItemPage> {
   TextEditingController reviewController = TextEditingController();
   @override
   void initState() {
-    c.itemCount.value = 1;
+
     checkCart();
     super.initState();
   }

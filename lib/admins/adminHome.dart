@@ -19,7 +19,6 @@ class _AdminHomeState extends State<AdminHome> {
   late int productCount = -1;
   @override
   void initState() {
-    print('Hi1');
     check();
     super.initState();
   }

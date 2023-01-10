@@ -8,7 +8,7 @@ class CategoriesContainer extends StatefulWidget {
 
    final String img;
    final String name;
-   final String quantity;
+   final quantity;
    CategoriesContainer({
      super.key,
      required this.img,

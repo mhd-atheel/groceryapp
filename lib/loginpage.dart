@@ -196,6 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(left: 20, top: 0),
                           child: TextFormField(
                               validator:validatePassword,
+                            obscureText: true,
                             controller: passwordController,
                               decoration: InputDecoration(
                                   labelText: 'password ',

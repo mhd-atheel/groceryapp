@@ -11,6 +11,11 @@ class  Variable extends GetxController {
 class  ItemVariable extends GetxController {
    RxInt itemCount = 1.obs;
 }
+class  HomeVariable extends GetxController {
+   RxInt tabVale = 1.obs;
+   RxInt isState = 0.obs;
+   RxString productName = 'All'.obs;
+}
 class IsLoading{
    static bool isLoading  = false;
 }
