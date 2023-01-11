@@ -226,6 +226,7 @@ class _SignupPageState extends State<SignupPage> {
                           padding: const EdgeInsets.only(left: 20, top: 0),
                           child: TextFormField(
                             controller: passwordController,
+                              obscureText: true,
                               validator: validatePassword,
                               decoration: InputDecoration(
                                 hintText: 'password ',
