@@ -3,8 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:groceryapp/admins/adminHome.dart';
 import 'package:groceryapp/loginpage.dart';
+import 'package:groceryapp/variables.dart';
 
 import 'data.dart';
 import 'main.dart';
@@ -17,11 +19,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3)).then((value) {
       getUserInfo();
-
+      getCounterValue();
     });
     super.initState();
   }
@@ -82,3 +85,17 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 }
+
+void getCounterValue(){
+  final AdminHomeVariable c = Get.put(AdminHomeVariable());
+  FirebaseFirestore.instance.collection('biodata').get().then((value) {
+    c.userCount.value = value.size.obs as int;
+  });
+  FirebaseFirestore.instance.collection('orders').get().then((value) {
+    c.orderCount.value = value.size.obs as int;
+  });
+  FirebaseFirestore.instance.collection('products').get().then((value) {
+    c.productCount.value = value.size.obs as int;
+  });
+}
+

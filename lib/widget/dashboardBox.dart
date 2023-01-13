@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:groceryapp/admins/categories.dart';
 import 'package:groceryapp/admins/userOrders.dart';
 import 'package:groceryapp/admins/users.dart';
@@ -6,7 +8,7 @@ import 'package:groceryapp/admins/users.dart';
 import '../admins/products.dart';
 
 class Functions {
-  static Dashboard_box(context, bgcolor, name, int count) {
+  static Dashboard_box(context, bgcolor, name,  count) {
     return GestureDetector(
       onTap: () {
         if (name == "Categories") {
@@ -68,7 +70,7 @@ class Functions {
                           ],
                         ),
                       ),
-                      count!=-1 ? Padding(
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           count<=9&&count>=0?'0'+count.toString():count.toString(),
@@ -78,7 +80,7 @@ class Functions {
 
                               fontSize: 40),
                         ),
-                      ):CircularProgressIndicator()
+                      )
                     ],
                   ),
                 ),

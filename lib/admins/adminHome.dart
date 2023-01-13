@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:groceryapp/loginpage.dart';
+import 'package:groceryapp/variables.dart';
 
 import '../widget/dashboardBox.dart';
 
@@ -17,29 +20,29 @@ class _AdminHomeState extends State<AdminHome> {
   late int ordersCount = -1;
   late int userCount = -1;
   late int productCount = -1;
+  AdminHomeVariable? p;
+  //final AdminHomeVariable c = Get.put(AdminHomeVariable());
   @override
   void initState() {
-    check();
+    // c.orderCount.value;
+    p = Get.find();
+    print(p!.orderCount.value);
+    // check();
     super.initState();
   }
   check() async {
     await FirebaseFirestore.instance.collection('orders').get(
     ).then((value) {
-      setState(() {
-        ordersCount = value.size;
-      });
+        p!.orderCount.value = value.size;
     });
     await FirebaseFirestore.instance.collection('biodata').get(
     ).then((value) {
-      setState(() {
-        userCount = value.size;
-      });
+        p!.userCount.value = value.size;
     });
     await FirebaseFirestore.instance.collection('products').get(
     ).then((value) {
-      setState(() {
-        productCount = value.size;
-      });
+
+        p!.productCount.value = value.size;
     });
 
   }
@@ -70,17 +73,18 @@ class _AdminHomeState extends State<AdminHome> {
         ],
       ),
         body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(height: 20,),
-              Functions.Dashboard_box(context,0xff3F9CBA,"Orders",ordersCount),
-              Functions.Dashboard_box(context,0xffEA40A6,"Users",userCount),
-              Functions.Dashboard_box(context,0xffF14B4B,"Products",productCount),
-              Functions.Dashboard_box(context,0xff519557,"Categories",8),
-               const SizedBox(height: 20,),
-            ],
-          ),
+          child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(height: 20,),
+                Functions.Dashboard_box(context,0xff3F9CBA,"Orders",p!.orderCount.value),
+                Functions.Dashboard_box(context,0xffEA40A6,"Users",p!.userCount.value),
+                Functions.Dashboard_box(context,0xffF14B4B,"Products",p!.productCount.value),
+                Functions.Dashboard_box(context,0xff519557,"Categories",p!.categoriesCount.value),
+                 const SizedBox(height: 20,),
+              ],
+            ),
         ),
     );
   }
