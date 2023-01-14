@@ -4,10 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
 import '../admins/edit products.dart';
+import '../variables.dart';
 
 class Items extends StatefulWidget {
   final String net;
@@ -34,6 +37,7 @@ class Items extends StatefulWidget {
 }
 
 class _ItemsState extends State<Items> {
+  AdminHomeVariable _adminHomeVariable = Get.find();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -101,8 +105,13 @@ class _ItemsState extends State<Items> {
                           ),
                           child: Center(child: const Text('Delete',style: TextStyle(fontFamily: 'Prompt',color: Colors.red,fontWeight: FontWeight.bold))),
                           onPressed: () async{
-                               FirebaseFirestore.instance.collection('products').doc(widget.id).delete().then((value) {
+                               FirebaseFirestore.instance.collection('products').doc(widget.id).delete().then((value) async {
                                  Navigator.of(context).pop();
+                                 await FirebaseFirestore.instance.collection('products').get(
+                                 ).then((value) {
+                                   _adminHomeVariable.productCount.value = value.size;
+                                   print(_adminHomeVariable.productCount.value);
+                                 });
                                   MotionToast.warning(
                                    width: MediaQuery.of(context).size.width/1.2,
                                    height: 50,

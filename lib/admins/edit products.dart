@@ -82,9 +82,14 @@ class _EditProductsState extends State<EditProducts> {
       setState(() {
         netIndex = 0;
       });
-    }else{
+    }else if(widget.symbol=='kg'){
       setState(() {
         netIndex = 1;
+      });
+    }
+    else{
+      setState(() {
+        netIndex = 2;
       });
     }
     // print(widget.productId);
@@ -275,7 +280,7 @@ class _EditProductsState extends State<EditProducts> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width/2,
+                        width: MediaQuery.of(context).size.width/2.6,
                         height: 50,
                         decoration: BoxDecoration(
                           // 0xfff2f2f2  - like a gray
@@ -304,7 +309,7 @@ class _EditProductsState extends State<EditProducts> {
                         },
                         child: Container(
                           height: 50,
-                          width:MediaQuery.of(context).size.width/5,
+                          width:MediaQuery.of(context).size.width/6,
                           decoration: BoxDecoration(
                               color: netIndex ==0 ?Color(0xff2C5E30):Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -315,7 +320,7 @@ class _EditProductsState extends State<EditProducts> {
                           child: Center(
                             child: Text("gr",style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                                fontSize: 20,
                                 color: netIndex ==0 ?Colors.white:Color(0xff2C5E30)
                             ),),
                           ),
@@ -330,7 +335,7 @@ class _EditProductsState extends State<EditProducts> {
                         },
                         child: Container(
                           height: 50,
-                          width:MediaQuery.of(context).size.width/5,
+                          width:MediaQuery.of(context).size.width/6,
                           decoration: BoxDecoration(
                               color: netIndex ==1 ?Color(0xff2C5E30):Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -341,8 +346,34 @@ class _EditProductsState extends State<EditProducts> {
                           child: Center(
                             child: Text("kg",style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                                fontSize: 20,
                                 color: netIndex ==1 ?Colors.white:Color(0xff2C5E30)
+                            ),),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            netIndex = 2;
+                            print(netIndex);
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          width:MediaQuery.of(context).size.width/6,
+                          decoration: BoxDecoration(
+                              color: netIndex ==2 ?Color(0xff2C5E30):Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: netIndex ==2 ?Colors.white:Color(0xff2C5E30),
+                                  width: 2
+                              )
+                          ),
+                          child: Center(
+                            child: Text("item",style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: netIndex ==2 ?Colors.white:Color(0xff2C5E30)
                             ),),
                           ),
                         ),
@@ -411,7 +442,7 @@ class _EditProductsState extends State<EditProducts> {
                         'net':netController.text,
                         'description':descriptionController.text,
                         'downloadurl':downloadURL,
-                        'symbol': netIndex == 0 ? 'gr':'kg'
+                        'symbol': netIndex == 0 ? 'gr':netIndex ==1?'kg':'item'
                       }).then((value){
                         setState(() {
                           IsLoading.isLoading=false;
@@ -444,7 +475,7 @@ class _EditProductsState extends State<EditProducts> {
                         'net':netController.text,
                         'description':descriptionController.text,
                         'downloadurl':widget.img !=null ?widget.img: downloadURL,
-                        'symbol': netIndex == 0 ? 'gr':'kg'
+                        'symbol':netIndex == 0 ? 'gr':netIndex ==1?'kg':'item'
                       }).then((value){
                         setState(() {
                           IsLoading.isLoading=false;

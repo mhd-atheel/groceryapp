@@ -20,29 +20,25 @@ class _AdminHomeState extends State<AdminHome> {
   late int ordersCount = -1;
   late int userCount = -1;
   late int productCount = -1;
-  AdminHomeVariable? p;
-  //final AdminHomeVariable c = Get.put(AdminHomeVariable());
+  final AdminHomeVariable c = Get.put(AdminHomeVariable());
   @override
   void initState() {
-    // c.orderCount.value;
-    p = Get.find();
-    print(p!.orderCount.value);
-    // check();
+    check();
     super.initState();
   }
   check() async {
     await FirebaseFirestore.instance.collection('orders').get(
     ).then((value) {
-        p!.orderCount.value = value.size;
+        c.orderCount.value = value.size;
     });
     await FirebaseFirestore.instance.collection('biodata').get(
     ).then((value) {
-        p!.userCount.value = value.size;
+        c.userCount.value = value.size;
     });
     await FirebaseFirestore.instance.collection('products').get(
     ).then((value) {
 
-        p!.productCount.value = value.size;
+        c.productCount.value = value.size;
     });
 
   }
@@ -77,11 +73,11 @@ class _AdminHomeState extends State<AdminHome> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 20,),
-                Functions.Dashboard_box(context,0xff3F9CBA,"Orders",p!.orderCount.value),
-                Functions.Dashboard_box(context,0xffEA40A6,"Users",p!.userCount.value),
-                Functions.Dashboard_box(context,0xffF14B4B,"Products",p!.productCount.value),
-                Functions.Dashboard_box(context,0xff519557,"Categories",p!.categoriesCount.value),
+                SizedBox(height: 20,),
+                Functions.Dashboard_box(context,0xff3F9CBA,"Orders",c.orderCount.value),
+                Functions.Dashboard_box(context,0xffEA40A6,"Users",c.userCount.value),
+                Functions.Dashboard_box(context,0xffF14B4B,"Products",c.productCount.value),
+                Functions.Dashboard_box(context,0xff519557,"Categories",c.categoriesCount.value),
                  const SizedBox(height: 20,),
               ],
             ),

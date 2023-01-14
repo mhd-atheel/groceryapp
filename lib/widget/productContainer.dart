@@ -71,6 +71,7 @@ class _ProductContainerState extends State<ProductContainer> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 6),
                     child: Text(
+                      widget.data['symbol']=='item'?'${ widget.data['net']} ${ widget.data['symbol']}':
                      '${ widget.data['net']}${ widget.data['symbol']}',style:
                     TextStyle(
                         color: Colors.white,

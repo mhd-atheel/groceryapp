@@ -19,12 +19,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3)).then((value) {
+
       getUserInfo();
-      getCounterValue();
     });
     super.initState();
   }
@@ -86,16 +85,5 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-void getCounterValue(){
-  final AdminHomeVariable c = Get.put(AdminHomeVariable());
-  FirebaseFirestore.instance.collection('biodata').get().then((value) {
-    c.userCount.value = value.size.obs as int;
-  });
-  FirebaseFirestore.instance.collection('orders').get().then((value) {
-    c.orderCount.value = value.size.obs as int;
-  });
-  FirebaseFirestore.instance.collection('products').get().then((value) {
-    c.productCount.value = value.size.obs as int;
-  });
-}
+
 

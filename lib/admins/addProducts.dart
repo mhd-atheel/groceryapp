@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:groceryapp/variables.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
@@ -34,6 +36,7 @@ class _AddProductsState extends State<AddProducts> {
     'Frozen',
     'Organic',
   ];
+  AdminHomeVariable adminHomeVariable  = Get.find();
   int netIndex = 0;
   File? _image;
   final imagePicker = ImagePicker();
@@ -175,6 +178,7 @@ class _AddProductsState extends State<AddProducts> {
                         padding: const EdgeInsets.only(left: 20, top: 0),
                         child: TextFormField(
                             controller: priceController,
+                            keyboardType: TextInputType.number,
                             validator: validatePrice,
                             decoration: InputDecoration(
                               hintText: 'price ',
@@ -251,7 +255,7 @@ class _AddProductsState extends State<AddProducts> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width/2,
+                          width: MediaQuery.of(context).size.width/2.6,
                           height: 50,
                           decoration: BoxDecoration(
                             // 0xfff2f2f2  - like a gray
@@ -281,7 +285,7 @@ class _AddProductsState extends State<AddProducts> {
                           },
                           child: Container(
                             height: 50,
-                            width:MediaQuery.of(context).size.width/5,
+                            width:MediaQuery.of(context).size.width/6,
                             decoration: BoxDecoration(
                                 color: netIndex ==0 ?Color(0xff2C5E30):Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -292,7 +296,7 @@ class _AddProductsState extends State<AddProducts> {
                             child: Center(
                               child: Text("gr",style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                                fontSize: 20,
                                 color: netIndex ==0 ?Colors.white:Color(0xff2C5E30)
                               ),),
                             ),
@@ -307,7 +311,7 @@ class _AddProductsState extends State<AddProducts> {
                           },
                           child: Container(
                             height: 50,
-                            width:MediaQuery.of(context).size.width/5,
+                            width:MediaQuery.of(context).size.width/6,
                             decoration: BoxDecoration(
                                 color: netIndex ==1 ?Color(0xff2C5E30):Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -318,8 +322,34 @@ class _AddProductsState extends State<AddProducts> {
                             child: Center(
                               child: Text("kg",style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                                fontSize: 20,
                                 color: netIndex ==1 ?Colors.white:Color(0xff2C5E30)
+                              ),),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              netIndex = 2;
+                              print(netIndex);
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            width:MediaQuery.of(context).size.width/6,
+                            decoration: BoxDecoration(
+                                color: netIndex ==2 ?Color(0xff2C5E30):Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: netIndex ==2 ?Colors.white:Color(0xff2C5E30),
+                                    width: 2
+                                )
+                            ),
+                            child: Center(
+                              child: Text("item",style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: netIndex ==2 ?Colors.white:Color(0xff2C5E30)
                               ),),
                             ),
                           ),
@@ -390,12 +420,17 @@ class _AddProductsState extends State<AddProducts> {
                               'net':netController.text,
                               'description':descriptionController.text,
                               'downloadurl': downloadURL,
-                              'symbol': netIndex == 0 ? 'gr':'kg'
-                            }).then((value){
+                              'symbol': netIndex == 0 ? 'gr':netIndex ==1?'kg':'item'
+                            }).then((value) async {
                               setState(() {
                                 IsLoading.isLoading =false;
                               });
                               print("Product Inserted");
+                              await FirebaseFirestore.instance.collection('products').get(
+                              ).then((value) {
+                                  adminHomeVariable.productCount.value = value.size;
+                                  print( adminHomeVariable.productCount.value);
+                              });
                               MotionToast.success(
                                 width: MediaQuery.of(context).size.width/1.2,
                                 height: 50,

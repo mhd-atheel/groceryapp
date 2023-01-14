@@ -1,9 +1,9 @@
 
 
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class  Variable extends GetxController {
    RxInt totalPrice = 0.obs;
@@ -25,13 +25,7 @@ class AdminHomeVariable extends GetxController{
    RxInt productCount = 0.obs;
    RxInt categoriesCount = 8.obs;
 
-   getValue()async{
-      await FirebaseFirestore.instance.collection('orders').get(
-      ).then((value) {
-         return orderCount = value.size as RxInt;
-      });
-      return orderCount;
-   }
+
 }
 
 
