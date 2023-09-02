@@ -12,8 +12,19 @@ import 'package:groceryapp/splashScreen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
 
+=======
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyAsMVCStJSVBOLRRSpYUIiDorFnT8YziTk",
+          appId: "1:700526240192:ios:9ce1307ed6105bdad52825",
+          messagingSenderId: "700526240192",
+          projectId: "grocery-app-9b16d"
+      )
+  );
+  
   runApp( const MyApp());
 }
 
