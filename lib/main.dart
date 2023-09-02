@@ -15,7 +15,7 @@ void main() async{
 
   await Firebase.initializeApp();
 
-=======
+
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyAsMVCStJSVBOLRRSpYUIiDorFnT8YziTk",
@@ -108,7 +108,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           ),
           BottomBarItem(
             icon: Icon(FontAwesomeIcons.user,size: 18,),
-            title: Text('Account',style: TextStyle(color: Colors.black54),),
+            title: Text('My Profile',style: TextStyle(color: Colors.black54),),
             activeColor: Color(0xff2C5E30),
           ),
         ],

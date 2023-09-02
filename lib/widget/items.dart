@@ -68,7 +68,7 @@ class _ItemsState extends State<Items> {
                           style: TextButton.styleFrom(
                             textStyle: Theme.of(context).textTheme.labelLarge,
                           ),
-                          child: Center(child: const Text('Edit',style: TextStyle(fontFamily: 'Prompt',color: Colors.green,fontWeight: FontWeight.bold),)),
+                          child: const Center(child: Text('Edit',style: TextStyle(fontFamily: 'Prompt',color: Colors.green,fontWeight: FontWeight.bold),)),
                           onPressed: () async {
                             Navigator.push(
                               context,

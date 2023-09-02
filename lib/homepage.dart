@@ -46,54 +46,58 @@ class _HomePageState extends State<HomePage> {
         child: SafeArea(
           child: Column(
             children: [
-
               Row(
                 children: [
                   // SizedBox(width: 10,),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 1.25,
-                      height: 45,
-                      decoration: BoxDecoration(
-                          color: Color(0xfff2f2f2),
-                          borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.grey)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 0),
-                        child: TextField(
-                            onChanged: (val){
-                              searchValue=val;
-                            },
-                            decoration: InputDecoration(
-                                labelText: 'Search Products ',
-                                labelStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                                suffixIcon: Icon(
-                                  FontAwesomeIcons.magnifyingGlass,
-                                  size: 16,
-                                  color: Colors.grey,
-                                ))),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15.0,right: 10, top: 8,bottom: 8),
+                      child: Container(
+
+                        height: 45,
+                        decoration: BoxDecoration(
+                            color: const Color(0xfff2f2f2),
+                            borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 0),
+                          child: TextField(
+                              onChanged: (val){
+                                searchValue=val;
+                              },
+                              decoration:const  InputDecoration(
+                                  labelText: 'Search Products ',
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                  suffixIcon: Icon(
+                                    FontAwesomeIcons.magnifyingGlass,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ))),
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 2,
                   ),
-                  Icon(
-                    FontAwesomeIcons.bell,
-                    size: 23,
-                    color: Color(0xff00e673),
-                  )
+                  const Icon(
+                    FontAwesomeIcons.facebookMessenger,
+                    size:40 ,
+                    color: Color(0xff2C5E30),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
                 ],
               ),
-              SizedBox(height: 5,),
+              const SizedBox(height: 5,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
-                  children: [
+                  children:const  [
                     Text(
                       "What do you looking for?",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
@@ -130,9 +134,9 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
-                  children: [
+                  children:const  [
                     Text(
-                      "Promations for you?",
+                      "Promotions for you?",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,fontFamily: 'Prompt'),
                     ),
                   ],
@@ -174,21 +178,21 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         thumbDecoration: BoxDecoration(
-                          color: Color(0xff27963c),
+                          color: const Color(0xff27963c),
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(.3),
                               blurRadius: 4.0,
                               spreadRadius: 1.0,
-                              offset: Offset(
+                              offset: const Offset(
                                 0.0,
                                 2.0,
                               ),
                             ),
                           ],
                         ),
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInToLinear,
                         onValueChanged: (v) {
                           c.tabVale.value=v;
