@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class OrderContainer extends StatelessWidget {
   final String orderId;
   final String deliveryAt;
   final String total;
-  final String date;
+  final Timestamp date;
   final String status;
 
 
@@ -37,7 +38,7 @@ class OrderContainer extends StatelessWidget {
         ),
         child: Column(
           children: [
-            SizedBox(height:10),
+            const SizedBox(height:10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 25),
               child: Row(
@@ -53,7 +54,7 @@ class OrderContainer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 4),
                         child: Text(
                           status,
-                          style: TextStyle(
+                          style:const TextStyle(
                               color:Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 12
@@ -62,8 +63,17 @@ class OrderContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(date,
-                    style: TextStyle(color: Colors.black26,fontWeight: FontWeight.bold),)
+                  Row(
+
+                    children: [
+                      Text(date.toDate().toString().substring(0,10),
+                        style:const  TextStyle(color: Colors.black26,fontWeight: FontWeight.bold),),
+                      const Text(' |',
+                        style:TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
+                      Text(date.toDate().toString().substring(10,16),
+                        style:const  TextStyle(color: Colors.black26,fontWeight: FontWeight.bold),),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -77,13 +87,13 @@ class OrderContainer extends StatelessWidget {
                       child: Column(
                         children: [
                           Row(
-                            children: [
+                            children: const [
                               Text("Transaction ID",style: TextStyle(color: Colors.black45,fontWeight: FontWeight.w600,fontSize:12),),
                             ],
                           ),
                           Row(
                             children: [
-                              Text('\#'+orderId,style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text('#$orderId',style: TextStyle(fontWeight: FontWeight.bold),),
                             ],
                           ),
                         ],
