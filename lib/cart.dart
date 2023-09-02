@@ -141,13 +141,13 @@ class _CartState extends State<Cart> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Cart",
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 25, fontFamily: "Poppins"),
         ),
         backgroundColor: Colors.white,
-        foregroundColor: Color(0xff2C5E30),
+        foregroundColor: const Color(0xff2C5E30),
         automaticallyImplyLeading: false,
         elevation: 0,
       ),
@@ -164,16 +164,16 @@ class _CartState extends State<Cart> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: Text('Something went wrong'));
+                  return const Center(child: Text('Something went wrong'));
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 return Column(
                   children: [
                     ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           Map<String, dynamic> data = snapshot.data!.docs[index]
@@ -189,12 +189,13 @@ class _CartState extends State<Cart> {
                         }),
                     snapshot.data!.docs.isEmpty
                         ? Container(
-                            height: 50,
+                            height:50,
+                            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/2.8),
                             width: MediaQuery.of(context).size.width / 3,
                             decoration: BoxDecoration(
-                                color: Color(0xff27963c),
+                                color: const Color(0xff27963c),
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Center(
+                            child: const Center(
                               child: Text(
                                 'Cart is Empty',
                                 style: TextStyle(
@@ -208,7 +209,7 @@ class _CartState extends State<Cart> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
                                 child: Row(
-                                  children: [
+                                  children: const [
                                     Text(
                                       "Delivery Location",
                                       style: TextStyle(
@@ -236,7 +237,7 @@ class _CartState extends State<Cart> {
                                         const EdgeInsets.only(left: 20, top: 0),
                                     child: TextField(
                                         controller: addressController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           labelStyle:
                                               TextStyle(color: Colors.grey),
                                           border: InputBorder.none,

@@ -46,24 +46,25 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title:  const Text(
           "DashBoard",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
               fontFamily: "Poppins"),
         ),
-        backgroundColor: Color(0xffF4F4F3),
-        foregroundColor: Color(0xff2C5E30),
+        backgroundColor: const Color(0xffF4F4F3),
+        foregroundColor: const Color(0xff2C5E30),
         automaticallyImplyLeading: false,
         elevation: 0,
         actions: [
           TextButton(onPressed: (){
             FirebaseAuth.instance.signOut().then((value) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
+              Get.off(const LoginPage());
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const LoginPage()),
+              // );
             });
           }, child: const Text("Logout",style: TextStyle(color: Colors.red),))
         ],
@@ -73,7 +74,7 @@ class _AdminHomeState extends State<AdminHome> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 Functions.Dashboard_box(context,0xff3F9CBA,"Orders",c.orderCount.value),
                 Functions.Dashboard_box(context,0xffEA40A6,"Users",c.userCount.value),
                 Functions.Dashboard_box(context,0xffF14B4B,"Products",c.productCount.value),

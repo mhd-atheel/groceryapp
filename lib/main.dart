@@ -2,6 +2,7 @@ import 'package:bottom_bar/bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:groceryapp/cart.dart';
 import 'package:groceryapp/homepage.dart';
 import 'package:groceryapp/orderpage.dart';
@@ -11,6 +12,10 @@ import 'package:groceryapp/splashScreen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+
+=======
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyAsMVCStJSVBOLRRSpYUIiDorFnT8YziTk",
@@ -19,6 +24,7 @@ void main() async{
           projectId: "grocery-app-9b16d"
       )
   );
+  
   runApp( const MyApp());
 }
 
@@ -27,7 +33,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Grocery App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -43,7 +49,7 @@ class MyApp extends StatelessWidget {
 
 
       ),
-      home:  SplashScreen()
+      home:  const SplashScreen()
       //
         // auth.currentUser == null ? LoginPage():HomePage()
     );
@@ -65,7 +71,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
     return  Scaffold(
       body: PageView(
         controller: _pageController,
-        children: [
+        children: const [
          HomePage(),
           Cart(),
           OrderPage(),
@@ -83,8 +89,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
           _pageController.jumpToPage(index);
           setState(() => _currentPage = index);
         },
-        border: StadiumBorder(),
-        items: <BottomBarItem>[
+        border: const StadiumBorder(),
+        items: const <BottomBarItem>[
           BottomBarItem(
             icon: Icon(FontAwesomeIcons.shop,size: 18,),
             title: Text(' Shop',style: TextStyle(color: Colors.black54),),

@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
    String? adminEmail = '';
    errorMsg(msg){
      MotionToast.error(
-       title:  Text("System's Notification",style: TextStyle(fontWeight: FontWeight.bold)),
+       title:  const Text("System's Notification",style: TextStyle(fontWeight: FontWeight.bold)),
        description:  Text(msg),
        width:MediaQuery.of(context).size.width/1.2,
        position: MotionToastPosition.top,
@@ -39,23 +39,26 @@ class _LoginPageState extends State<LoginPage> {
 
    }
    String? validateEmail(String? formEmail) {
-     if (formEmail == null || formEmail.isEmpty)
+     if (formEmail == null || formEmail.isEmpty) {
        return errorMsg("Email address is required ");
+     }
      String pattern = r'\w+@\w+\.\w+';
      RegExp regex = RegExp(pattern);
      if (!regex.hasMatch(formEmail)) return 'Invalid E-mail Address format.';
      return null;
    }
    String? validatePassword(String? formPassword) {
-     if (formPassword == null || formPassword.isEmpty)
+     if (formPassword == null || formPassword.isEmpty) {
        return errorMsg('Password is required');
+     }
      String pattern =
          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
      RegExp regex = RegExp(pattern);
-     if (!regex.hasMatch(formPassword))
+     if (!regex.hasMatch(formPassword)) {
        return errorMsg(
            "Password must be at least 8 characters, include an uppercase letter, number and symbol."
        ) ;
+     }
      return null;
    }
   @override
@@ -84,13 +87,13 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 40,),
+                const SizedBox(height: 40,),
                 Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Hi,Welcome back!",style: TextStyle(
                             fontFamily: "Prompt",
                             fontSize: 35,
@@ -103,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Hello again,you have been missed!",style: TextStyle(
                               fontFamily: "Proppins",
                               fontSize: 15,
@@ -117,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 Column(
                   children: [
-                    SizedBox(height: 40,),
+                    const SizedBox(height: 40,),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -135,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Email Address",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 15,
@@ -161,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: TextFormField(
                             validator:validateEmail,
                             controller: emailController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   hintText: 'example@gmail.com ',
                                   labelStyle: TextStyle(color: Colors.grey),
                                   border: InputBorder.none,
@@ -172,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Password",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 15,
@@ -198,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                               validator:validatePassword,
                             obscureText: true,
                             controller: passwordController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   labelText: 'password ',
                                   labelStyle: TextStyle(color: Colors.grey),
                                   border: InputBorder.none,
@@ -219,10 +222,12 @@ class _LoginPageState extends State<LoginPage> {
                                    if(value.exists) {
                                      String userType = value.data()!['userType'];
                                      if(userType=='admin') {
-                                       Navigator.push(
-                                         context,
-                                         MaterialPageRoute(builder: (context) => const AdminHome()),
-                                       );
+                                       //
+                                       // Navigator.push(
+                                       //   context,
+                                       //   MaterialPageRoute(builder: (context) => const AdminHome()),
+                                       // );
+                                       Get.off(const AdminHome());
 
                                      } else {
                                        Navigator.push(
