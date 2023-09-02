@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -42,9 +43,9 @@ class _ItemPageState extends State<ItemPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Center(child: new Text("Your review & rating")),
-          insetPadding: EdgeInsets.all(20),
-          titlePadding: EdgeInsets.only(top: 14.0, bottom: 4),
+          title: const Center(child: Text("Your review & rating")),
+          insetPadding: const EdgeInsets.all(20),
+          titlePadding: const EdgeInsets.only(top: 14.0, bottom: 4),
 
           //content: new Text("You are awesome!"),
           actions: <Widget>[
@@ -74,7 +75,7 @@ class _ItemPageState extends State<ItemPage> {
                               controller: reviewController,
                               minLines: 2,
                               maxLines: 4,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'Your review',
                                 labelStyle: TextStyle(color: Colors.grey),
                                 border: InputBorder.none,
@@ -90,8 +91,8 @@ class _ItemPageState extends State<ItemPage> {
                       direction: Axis.horizontal,
                       allowHalfRating: false,
                       itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
                         Icons.star,
                         color: Colors.amber,
                       ),
@@ -99,7 +100,7 @@ class _ItemPageState extends State<ItemPage> {
                         newRating=rating;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -115,8 +116,9 @@ class _ItemPageState extends State<ItemPage> {
                                     data = value.data() as Map;
                                   }).then((value){
                                     FirebaseFirestore.instance.collection('reviews').doc().set({
-                                      'name':data['name'],
-                                      'downloadurl':data['downloadurl'],
+                                      // 'name':data['name'],
+                                      // 'downloadurl':data['downloadurl'],
+                                      'author':FirebaseAuth.instance.currentUser!.uid,
                                       'review':reviewController.text,
                                       'rating':newRating,
                                       'date':Timestamp.now(),
@@ -133,15 +135,15 @@ class _ItemPageState extends State<ItemPage> {
                                 style: ButtonStyle(
                                   backgroundColor:
                                   MaterialStateProperty.all<Color>(
-                                      Color(0xff27963c)),
+                                      const Color(0xff27963c)),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(15.0),
-                                  child:IsLoading.isLoading==false?Text("Submit"):Loading(),
+                                  child:IsLoading.isLoading==false?const Text("Submit"):Loading(),
                                 ))),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -159,8 +161,8 @@ class _ItemPageState extends State<ItemPage> {
                                   MaterialStateProperty.all<Color>(
                                       Colors.black),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(15.0),
                                   child: Text("Cancel"),
                                 ))),
                       ],
@@ -186,11 +188,11 @@ class _ItemPageState extends State<ItemPage> {
               MaterialPageRoute(builder: (context) => const BottomNavbar()),
             );
           },
-          icon: Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
+          icon: const Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
         ),
         actions: [
           GestureDetector(
-            child: Icon(
+            child: const Icon(
               FontAwesomeIcons.heart,size: 20,color: Color(0xff2C5E30),
             ),
             onTap:() {
@@ -205,12 +207,12 @@ class _ItemPageState extends State<ItemPage> {
                 MaterialPageRoute(builder: (context) => const Cart()),
               );
             },
-            icon: Icon(Icons.shopping_cart_outlined,size: 20,color: Color(0xff2C5E30),),
+            icon: const Icon(Icons.shopping_cart_outlined,size: 20,color: Color(0xff2C5E30),),
           ),
         ],
         // backgroundColor: Color(0xffF4F4F3),
         backgroundColor: Colors.white,
-        foregroundColor: Color(0xff2C5E30),
+        foregroundColor: const Color(0xff2C5E30),
         elevation: 0,
       ),
       body:  Stack(
@@ -218,7 +220,7 @@ class _ItemPageState extends State<ItemPage> {
           SingleChildScrollView(
             child: Column(
               children: [
-                Text( widget.data['name'],style: TextStyle(
+                Text( widget.data['name'],style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Prompt'
@@ -251,8 +253,8 @@ class _ItemPageState extends State<ItemPage> {
                           ),
                         ),
                       ),
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   ),
                 ),
@@ -264,7 +266,7 @@ class _ItemPageState extends State<ItemPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 5.0,top: 0),
                         child: Text('\$${ double.parse(widget.data['price'])*c.itemCount.value}',style:
-                        TextStyle(
+                        const TextStyle(
                             color: Color(0xff2F3825),
                             fontSize: 35,
                             fontWeight: FontWeight.bold,
@@ -302,21 +304,21 @@ class _ItemPageState extends State<ItemPage> {
                                   print(c.itemCount.value);
                               }
                             },
-                            child: Icon(Icons.remove_circle_outline_rounded,size: 40,
+                            child: const Icon(Icons.remove_circle_outline_rounded,size: 40,
                             ),
                           ),
-                          SizedBox(width: 6,),
-                          Text("${c.itemCount.value}",style: TextStyle(
+                          const SizedBox(width: 6,),
+                          Text("${c.itemCount.value}",style: const TextStyle(
                               fontSize: 25
                           ),),
-                          SizedBox(width: 6,),
+                          const SizedBox(width: 6,),
                           GestureDetector(
                             onTap:(){
                               c.itemCount.value ++;
                                 print(c.itemCount.value);
 
                             },
-                            child: Icon(Icons.add_circle_outline_rounded,size: 40,),
+                            child: const Icon(Icons.add_circle_outline_rounded,size: 40,),
                           ),
                         ],
                       )),
@@ -326,7 +328,7 @@ class _ItemPageState extends State<ItemPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
-                    children: [
+                    children: const [
                       Text("Description",style: TextStyle(
                         fontWeight: FontWeight.w600
                       ),),
@@ -336,7 +338,7 @@ class _ItemPageState extends State<ItemPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0,top: 3.0,right: 16.0),
                   child: Row(
-                    children: [
+                    children: const [
                       Expanded(
                         child: Text("It is a long established fact that a reader will be distra by t"
                             "he readable  will be distracted by thunge is state controller established fact life",style: TextStyle(
@@ -351,12 +353,12 @@ class _ItemPageState extends State<ItemPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Products Reviews",style: TextStyle(
+                      const Text("Products Reviews",style: TextStyle(
                           fontWeight: FontWeight.w600
                       ),),
                       TextButton(onPressed: (){
                         _showDialog(context);
-                      }, child: Text(
+                      }, child: const Text(
                         'Add Review'
                       ))
                     ],
@@ -366,80 +368,89 @@ class _ItemPageState extends State<ItemPage> {
                   stream: FirebaseFirestore.instance.collection('reviews').where('productName',isEqualTo: widget.data['name']).orderBy('date',descending: true).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
-                      return Center(child: Text('Something went wrong'));
+                      return const Center(child: Text('Something went wrong'));
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
-
-                    return snapshot.data!.docs.isEmpty ?  Center(child: Center(
+                    final reviews = snapshot.data!.docs;
+                    print(reviews);
+                    return snapshot.data!.docs.isEmpty ?  const Center(child: Center(
                       child: Text('No Product Review',style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                       ),
-                    )):ListView(
-                      physics:const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
-                          child: ListTile(
-                            leading:ClipRRect(
-                              borderRadius: BorderRadius.circular(22), // Image border
-                              child: SizedBox.fromSize(
-                                size: Size.fromRadius(22), // Image radius
-                                child:CachedNetworkImage(
-                                  imageUrl: data['downloadurl'],
-                                  imageBuilder: (context, imageProvider) => Container(
-                                    height: 80,
-                                    width: 110,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.contain,
+                    )):ListView.builder(
+                        itemCount: reviews.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context,index){
+                          return FutureBuilder<DocumentSnapshot>(
+                            future: FirebaseFirestore.instance.collection('biodata').doc(reviews[index]['author']).get(),
+                            builder: (context, userSnapshot) {
+                              if (!userSnapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+                              final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
+                                child: ListTile(
+                                  leading:ClipRRect(
+                                    borderRadius: BorderRadius.circular(22), // Image border
+                                    child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(22), // Image radius
+                                      child:CachedNetworkImage(
+                                        imageUrl: userData['downloadurl'],
+                                        imageBuilder: (context, imageProvider) => Container(
+                                          height: 80,
+                                          width: 110,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        placeholder: (context, url) => const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
                                       ),
                                     ),
                                   ),
-                                  placeholder: (context, url) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CircularProgressIndicator(),
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(userData['name'],style: const TextStyle(
+                                          fontWeight: FontWeight.w600,fontFamily: 'Prompt',fontSize: 15
+                                      ),),
+                                      RatingBar.builder(
+                                        initialRating:reviews[index]['rating'],
+                                        minRating: 1,
+                                        itemSize: 12,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        ignoreGestures: true,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  subtitle: Text(reviews[index]['review'],style: const TextStyle(
+                                      fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
+                                  ),),
                                 ),
-                              ),
-                            ),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(data['name'],style: TextStyle(
-                                    fontWeight: FontWeight.w600,fontFamily: 'Prompt',fontSize: 15
-                                ),),
-                                RatingBar.builder(
-                                  initialRating:data['rating'],
-                                  minRating: 1,
-                                  itemSize: 12,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  ignoreGestures: true,
-                                  itemCount: 5,
-                                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    print(rating);
-                                  },
-                                ),
-                              ],
-                            ),
-                            subtitle: Text(data['review'],style: TextStyle(
-                                fontWeight: FontWeight.normal,fontFamily: 'Prompt',fontSize: 10
-                            ),),
-                          ),
-                        );
-                      }).toList(),
+                              );
+                            },
+                          );
+                        }
                     );
                   },
                 ),
@@ -447,8 +458,8 @@ class _ItemPageState extends State<ItemPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 5),
                   child: Row(
-                    children: [
-                      Text("Realated Products",style: TextStyle(
+                    children: const [
+                      Text("Related Products",style: TextStyle(
                           fontWeight: FontWeight.w600
                       ),),
                     ],
@@ -459,10 +470,10 @@ class _ItemPageState extends State<ItemPage> {
                   stream: FirebaseFirestore.instance.collection('products').where('categories',isEqualTo: widget.data['categories']).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
-                      return Center(child: Text('Something went wrong'));
+                      return const Center(child: Text('Something went wrong'));
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     return SizedBox(
                       height: 370,

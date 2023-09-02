@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -37,11 +36,11 @@ class _EditProfileState extends State<EditProfile> {
      showDialog(
        context: context,
        builder: (BuildContext context) {
-         return CircularProgressIndicator();
+         return const CircularProgressIndicator();
        },
      );
    }
-   Future ImagePickerMethod() async{
+   Future imagePickerMethod() async{
     final pick =await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       if(pick != null){
@@ -53,24 +52,27 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
   Future uploadImage() async {
-    final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
+    final  postTime = DateTime.now().millisecondsSinceEpoch.toString();
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-    Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(posttime);
+    Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(postTime);
     await ref.putFile(_image!);
     downloadURL = await ref.getDownloadURL();
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    await  firestore.collection("biodata").doc(Data.uuid).update({
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    await  fireStore.collection("biodata").doc(Data.uuid).update({
       'downloadurl': downloadURL
     });
     print(downloadURL);
   }
+
+  @override
   void initState() {
+    super.initState();
       setState(() {
         IsLoading.isLoading=false;
       });
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    FirebaseFirestore fireStore = FirebaseFirestore.instance;
     Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-    firestore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
+    fireStore.collection('biodata').doc(Data.uuid).get().then<dynamic>((DocumentSnapshot snapshot){
       Map myData = snapshot.data()as Map;
       print(myData);
       setState(() {
@@ -89,15 +91,15 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title:  const Text(
           "Edit Profile",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
               fontFamily: "Poppins"),
         ),
-        backgroundColor: Color(0xffF4F4F3),
-        foregroundColor: Color(0xff2C5E30),
+        backgroundColor: const Color(0xffF4F4F3),
+        foregroundColor: const Color(0xff2C5E30),
         automaticallyImplyLeading: false,
         elevation: 0,
         leading: IconButton(
@@ -107,7 +109,7 @@ class _EditProfileState extends State<EditProfile> {
               MaterialPageRoute(builder: (context) => const ProfilePage()),
             );
           },
-          icon: Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
+          icon: const Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
         ),
       ),
       body: SingleChildScrollView(
@@ -121,13 +123,13 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        ImagePickerMethod();
+                        imagePickerMethod();
                       },
                       child: _image == null?CircleAvatar(
                         radius: 60,
-                        child: Image.network(downloadURL!),
                         backgroundColor: Colors.black,
                         foregroundColor: Colors.white,
+                        child: Image.network(downloadURL!),
                       ):CircleAvatar(
                         radius: 40,
                         backgroundImage:FileImage(_image!),
@@ -140,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: [
+                    children: const [
                       Text("Your Name",style: TextStyle(
                           fontFamily: "Prompt",
                           fontSize: 15,
@@ -165,7 +167,7 @@ class _EditProfileState extends State<EditProfile> {
                       padding: const EdgeInsets.only(left: 20, top: 0),
                       child: TextField(
                           controller: nameController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'your name',
                             labelStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
@@ -176,7 +178,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: [
+                    children: const[
                       Text("Email Address",style: TextStyle(
                           fontFamily: "Prompt",
                           fontSize: 15,
@@ -203,7 +205,7 @@ class _EditProfileState extends State<EditProfile> {
                           enableInteractiveSelection: false,
                           enabled: false,
                           controller: emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'example@gmail.com ',
                             labelStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
@@ -214,7 +216,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: [
+                    children:const [
                       Text("Password",style: TextStyle(
                           fontFamily: "Prompt",
                           fontSize: 15,
@@ -240,7 +242,7 @@ class _EditProfileState extends State<EditProfile> {
                           controller: passwordController,
                           enabled: false,
                           obscureText: true,
-                          decoration: InputDecoration(
+                          decoration:const InputDecoration(
                             hintText: 'password ',
                             labelStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
@@ -251,7 +253,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: [
+                    children:const [
                       Text("Phone Number",style: TextStyle(
                           fontFamily: "Prompt",
                           fontSize: 15,
@@ -275,7 +277,7 @@ class _EditProfileState extends State<EditProfile> {
                       padding: const EdgeInsets.only(left: 20, top: 0),
                       child: TextField(
                           controller: phoneController,
-                          decoration: InputDecoration(
+                          decoration:const InputDecoration(
                             labelStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
                           )),
@@ -285,7 +287,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: [
+                    children:const [
                       Text("Address",style: TextStyle(
                           fontFamily: "Prompt",
                           fontSize: 15,
@@ -309,7 +311,7 @@ class _EditProfileState extends State<EditProfile> {
                       padding: const EdgeInsets.only(left: 20, top: 0),
                       child: TextField(
                           controller: addressController,
-                          decoration: InputDecoration(
+                          decoration:const InputDecoration(
                             labelStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
                           )),
@@ -340,10 +342,10 @@ class _EditProfileState extends State<EditProfile> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: Colors.white,
-                              border: Border.all(color:Color(0xff27963c) )
+                              border: Border.all(color:const Color(0xff27963c) )
 
                           ),
-                          child: Center(
+                          child:const Center(
                             child: Text("CENCEL",style: TextStyle(
                                 color: Color(0xff27963c),
                                 fontWeight: FontWeight.bold,
@@ -353,16 +355,16 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     GestureDetector(
                       onTap: () async{
                         setState(() {
                           IsLoading.isLoading=true;
                         });
                         if(_image!=null || downloadURL==null){
-                          final  posttime = DateTime.now().millisecondsSinceEpoch.toString();
+                          final  postTime = DateTime.now().millisecondsSinceEpoch.toString();
                           Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-                          Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(posttime);
+                          Reference ref = FirebaseStorage.instance.ref().child('UserProfiles').child(Data.uuid).child(postTime);
                           await ref.putFile(_image!);
                           downloadURL = await ref.getDownloadURL();
                           Data.uuid = FirebaseAuth.instance.currentUser!.uid;
@@ -399,8 +401,8 @@ class _EditProfileState extends State<EditProfile> {
                           });
                         }else{
                           Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-                          FirebaseFirestore firestore = FirebaseFirestore.instance;
-                          await  firestore.collection("biodata").doc(Data.uuid).update({
+                          FirebaseFirestore fireStore = FirebaseFirestore.instance;
+                          await  fireStore.collection("biodata").doc(Data.uuid).update({
                             'name':nameController.text,
                             'email':emailController.text,
                             // 'password':passwordController.text,
@@ -438,11 +440,11 @@ class _EditProfileState extends State<EditProfile> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: Color(0xff27963c),
+                            color:const Color(0xff27963c),
 
                           ),
                           child: Center(
-                            child:IsLoading.isLoading==false?Text("SAVE",style: TextStyle(
+                            child:IsLoading.isLoading==false?const Text("SAVE",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15
