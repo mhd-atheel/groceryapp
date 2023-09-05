@@ -84,8 +84,8 @@ class _HomePageState extends State<HomePage> {
                     width: 2,
                   ),
                   const Icon(
-                    FontAwesomeIcons.facebookMessenger,
-                    size:40 ,
+                    FontAwesomeIcons.bell,
+                    size:30 ,
                     color: Color(0xff2C5E30),
                   ),
                   const SizedBox(

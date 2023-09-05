@@ -9,6 +9,8 @@ import 'package:groceryapp/orderpage.dart';
 import 'package:groceryapp/profilePage.dart';
 import 'package:groceryapp/splashScreen.dart';
 
+import 'loginpage.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

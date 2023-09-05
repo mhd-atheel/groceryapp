@@ -260,11 +260,11 @@ class _LoginPageState extends State<LoginPage> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(0xff27963c),
+                            color: const Color(0xff27963c),
 
                           ),
                           child: Center(
-                            child:IsLoading.isLoading==false?Text("Login",style: TextStyle(
+                            child:IsLoading.isLoading==false?const Text("Login",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
@@ -278,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Don't have an account?",style: TextStyle(
+                          const Text("Don't have an account?",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 16,
                               color: Color(0xff2F3825)
@@ -288,13 +288,13 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(builder: (context) => const SignupPage()),
                             );
-                          }, child:Text("Create Account",style: TextStyle(color: Color(0xff27963c)),) )
+                          }, child:const Text("Create Account",style: TextStyle(color: Color(0xff27963c)),) )
                         ],
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10,)
+                const SizedBox(height: 10,)
               ],
             ),
           ),
