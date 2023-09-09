@@ -1,6 +1,9 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import '../widget/userOrderWidget.dart';
 import 'adminHome.dart';
 
@@ -29,10 +32,7 @@ class _UserOrdersState extends State<UserOrders> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AdminHome()),
-            );
+            Get.back();
           },
           icon: const Icon(FontAwesomeIcons.chevronLeft,size: 20,color: Color(0xff2C5E30),),
         ),
@@ -46,21 +46,33 @@ class _UserOrdersState extends State<UserOrders> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
+          final orders = snapshot.data!.docs;
 
-          return ListView(
-            shrinkWrap: true,
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-              return UserOrderWidget(
-                name: data['name'],
-                email: data['email'],
-                isExpand: data['isExpand'],
-                status: data['status'],
-                total: data['total'].toString(),
-                id: document.id,
-              );
-            }).toList(),
+          return ListView.builder(
+              itemCount: orders.length,
+              itemBuilder: (context,index){
+                return FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance.collection('biodata').doc(orders[index]['userId']).get(),
+                  builder: (context, userSnapshot) {
+                    if (userSnapshot.connectionState == ConnectionState.waiting) {
+                      return Container();
+                    }
+                    final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                    return  UserOrderWidget(
+                        name: userData['name'],
+                        email: userData['email'],
+                        image: userData['downloadurl'],
+                        isExpand: orders[index]['isExpand'],
+                        status: orders[index]['status'],
+                        total: orders[index]['total'].toString(),
+                        id:orders[index].id,
+                      );
+                  },
+                );
+              }
           );
+
+
         },
       ),
     );

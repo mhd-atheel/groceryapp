@@ -50,73 +50,8 @@ class _CartState extends State<Cart> {
     getCart();
   }
 
-  void showAlert(BuildContext context, String title, String msg) {
-    // set up the button
-    Widget okButton = TextButton(
-      onPressed: () {},
-      child: Text("OK"),
-    );
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      content: Text(msg),
-      actions: [
-        okButton,
-      ],
-    );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  void startOneTimePayment(BuildContext context) async {
-    Map paymentObject = {
-      "sandbox": true, // true if using Sandbox Merchant ID
-      "merchant_id": "1221820", // Replace your Merchant ID
-      "notify_url": "https://ent13zfovoz7d.x.pipedream.net/",
-      "order_id": "ItemNo12345",
-      "items": "Hello from Flutter!",
-      "item_number_1": "001",
-      "item_name_1": "Test Item #1",
-      "amount_1": "5.00",
-      "quantity_1": "2",
-      "item_number_2": "002",
-      "item_name_2": "Test Item #2",
-      "amount_2": "20.00",
-      "quantity_2": "1",
-      "amount": 30.00,
-      "currency": "LKR",
-      "first_name": "Saman",
-      "last_name": "Perera",
-      "email": "samanp@gmail.com",
-      "phone": "0771234567",
-      "address": "No.1, Galle Road",
-      "city": "Colombo",
-      "country": "Sri Lanka",
-      "delivery_address": "No. 46, Galle road, Kalutara South",
-      "delivery_city": "Kalutara",
-      "delivery_country": "Sri Lanka",
-      "custom_1": "",
-      "custom_2": ""
-    };
-
-    PayHere.startPayment(paymentObject, (paymentId) {
-      print("One Time Payment Success. Payment Id: $paymentId");
-      showAlert(context, "Payment Success!", "Payment Id: $paymentId");
-    }, (error) {
-      print("One Time Payment Failed. Error: $error");
-      showAlert(context, "Payment Failed", "$error");
-    }, () {
-      print("One Time Payment Dismissed");
-      showAlert(context, "Payment Dismissed", "");
-    });
-  }
 
   getCart() {
     c.totalPrice.value = 0;
@@ -249,7 +184,7 @@ class _CartState extends State<Cart> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0),
                                 child: Row(
-                                  children: [
+                                  children: const [
                                     Text(
                                       "Delivery to",
                                       style: TextStyle(
@@ -289,9 +224,9 @@ class _CartState extends State<Cart> {
                                           child: Text(items),
                                         );
                                       }).toList(),
-                                      onChanged: (String? Value) {
+                                      onChanged: (String? value) {
                                         setState(() {
-                                          dropdownvalue = Value!;
+                                          dropdownvalue = value!;
                                         });
                                       },
                                     ),
@@ -302,7 +237,7 @@ class _CartState extends State<Cart> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
                                 child: Row(
-                                  children: [
+                                  children: const [
                                     Text(
                                       "Order Info",
                                       style: TextStyle(
@@ -320,7 +255,7 @@ class _CartState extends State<Cart> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Subtotal",
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
@@ -329,7 +264,7 @@ class _CartState extends State<Cart> {
                                     ),
                                     Obx(() => Text(
                                           "\$${c.totalPrice.value}",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.normal,
                                               fontSize: 15,
                                               fontFamily: 'Prompt'),
@@ -343,7 +278,7 @@ class _CartState extends State<Cart> {
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [
+                                  children: const [
                                     Text(
                                       "Delivery Cost",
                                       style: TextStyle(
@@ -359,8 +294,8 @@ class _CartState extends State<Cart> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
                                     vertical: 0.0, horizontal: 16),
                                 child: Divider(
                                   color: Colors.black,
@@ -377,7 +312,7 @@ class _CartState extends State<Cart> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Totals",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -386,7 +321,7 @@ class _CartState extends State<Cart> {
                                     ),
                                     Obx(() => Text(
                                           "\$${c.totalPrice.value}",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
                                               fontFamily: 'Prompt'),
@@ -408,10 +343,8 @@ class _CartState extends State<Cart> {
                                 'orderedAt': Timestamp.now(),
                                 'deliveryAt': dropdownvalue,
                                 'total': c.totalPrice.value,
-                                'orderId': new Random().nextInt(MAX),
+                                'orderId': Random().nextInt(MAX),
                                 'status': 'Waiting',
-                                'name': name,
-                                'email': email,
                                 'isExpand': false,
                                 'userId': Data.uuid,
                               }).then((value) async {
@@ -474,12 +407,12 @@ class _CartState extends State<Cart> {
                                     height: 50,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
-                                      color: Color(0xff27963c),
+                                      color: const Color(0xff27963c),
                                     ),
                                     child: Center(
                                       child: Obx(() => Text(
                                             "CHECKOUT (\$${c.totalPrice.value})",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15),

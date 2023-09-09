@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryapp/loginpage.dart';
 import 'package:groceryapp/variables.dart';
@@ -26,6 +27,7 @@ class _SignupPageState extends State<SignupPage> {
   final passwordController = TextEditingController();
   String address = 'your address';
   String phone = 'your number';
+  String? fcmToken;
   String userType = 'user';
   String downloadURL = 'https://firebasestorage.googleapis.com/v0/b/grocery-app-9b16d.appspot.com/o/logo.png?alt=media&token=80b8001d-cdce-447a-a535-07b979bed2cf';
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -66,6 +68,17 @@ class _SignupPageState extends State<SignupPage> {
       ) ;
     return null;
   }
+  Future <void> getToken() async {
+    setState(() async {
+      fcmToken  = await FirebaseMessaging.instance.getToken();
+    });
+  }
+
+  @override
+  void initState() {
+    getToken();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,13 +90,13 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
                 Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Hi,Welcome guys!",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 35,
@@ -96,7 +109,7 @@ class _SignupPageState extends State<SignupPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Hello again, we always with you!",style: TextStyle(
                               fontFamily: "Proppins",
                               fontSize: 15,
@@ -110,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
 
                 Column(
                   children: [
-                    SizedBox(height: 40,),
+                    const SizedBox(height: 40,),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -128,7 +141,7 @@ class _SignupPageState extends State<SignupPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Your Name",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 15,
@@ -154,7 +167,7 @@ class _SignupPageState extends State<SignupPage> {
                           child: TextFormField(
                               controller: nameController,
                               validator: validateName,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'your name',
                                 labelStyle: TextStyle(color: Colors.grey),
                                 border: InputBorder.none,
@@ -165,7 +178,7 @@ class _SignupPageState extends State<SignupPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Email Address",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 15,
@@ -191,7 +204,7 @@ class _SignupPageState extends State<SignupPage> {
                           child: TextFormField(
                             controller: emailController,
                               validator: validateEmail,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'example@gmail.com ',
                                 labelStyle: TextStyle(color: Colors.grey),
                                 border: InputBorder.none,
@@ -202,7 +215,7 @@ class _SignupPageState extends State<SignupPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Row(
-                        children: [
+                        children: const [
                           Text("Password",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 15,
@@ -228,7 +241,7 @@ class _SignupPageState extends State<SignupPage> {
                             controller: passwordController,
                               obscureText: true,
                               validator: validatePassword,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: 'password ',
                                 labelStyle: TextStyle(color: Colors.grey),
                                 border: InputBorder.none,
@@ -249,8 +262,8 @@ class _SignupPageState extends State<SignupPage> {
                                 .then((value) async {
                               print("Signup Success Fully");
                               Data.uuid = FirebaseAuth.instance.currentUser!.uid;
-                              FirebaseFirestore firestore = FirebaseFirestore.instance;
-                              await  firestore.collection("biodata").doc(Data.uuid).set({
+                              FirebaseFirestore fireStore = FirebaseFirestore.instance;
+                              await  fireStore.collection("biodata").doc(Data.uuid).set({
                                 'name':nameController.text,
                                 'email':emailController.text,
                                 'password':passwordController.text,
@@ -258,6 +271,7 @@ class _SignupPageState extends State<SignupPage> {
                                 'phone':phone,
                                 'downloadurl': downloadURL,
                                 'userType': userType,
+                                'fcmToken': fcmToken,
                               }).then((value) {
 
                                 Navigator.push(
@@ -287,11 +301,11 @@ class _SignupPageState extends State<SignupPage> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(0xff27963c),
+                            color: const Color(0xff27963c),
 
                           ),
                           child: Center(
-                            child:IsLoading.isLoading==false? Text("Create Account",style: TextStyle(
+                            child:IsLoading.isLoading==false? const Text("Create Account",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
@@ -305,7 +319,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Already have an account?",style: TextStyle(
+                          const Text("Already have an account?",style: TextStyle(
                               fontFamily: "Prompt",
                               fontSize: 16,
                               color: Color(0xff2F3825)
@@ -315,13 +329,13 @@ class _SignupPageState extends State<SignupPage> {
                               context,
                               MaterialPageRoute(builder: (context) => const LoginPage()),
                             );
-                          }, child:Text("Login",style: TextStyle(color: Color(0xff27963c),fontFamily: "Prompt"),) )
+                          }, child:const Text("Login",style: TextStyle(color: Color(0xff27963c),fontFamily: "Prompt"),) )
                         ],
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10,)
+                const SizedBox(height: 10,)
               ],
             ),
           ),

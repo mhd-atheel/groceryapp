@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:groceryapp/variables.dart';
+
 
 import 'loading.dart';
 
@@ -11,9 +11,10 @@ class UserOrderWidget extends StatefulWidget {
   final String total;
   final String status;
   final String id;
+  final String image;
   bool isExpand;
   UserOrderWidget(
-      {required this.name, required this.email, required this.total,required this.id,required this.isExpand,required this.status});
+      {super.key, required this.name, required this.email, required this.total,required this.id,required this.isExpand,required this.status,required this.image});
 
   @override
   State<UserOrderWidget> createState() => _UserOrderWidgetState();
@@ -21,6 +22,14 @@ class UserOrderWidget extends StatefulWidget {
 
 class _UserOrderWidgetState extends State<UserOrderWidget> {
    bool isPress =false;
+   bool isDecline =false;
+   bool isLoading =false;
+
+   @override
+  void dispose() {
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +47,7 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                   color: Colors.grey.shade100,
                   spreadRadius: 2,
                   blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: const Offset(0, 3), // changes position of shadow
                 ),
               ],
             ),
@@ -46,48 +55,45 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
               children: [
                 ListTile(
                   shape: RoundedRectangleBorder( //<-- SEE HERE
-                    side: BorderSide(width: 1),
+                    side: const BorderSide(width: 1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   leading: CircleAvatar(
                     backgroundColor: const Color(0xff6ae792),
                     child: CachedNetworkImage(
-                      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/grocery-app-9b16d.appspot.com/o/UserProfiles%2F0qBOYa9ml7SVgG5bZza2cWzwW5j1%2F1670590530628?alt=media&token=9986c87f-7347-4311-ad7b-bcc3d2d18580',
+                      imageUrl: widget.image,
                       imageBuilder: (context, imageProvider) => CircleAvatar(
                         backgroundImage: imageProvider,
                       ),
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   ),
                   title: Text(
                     widget.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400
                     ),
                   ),
-                  subtitle: Text(widget.email,
-                    style: TextStyle(
+                  subtitle:  Text(widget.email,
+                    style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w200,
                       fontSize: 12,
                     ),
                   ),
-                  trailing: Container(
-
-                    child: Text(widget.status,style: TextStyle(
-                      color: widget.status =='Waiting'?Colors.orangeAccent:widget.status=='Decline'?Colors.red:Colors.green,
-                      fontWeight: FontWeight.bold
-                    ),),
-                  ),
+                  trailing: Text(widget.status,style: TextStyle(
+                    color: widget.status =='Waiting'?Colors.orangeAccent:widget.status=='Decline'?Colors.red:Colors.green,
+                    fontWeight: FontWeight.bold
+                  ),),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 18),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Totals",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -96,8 +102,8 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                         ),
                       ),
                       Text(
-                       '\$'+widget.total ,
-                        style: TextStyle(
+                       '\$${widget.total}' ,
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                             fontFamily: 'Prompt'
@@ -106,15 +112,19 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                widget.isExpand==false?Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          IsLoading.isLoading=true;
-                        });
+                      onTap: () async {
+                        if(mounted){
+                          setState(() {
+                            isDecline=true;
+                          });
+                        }
+                        await Future.delayed(const Duration(seconds: 4));
+                        
                         FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
                             {
                               'status':'Decline'
@@ -126,9 +136,11 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                                 'isExpand':true
                               }
                           ).then((value) {
-                            setState(() {
-                              IsLoading.isLoading=false;
-                            });
+                            if(mounted){
+                              setState(() {
+                                isDecline=false;
+                              });
+                            }
                           });
                         });
                       },
@@ -139,20 +151,20 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Color(0xffcccccc),
-                            border: Border.all(color:Color(0xffcccccc)),
+                            color: const Color(0xffcccccc),
+                            border: Border.all(color:const Color(0xffcccccc)),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.shade100,
                                 spreadRadius: 2,
                                 blurRadius: 7,
-                                offset: Offset(0, 3), // changes position of shadow
+                                offset: const Offset(0, 3), // changes position of shadow
                               ),
                             ],
 
                           ),
                           child: Center(
-                            child:IsLoading.isLoading==false?Text("Decline",style: TextStyle(
+                            child:isDecline==false?const Text("Decline",style: TextStyle(
                                 color: Color(0xff999999),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
@@ -162,10 +174,14 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          IsLoading.isLoading=true;
-                        });
+                      onTap: () async {
+                        if(mounted){
+                          setState(() {
+                            isLoading=true;
+                          });
+                        }
+
+                        await Future.delayed(const Duration(seconds: 4));
                         FirebaseFirestore.instance.collection('orders').doc(widget.id).update(
                           {
                             'status':'Accepted'
@@ -176,9 +192,11 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                                 'isExpand':true
                               }
                           ).then((value) {
-                            setState(() {
-                              IsLoading.isLoading=false;
-                            });
+                            if(mounted){
+                              setState(() {
+                                isLoading=false;
+                              });
+                            }
                           });
                         });
                       },
@@ -189,12 +207,12 @@ class _UserOrderWidgetState extends State<UserOrderWidget> {
                           height: 50,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: Color(0xff27963c),
-                              border: Border.all(color:Color(0xff27963c) )
+                              color: const Color(0xff27963c),
+                              border: Border.all(color:const Color(0xff27963c) )
 
                           ),
                           child: Center(
-                            child:IsLoading.isLoading==false? Text("Accept",style: TextStyle(
+                            child:isLoading==false? const Text("Accept",style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18
